@@ -23,6 +23,7 @@ const createOTP = AsyncHandler(async (req, res) => {
         sendOtp(email, otp);
 
         res.status(201).json(new ApiResponse("OTP created successfully"));
+        return;
     }
 
     await OTP.create({
@@ -36,4 +37,28 @@ const createOTP = AsyncHandler(async (req, res) => {
     res.status(201).json(new ApiResponse("OTP created successfully"));
 });
 
-export { createOTP };
+const verifyOTP = AsyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+
+    if(!email || !otp) {
+        throw new ApiError(400, "Please provide email and otp");
+    }
+
+    const existingOTP = await OTP.findOne({ email });
+    if(!existingOTP) {
+        throw new ApiError(400, "OTP not found");
+    }
+
+    if(existingOTP.otp !== otp) {
+        throw new ApiError(400, "Invalid OTP");
+    }
+
+    if(existingOTP.expiry < new Date()) {
+        throw new ApiError(400, "OTP expired");
+    }
+
+    await OTP.deleteOne({email});
+    res.status(200).json(new ApiResponse("OTP verified successfully"));
+});
+
+export { createOTP, verifyOTP };
