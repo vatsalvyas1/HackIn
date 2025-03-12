@@ -46,8 +46,8 @@ export default function DashBoardDemo() {
               </a>
             </div>
   
-            <div className="w-full md:w-1/2 hover:-translate-y-2 transition-all duration-300 group">
-              <div className="bg-neutral-800 rounded-xl border border-neutral-700 group-hover:border-purple-500 overflow-hidden shadow-2xl transition-all duration-300 group">
+            <div className="w-full md:w-1/2 hover:-translate-y-2 transition-all duration-300">
+              <div className="bg-neutral-800 rounded-xl border border-neutral-700  overflow-hidden shadow-2xl group">
                 <div className="bg-neutral-900 p-4 border-b border-neutral-700 flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="h-10 w-10 rounded-full bg-purple-700 flex items-center justify-center">

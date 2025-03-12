@@ -13,32 +13,6 @@ export default function FeaturedGrid() {
             </div>
     
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div id="home-preview" className="bg-neutral-800 rounded-xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300 hover:-translate-y-2 group">
-                    <div className="w-14 h-14 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-800/50 transition-colors duration-300">
-                    <Newspaper size={24} className='text-purple-400'/>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3">Developer Feed</h3>
-                    <p className="text-neutral-400 mb-4">Your personalized feed of tech posts, projects, and discussions from the developer community.</p>
-                    <ul className="space-y-2 text-neutral-300">
-                    <li className="flex items-center">
-                        <CircleCheck size={18} className='text-purple-500 mr-2'/>
-                        Tech-focused discussions
-                    </li>
-                    <li className="flex items-center">
-                    <CircleCheck size={18} className='text-purple-500 mr-2'/>
-                        Project showcases
-                    </li>
-                    <li className="flex items-center">
-                    <CircleCheck size={18} className='text-purple-500 mr-2'/>
-                        Team updates
-                    </li>
-                    </ul>
-                    <a href="#" className="mt-6 inline-flex items-center text-purple-400 hover:text-purple-300 group-hover:translate-x-2 transition-transform duration-300">
-                    Explore Feed
-                    <ArrowRight size={18} className='ml-1' />
-                    </a>
-                </div>
-        
                 <div id="hackmates-preview" className="bg-neutral-800 rounded-xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300 hover:-translate-y-2 group">
                     <div className="w-14 h-14 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-800/50 transition-colors duration-300">
                     <Users size={24} className='text-purple-400'/>
@@ -113,6 +87,32 @@ export default function FeaturedGrid() {
                     </ul>
                     <a href="#" className="mt-6 inline-flex items-center text-purple-400 hover:text-purple-300 group-hover:translate-x-2 transition-transform duration-300">
                     Find Hackathons
+                    <ArrowRight size={18} className='ml-1' />
+                    </a>
+                </div>
+
+                <div id="home-preview" className="bg-neutral-800 rounded-xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300 hover:-translate-y-2 group">
+                    <div className="w-14 h-14 bg-purple-900/30 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-800/50 transition-colors duration-300">
+                    <Newspaper size={24} className='text-purple-400'/>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">Developer Feed</h3>
+                    <p className="text-neutral-400 mb-4">Your personalized feed of tech posts, projects, and discussions from the developer community.</p>
+                    <ul className="space-y-2 text-neutral-300">
+                    <li className="flex items-center">
+                        <CircleCheck size={18} className='text-purple-500 mr-2'/>
+                        Tech-focused discussions
+                    </li>
+                    <li className="flex items-center">
+                    <CircleCheck size={18} className='text-purple-500 mr-2'/>
+                        Project showcases
+                    </li>
+                    <li className="flex items-center">
+                    <CircleCheck size={18} className='text-purple-500 mr-2'/>
+                        Team updates
+                    </li>
+                    </ul>
+                    <a href="#" className="mt-6 inline-flex items-center text-purple-400 hover:text-purple-300 group-hover:translate-x-2 transition-transform duration-300">
+                    Explore Feed
                     <ArrowRight size={18} className='ml-1' />
                     </a>
                 </div>
