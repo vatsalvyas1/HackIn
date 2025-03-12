@@ -6,7 +6,7 @@ const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="px-4 mx-2 md:mx-16">
+    <nav className="px-4 mx-1 md:mx-16 border-b border-neutral-800">
       <div className="flex justify-between items-center py-4">
         <div className="flex items-center">
           <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
