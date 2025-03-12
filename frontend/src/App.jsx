@@ -6,7 +6,8 @@ import HomePage from './components/HomePage.jsx'
 
 function App() {
   return (
-    <Router>
+    <div className='flex flex-col'>
+      <Router>
       <NavBar />
       <Routes>
         <Route path='/' element={<HomePage />} />
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
+    </div>
   )
 }
 
