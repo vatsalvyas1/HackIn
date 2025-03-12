@@ -6,7 +6,7 @@ export default function DashBoardDemo() {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="w-full md:w-2/5 mb-10 md:mb-0">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">
-                Dev <span className="text-purple-500">Dashboard</span>
+                HackIn <span className="text-purple-500">Dashboard</span>
               </h2>
               <p className="text-neutral-400 mb-6">
                 Track your progress, manage your teams, and showcase your achievements all in one place.
