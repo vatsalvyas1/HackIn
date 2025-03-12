@@ -1,26 +1,46 @@
 import express from "express";
-import passport from "passport";
+import admin from "firebase-admin";
+import User from "../models/user.model.js";
 
 const router = express.Router();
 
-// GitHub Login Route
-router.get("/github", passport.authenticate("github", { scope: ["user:email"] }));
+// Initialize Firebase Admin SDK
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  }),
+});
 
-// GitHub Callback Route
-router.get(
-  "/github/callback",
-  passport.authenticate("github", { failureRedirect: "http://localhost:5173/login" }),
-  (req, res) => {
-    res.redirect("http://localhost:5173/"); // Redirect after successful login
+// GitHub Authentication Route
+router.post("/github", async (req, res) => {
+  try {
+    const { token } = req.body;
+    console.log("Received Token from Frontend:", token); // Log token to check if it's received
+
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    console.log("Decoded Token:", decodedToken); // Log user details from Firebase
+
+    let user = await User.findOne({ oauthId: decodedToken.uid });
+
+    if (!user) {
+      user = new User({
+        oauthProvider: "github",
+        oauthId: decodedToken.uid,
+        name: decodedToken.name,
+        email: decodedToken.email,
+        profileImage: decodedToken.picture,
+      });
+      await user.save();
+    }
+
+    console.log("User saved in MongoDB:", user);
+    res.json({ user });
+  } catch (error) {
+    console.error("Authentication Error:", error);
+    res.status(401).json({ message: "Authentication failed", error });
   }
-);
-
-// Logout Route
-router.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) return res.status(500).send("Logout failed");
-    res.redirect("http://localhost:5173");
-  });
 });
 
 export default router;

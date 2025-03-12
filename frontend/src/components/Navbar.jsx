@@ -1,55 +1,51 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { signInWithGithub, logout } from "../firebase";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+  }, []);
+
+  const handleLogin = async () => {
+    const loggedInUser = await signInWithGithub();
+    if (loggedInUser) {
+      setUser(loggedInUser);
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
+    }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    setUser(null);
+    localStorage.removeItem("user");
+  };
 
   return (
-    <nav className="px-4 mx-1 md:mx-16 border-b border-neutral-800">
+    <nav className="px-4 mx-2 md:mx-16">
       <div className="flex justify-between items-center py-4">
-        <div className="flex items-center">
-          <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
-        </div>
-
+        <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
         <div className="hidden md:flex space-x-6 text-white font-mono">
-          <Link to="/" className="hover:text-purple-400 transition-color duration-300">Home</Link>
-          <Link to="/find-teammates" className="hover:text-purple-400 transition-color duration-300">Hackmates</Link>
-          <Link to="/leaderboard" className="hover:text-purple-400 transition-color duration-300">Leaderboard</Link>
-          <Link to="/hackathons" className="hover:text-purple-400 transition-color duration-300">Hackathons</Link>
-          <a 
-            href="http://localhost:3000/api/v1/auth/github"
-            className="bg-purple-700 px-4 py-2 rounded-md hover:bg-purple-600 transition-color duration-300"
-          >
-            Login/Signup
-          </a>
-        </div>
-
-        <div className="md:hidden flex items-center text-white">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="focus:outline-none">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <Link to="/" className="hover:text-purple-400">Home</Link>
+          <Link to="/find-teammates" className="hover:text-purple-400">Hackmates</Link>
+          <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
+          <Link to="/hackathons" className="hover:text-purple-400">Hackathons</Link>
+          {user ? (
+            <button onClick={handleLogout} className="bg-red-600 px-4 py-2 rounded-md hover:bg-red-500">
+              Logout
+            </button>
+          ) : (
+            <button onClick={handleLogin} className="bg-purple-700 px-4 py-2 rounded-md hover:bg-purple-600">
+              Login with GitHub
+            </button>
+          )}
         </div>
       </div>
-
-      {isMenuOpen && (
-        <div className="md:hidden font-mono text-white">
-          <div className="flex flex-col space-y-3 py-4 border-t border-b border-neutral-800">
-            <Link to="/" className="hover:text-purple-400 transition-color duration-300">Home</Link>
-            <Link to="/find-teammates" className="hover:text-purple-400 transition-color duration-300">Hackmates</Link>
-            <Link to="/leaderboard" className="hover:text-purple-400 transition-color duration-300">Leaderboard</Link>
-            <Link to="/hackathons" className="hover:text-purple-400 transition-color duration-300">Hackathons</Link>
-            <a 
-              href="http://localhost:3000/api/v1/auth/github"
-              className="bg-purple-700 px-4 py-2 rounded-md hover:bg-purple-600 transition-color duration-300"
-            >
-              Login/Signup
-            </a>
-          </div>
-        </div>
-      )}
     </nav>
   );
-}
+};
 
 export default NavBar;
