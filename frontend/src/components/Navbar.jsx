@@ -22,9 +22,9 @@ const NavBar = () => {
 
   return (
     <nav className="px-4 mx-2 md:mx-16">
-      <div className="flex justify-between items-center py-4">
+      <div className="flex justify-between items-center py-4 border-b border-neutral-800">
         <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
-        <div className="hidden md:flex space-x-6 text-white font-mono">
+        <div className="hidden md:flex items-center space-x-6 text-white font-mono">
           <Link to="/" className="hover:text-purple-400">Home</Link>
           <Link to="/find-teammates" className="hover:text-purple-400">Hackmates</Link>
           <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>

@@ -72,10 +72,6 @@ const UserSchema = new mongoose.Schema(
         timestamp: { type: Date, default: Date.now },
       },
     ],
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );

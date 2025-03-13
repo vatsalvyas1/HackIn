@@ -25,13 +25,13 @@ export default function DashBoard(){
                             <img src={user.profileImage} alt="profile" className="w-10 h-10 md:w-16 md:h-16 rounded-full"/>
                             <div>
                                 <h3 className="md:text-xl">{user.name}</h3>
-                                <p className="text-sm md:text-base text-neutral-400">Full Stack devloper</p>
+                                <p className="text-sm md:text-base text-neutral-400">{user.bio}</p>
                             </div>
                         </div>
 
                         <div className="flex items-center">
                             <span className="bg-purple-900/30 text-purple-400 px-3 py-1 text-sm md:text-base rounded-full font-medium mr-2">
-                                104 🏆
+                                {user.contributionScore} 🏆
                             </span>
                             <button onClick={handleLogout} className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300">
                                 <LogOut size={18}/>
