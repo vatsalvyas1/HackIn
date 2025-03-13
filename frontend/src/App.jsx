@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SignUp from './components/SignUp.jsx'
 import NavBar from './components/Navbar.jsx'
 import HomePage from './components/HomePage.jsx'
-import Fotter from './components/Fotter.jsx'
+import Footer from './components/Footer.jsx'
 import DashBoard from './components/DashBoard.jsx'
 import EditProfile from './components/EditProfile.jsx'
 
@@ -19,7 +19,7 @@ function App() {
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/dashboard' element={<DashBoard />} />
       </Routes>
-      <Fotter />
+      <Footer />
     </Router>
     </div>
   )

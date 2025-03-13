@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
   {
     oauthProvider: {
       type: String,
-      enum: ["google", "github"],
+      enum: ["email", "github"],
       required: true,
     },
     oauthId: {
@@ -35,8 +35,8 @@ const UserSchema = new mongoose.Schema(
       },
     ],
     socialLinks: {
-      github: String,
-      portfolio: String,
+      linkedin: String,
+      portfolio: {type: String, required: false},
     },
     experienceLevel: {
       type: String,

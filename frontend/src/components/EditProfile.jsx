@@ -4,7 +4,7 @@ import { Plus, X } from "lucide-react";
 export default function EditProfile() {
     const [user, setUser] = useState(null);
     const [addedSkills, setAddedSkills] = useState([]);
-    const [skills, setSkills] = useState(["HTML", "CSS", "REACT", "JAVASCRIPT", "NEXT.JS"]);
+    const [skills, setSkills] = useState(["HTML", "CSS", "REACT", "JAVASCRIPT", "NEXTJS", "BLOCKCHAIN", "AI", "DOCKER"]);
 
     function addSkill(skill) {
         setAddedSkills((prevSkills) =>
@@ -55,6 +55,16 @@ export default function EditProfile() {
                         </div>
 
                         <div className="space-x-2">
+                            <label htmlFor="linkedin">LinkedIn Link :</label>
+                            <input
+                                type="url"
+                                required
+                                placeholder="LinkedIn Profile Link"
+                                className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
+                            />
+                        </div>
+
+                        <div className="space-x-2">
                             <label htmlFor="portfolio">Portfolio Link :</label>
                             <input
                                 type="text"
@@ -63,8 +73,6 @@ export default function EditProfile() {
                             />
                         </div>
 
-
-                        {/*Skill */}
                         <div>
                             <h5>Add skills</h5>
                             {addedSkills.length > 0 && (
@@ -73,7 +81,7 @@ export default function EditProfile() {
                                         <button
                                             key={skill}
                                             className="bg-purple-900/30 text-purple-400 border border-neutral-700 px-2 py-1 text-sm flex gap-2 items-center rounded-full font-mono hover:bg-purple-900/80 transition-color duration-300"
-                                            onClick={() => removeSkill(skill)} // Remove skill on click
+                                            onClick={() => removeSkill(skill)}
                                         >
                                             {skill} <X size={18} />
                                         </button>
@@ -86,7 +94,7 @@ export default function EditProfile() {
                                     <span
                                         key={skill}
                                         className="bg-neutral-900 border border-neutral-700 px-3 py-1 text-sm flex gap-2 items-center rounded-full font-mono cursor-pointer hover:bg-neutral-700 transition-color duration-300"
-                                        onClick={() => addSkill(skill)} // Add skill on click
+                                        onClick={() => addSkill(skill)}
                                     >
                                         {skill} <Plus size={18} />
                                     </span>

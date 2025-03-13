@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Linkedin ,Instagram, Twitter, Facebook } from 'lucide-react';
 
-export default function Fotter() {
+export default function Footer() {
     return(
         <footer id="footer" className="bg-neutral-900 pt-16 border-t border-neutral-800">
             <div className="container mx-auto px-4">

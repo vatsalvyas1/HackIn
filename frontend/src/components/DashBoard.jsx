@@ -1,9 +1,11 @@
 import { logout } from "../firebase";
 import { useState ,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { LogOut } from "lucide-react"
 
 export default function DashBoard(){
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
@@ -14,6 +16,9 @@ export default function DashBoard(){
         await logout();
         setUser(null);
         localStorage.removeItem("user");
+
+        navigate("/");
+        window.location.reload();
     };
 
     return (
