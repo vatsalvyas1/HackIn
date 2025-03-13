@@ -4,6 +4,7 @@ import SignUp from './components/SignUp.jsx'
 import NavBar from './components/Navbar.jsx'
 import HomePage from './components/HomePage.jsx'
 import Fotter from './components/Fotter.jsx'
+import DashBoard from './components/DashBoard.jsx'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path="/" element={<Link to={"/login"}>Login</Link>} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path='/dashboard' element={<DashBoard />} />
       </Routes>
       <Fotter />
     </Router>
