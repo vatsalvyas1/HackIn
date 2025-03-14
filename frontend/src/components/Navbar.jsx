@@ -17,6 +17,10 @@ const NavBar = () => {
     if (loggedInUser) {
       setUser(loggedInUser);
       localStorage.setItem("user", JSON.stringify(loggedInUser));
+
+      if (loggedInUser.firstLogin) {
+        window.location.href = "/edit-profile";
+      }
     }
   };
 
