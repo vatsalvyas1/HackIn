@@ -20,23 +20,41 @@ const signInWithGithub = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider);
     const idToken = await result.user.getIdToken();
-    console.log("Firebase ID Token:", idToken); // Check token in frontend console
+    console.log("Firebase ID Token:", idToken);
 
+    // Get the GitHub access token
+    const githubAccessToken = result._tokenResponse.oauthAccessToken;
+    console.log("GitHub Access Token:", githubAccessToken);
+
+    // Fetch GitHub user details
+    const githubResponse = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `token ${githubAccessToken}`,
+      },
+    });
+
+    const githubData = await githubResponse.json();
+    console.log("GitHub User Data:", githubData);
+
+    // Extract name and username from GitHub
+    const name = githubData.name || null; // GitHub display name (null if not set)
+    const username = githubData.login || result.user.email.split("@")[0]; // GitHub username
+
+    // Send token, GitHub name, and username to backend
     const res = await fetch("http://localhost:3000/api/v1/auth/github", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: idToken }),
+      body: JSON.stringify({ token: idToken, name, username }),
     });
 
     const data = await res.json();
-    console.log("Response from Backend:", data); // Log backend response
+    console.log("Response from Backend:", data);
 
     return data.user;
   } catch (error) {
     console.error("GitHub Login Error:", error);
   }
 };
-
 
 // Logout Function
 const logout = async () => {

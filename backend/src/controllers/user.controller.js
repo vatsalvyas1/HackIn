@@ -19,17 +19,19 @@ const completeUserProfile = AsyncHandler(async (req, res) => {
 
     await user.save();
 
-    res.status(201).json(new ApiResponse(201, user, "user updated succesfully"));
+    res.status(200).json(new ApiResponse(200, user, "User updated successfully"));
 });
 
-const getProfile = AsyncHandler(async (req,res) => {
-    const {userId} = req.params;
-    if(!userId) throw new ApiError(400,"userId not found");
+const getProfile = AsyncHandler(async (req, res) => {
+    const { userId } = req.params;
 
-    const user = await User.findById(userId);
-    if(!user) throw new ApiError(404,"user not found");
+    if (!userId) throw new ApiError(400, "User ID is required");
 
-    res.status(201).json(new ApiResponse(201,user,"fetched User"));
-})
+    const user = await User.findById(userId).select("name bio username profileImage socialLinks contributionScore skills");
+
+    if (!user) throw new ApiError(404, "User not found");
+
+    res.status(200).json(new ApiResponse(200, user, "Fetched user profile"));
+});
 
 export { completeUserProfile, getProfile };

@@ -16,7 +16,7 @@ admin.initializeApp({
 // GitHub Authentication Route
 router.post("/github", async (req, res) => {
   try {
-    const { token } = req.body;
+    const { token, name, username } = req.body;
     console.log("Received Token from Frontend:", token); // Log token to check if it's received
 
     const decodedToken = await admin.auth().verifyIdToken(token);
@@ -28,7 +28,8 @@ router.post("/github", async (req, res) => {
       user = new User({
         oauthProvider: "github",
         oauthId: decodedToken.uid,
-        name: decodedToken.name,
+        name: name || decodedToken.name || username, 
+        username: username,
         email: decodedToken.email,
         profileImage: decodedToken.picture,
         firstLogin: true,

@@ -8,7 +8,6 @@ export default function EditProfile() {
   const [addedSkills, setAddedSkills] = useState([]);
   const [profileData, setProfileData] = useState({
     bio: "",
-    username: "",
     linkedin: "",
     portfolio: "",
   });
@@ -91,6 +90,7 @@ export default function EditProfile() {
             />
             <h3>{user.name}</h3>
             <p>{user.email}</p>
+            <p>@{user.username}</p>
           </div>
 
           <form
@@ -108,19 +108,6 @@ export default function EditProfile() {
                   onChange={handleChange}
                   placeholder="Tell us about yourself"
                   className="md:ml-18 flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
-                />
-              </div>
-
-              <div className="space-x-2 flex flex-col md:flex-row justify-between items-center">
-                <label htmlFor="username">Username : </label>
-                <input
-                  type="text"
-                  name="username"
-                  required
-                  value={profileData.username}
-                  onChange={handleChange}
-                  placeholder="Github UserName"
-                  className="md:ml-5 flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
                 />
               </div>
 
