@@ -44,24 +44,5 @@ router.post("/github", async (req, res) => {
   }
 });
 
-router.put("/complete-profile", async (req, res) => {
-  try {
-    const { userId } = req.body;
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    user.firstLogin = false;
-    await user.save();
-
-    res.json({ message: "Profile setup completed" });
-  } catch (error) {
-    console.error("Profile completion error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
 
 export default router;

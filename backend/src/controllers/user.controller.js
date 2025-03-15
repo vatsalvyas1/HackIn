@@ -2,40 +2,34 @@ import { AsyncHandler } from "../utils/AsyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import User from "../models/user.model.js";
-import { uploadOnCloud } from "../utils/cloudinary.js";
 
-const createUser = AsyncHandler(async (req, res) => {
-    const { oauthProvider, oauthId, name, email, password, bio, skills, socialLinks, experinceLevel } = req.body;
+const completeUserProfile = AsyncHandler(async (req, res) => {
+    const { userId, bio, username, skills, socialLinks } = req.body;
 
-    if(!oauthProvider || !oauthId || !name || !email || !password || !skills || !socialLinks || !experinceLevel) {
-        throw new ApiError(400, "Please provide all the required fields");
-    }
+    if (!userId) throw new ApiError(400, "User ID is required");
 
-    const profilePath = req.file ? req.file.path : null;
-    if(!profilePath) {
-        throw new ApiError(400, "Please provide a profile image");
-    }
+    const user = await User.findById(userId);
+    if (!user) throw new ApiError(404, "User not found");
 
-    const profileImage = await uploadOnCloud(profilePath);
-    if(!profileImage) {
-        throw new ApiError(500, "Failed to upload profile image");
-    }
+    user.bio = bio || user.bio;
+    user.skills = skills || user.skills;
+    user.username = username || user.username;
+    user.socialLinks = socialLinks || user.socialLinks;
+    user.firstLogin = false;
 
-    const user = await User.create({
-        oauthProvider,
-        oauthId,
-        name,
-        email,
-        password,
-        bio,
-        profileImage : profileImage.url,
-        skills,
-        socialLinks,
-        experinceLevel
-    });
+    await user.save();
 
-    res.status(201).json(new ApiResponse("User created successfully", user));
+    res.status(201).json(new ApiResponse(201, user, "user updated succesfully"));
 });
 
-export { createUser };
+const getProfile = AsyncHandler(async (req,res) => {
+    const {userId} = req.params;
+    if(!userId) throw new ApiError(400,"userId not found");
 
+    const user = await User.findById(userId);
+    if(!user) throw new ApiError(404,"user not found");
+
+    res.status(201).json(new ApiResponse(201,user,"fetched User"));
+})
+
+export { completeUserProfile, getProfile };

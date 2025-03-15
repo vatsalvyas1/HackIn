@@ -1,9 +1,13 @@
 import { Router } from "express";
-import { createUser } from "../controllers/user.controller.js";
-import { upload } from "../middleware/multer.middleware.js";
-
+import { completeUserProfile, getProfile } from "../controllers/user.controller.js";
 const router = Router();
 
-router.route("/create").post(upload.single("profileImage"), createUser);
+router.route("/complete-profile").post(
+    completeUserProfile
+);
+
+router.route("/get-profile/:userId").get(
+    getProfile
+);
 
 export default router;

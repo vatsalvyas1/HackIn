@@ -8,6 +8,7 @@ export default function EditProfile() {
   const [addedSkills, setAddedSkills] = useState([]);
   const [profileData, setProfileData] = useState({
     bio: "",
+    username: "",
     linkedin: "",
     portfolio: "",
   });
@@ -41,17 +42,11 @@ export default function EditProfile() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!user) {
-      console.error("User not found");
-      navigate("/");
-      return;
-    }
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/v1/auth/complete-profile",
+      const response = await fetch("http://localhost:3000/api/v1/users/complete-profile",
         {
-          method: "PUT",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             userId: user._id,
@@ -66,10 +61,6 @@ export default function EditProfile() {
       );
 
       if (response.ok) {
-        const updatedUser = await response.json();
-        updatedUser.user.firstLogin = false;
-        localStorage.setItem("user", JSON.stringify(updatedUser.user));
-
         navigate("/dashboard");
       } else {
         const errorData = await response.json();
@@ -106,42 +97,57 @@ export default function EditProfile() {
             onSubmit={handleSubmit}
             className="space-y-4 bg-neutral-800 p-4 rounded-lg border border-neutral-700 flex-grow"
           >
-            <div className="space-x-2">
-              <label htmlFor="bio">Bio : </label>
-              <input
-                type="text"
-                name="bio"
-                required
-                value={profileData.bio}
-                onChange={handleChange}
-                placeholder="Tell us about yourself"
-                className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
-              />
-            </div>
+            <div className="flex flex-col gap-2 w-full md:w-1/2">
+              <div className="space-x-2 flex flex-col md:flex-row justify-between items-center">
+                <label htmlFor="bio">Bio : </label>
+                <input
+                  type="text"
+                  name="bio"
+                  required
+                  value={profileData.bio}
+                  onChange={handleChange}
+                  placeholder="Tell us about yourself"
+                  className="md:ml-18 flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
+                />
+              </div>
 
-            <div className="space-x-2">
-              <label htmlFor="linkedin">LinkedIn Link :</label>
-              <input
-                type="url"
-                name="linkedin"
-                required
-                value={profileData.linkedin}
-                onChange={handleChange}
-                placeholder="LinkedIn Profile Link"
-                className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
-              />
-            </div>
+              <div className="space-x-2 flex flex-col md:flex-row justify-between items-center">
+                <label htmlFor="username">Username : </label>
+                <input
+                  type="text"
+                  name="username"
+                  required
+                  value={profileData.username}
+                  onChange={handleChange}
+                  placeholder="Github UserName"
+                  className="md:ml-5 flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
+                />
+              </div>
 
-            <div className="space-x-2">
-              <label htmlFor="portfolio">Portfolio Link :</label>
-              <input
-                type="text"
-                name="portfolio"
-                value={profileData.portfolio}
-                onChange={handleChange}
-                placeholder="Portfolio link (if any)"
-                className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
-              />
+              <div className="space-x-2 flex flex-col md:flex-row justify-between items-center">
+                <label htmlFor="linkedin">LinkedIn Link :</label>
+                <input
+                  type="url"
+                  name="linkedin"
+                  required
+                  value={profileData.linkedin}
+                  onChange={handleChange}
+                  placeholder="LinkedIn Profile Link"
+                  className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
+                />
+              </div>
+
+              <div className="space-x-2 flex flex-col md:flex-row justify-between items-center">
+                <label htmlFor="portfolio">Portfolio Link :</label>
+                <input
+                  type="text"
+                  name="portfolio"
+                  value={profileData.portfolio}
+                  onChange={handleChange}
+                  placeholder="Portfolio link (if any)"
+                  className="flex-grow bg-neutral-800 border border-neutral-700 rounded-lg py-1 px-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent placeholder-neutral-500"
+                />
+              </div>
             </div>
 
             <div>
