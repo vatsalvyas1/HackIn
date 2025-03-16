@@ -125,7 +125,7 @@ export default function HackMates() {
                     <div className="p-4">
                         <div className="mb-4">
                             <h4 className="text-white font-medium mb-2">Looking for:</h4>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 font-mono">
                                 <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">Frontend Dev</span>
                                 <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">UI/UX Designer</span>
                             </div>
@@ -143,7 +143,7 @@ export default function HackMates() {
                             We're building a platform that uses satellite imagery and machine learning to predict climate change effects. Looking for frontend developers and UI/UX designers to join our team!
                         </p>
 
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-2 mb-4 font-mono">
                             <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">React</span>
                             <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">Python</span>
                             <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">TensorFlow</span>

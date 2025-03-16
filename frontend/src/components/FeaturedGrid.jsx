@@ -1,4 +1,5 @@
 import { Newspaper, Users, BadgeCheck, Clock, CircleCheck, ArrowRight } from 'lucide-react';
+import { Link } from "react-router-dom";
 
 export default function FeaturedGrid() {
     return (
@@ -33,10 +34,10 @@ export default function FeaturedGrid() {
                         Direct team applications
                     </li>
                     </ul>
-                    <a href="#" className="mt-6 inline-flex items-center text-purple-400 hover:text-purple-300 group-hover:translate-x-2 transition-transform duration-300">
+                    <Link to={"/hackmates"} className="mt-6 inline-flex items-center text-purple-400 hover:text-purple-300 group-hover:translate-x-2 transition-transform duration-300">
                     Find Teammates
                     <ArrowRight size={18} className='ml-1' />
-                    </a>
+                    </Link>
                 </div>
         
                 <div id="leaderboard-preview" className="bg-neutral-800 rounded-xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300 hover:-translate-y-2 group">

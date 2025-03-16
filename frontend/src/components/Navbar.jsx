@@ -29,10 +29,10 @@ const NavBar = () => {
       <div className="flex justify-between items-center py-4 border-b border-neutral-800">
         <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
         <div className="hidden md:flex items-center space-x-6 text-white font-mono">
-          <Link to="/" className="hover:text-purple-400">Home</Link>
-          <Link to="/hackmates" className="hover:text-purple-400">Hackmates</Link>
-          <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
-          <Link to="/hackathons" className="hover:text-purple-400">Hackathons</Link>
+          <Link to="/" className="hover:text-purple-400 transition-color duration-300">Home</Link>
+          <Link to="/hackmates" className="hover:text-purple-400 transition-color duration-300">Hackmates</Link>
+          <Link to="/leaderboard" className="hover:text-purple-400 transition-color duration-300">Leaderboard</Link>
+          <Link to="/hackathons" className="hover:text-purple-400 transition-color duration-300">Hackathons</Link>
           {user ? (
             <Link to={'/dashboard'} className="px-4 py-2 flex items-center gap-4 bg-purple-700 rounded-md hover:bg-purple-600 transition-color duration-300">
               <img src={user.profileImage} alt="" className="h-8 w-8 rounded-full"/>
