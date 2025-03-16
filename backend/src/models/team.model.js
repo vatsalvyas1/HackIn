@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
+import { type } from "os";
 
 const TeamSchema = new mongoose.Schema(
   {
@@ -19,11 +20,18 @@ const TeamSchema = new mongoose.Schema(
     teamSize: {
       type: Number,
       required: true,
-      default: 1, // At least 1 person in a team
+      default: 2, // At least 2 people in a team
     },
     hackathonName: {
       type: String,
       required: true,
+    },
+    dates: {
+      startDate: { type: String },
+      endDate: { type: String },
+    },
+    location: {
+      type: String,
     },
     teamMembers: [
       {
@@ -62,7 +70,7 @@ const TeamSchema = new mongoose.Schema(
 
 // Middleware to update `isTeamFull` before saving
 TeamSchema.pre("save", function (next) {
-  this.isTeamFull = this.teamMembers.length >= this.teamSize;
+  this.isTeamFull = this.teamMembers.length >= this.teamSize; // Use `>=` to handle edge cases
   next();
 });
 

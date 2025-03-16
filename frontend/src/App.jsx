@@ -6,6 +6,7 @@ import HomePage from './components/HomePage.jsx'
 import Footer from './components/Footer.jsx'
 import DashBoard from './components/DashBoard.jsx'
 import EditProfile from './components/EditProfile.jsx'
+import HackMates from './components/HackMates.jsx'
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/dashboard' element={<DashBoard />} />
+
+        <Route path='/hackmates' element={<HackMates />} />
       </Routes>
       <Footer />
     </Router>

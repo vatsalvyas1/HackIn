@@ -30,7 +30,7 @@ const NavBar = () => {
         <Link to="/" className="text-xl font-bold font-mono text-purple-500">{"<HackIn/>"}</Link>
         <div className="hidden md:flex items-center space-x-6 text-white font-mono">
           <Link to="/" className="hover:text-purple-400">Home</Link>
-          <Link to="/find-teammates" className="hover:text-purple-400">Hackmates</Link>
+          <Link to="/hackmates" className="hover:text-purple-400">Hackmates</Link>
           <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
           <Link to="/hackathons" className="hover:text-purple-400">Hackathons</Link>
           {user ? (
