@@ -1,7 +1,7 @@
 import { logout } from "../firebase";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LogOut, Pencil, Github, Linkedin } from "lucide-react";
+import { LogOut, Pencil, Github, Linkedin, Plus } from "lucide-react";
 
 export default function DashBoard() {
   const [user, setUser] = useState(null);
@@ -87,6 +87,13 @@ export default function DashBoard() {
               <span className="bg-purple-900/30 text-purple-400 px-3 py-1 text-sm md:text-base rounded-full font-medium mr-2">
                 {user.contributionScore} 🏆
               </span>
+
+              <Link
+                to="/add-project"
+                className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
+              >
+                <Plus size={18} />
+              </Link>
 
               <Link
                 to="/edit-profile"
