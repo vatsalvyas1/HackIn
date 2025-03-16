@@ -13,6 +13,8 @@ const ProjectForm = () => {
     images: [],
   });
 
+  const [imagePreviews, setImagePreviews] = useState([]); // Store preview URLs
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -24,22 +26,24 @@ const ProjectForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files).slice(0, 4);
+    const files = Array.from(e.target.files).slice(0, 4); 
     setFormData({ ...formData, images: files });
+
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(previewUrls);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const storedUser = localStorage.getItem("user");
-    const userId = JSON.parse(storedUser)._id;
+    const userId = JSON.parse(storedUser)?._id;
 
     if (!userId) {
       console.error("User ID is missing");
       return;
     }
 
-    // Creating FormData object
     const data = new FormData();
     data.append("userId", userId);
     data.append("hackathonName", formData.hackathonName);
@@ -47,25 +51,36 @@ const ProjectForm = () => {
     data.append("description", formData.description);
     data.append("teamName", formData.teamName);
     data.append("achievement", formData.achievement);
-    data.append("techStack", JSON.stringify(formData.techStack)); // Convert array to string
+    data.append("techStack", JSON.stringify(formData.techStack));
     data.append("githubLink", formData.githubLink);
     data.append("liveDemo", formData.liveDemo);
 
-    // Append images to FormData
-    formData.images.forEach((image, index) => {
-      data.append(`images`, image);
-    });
+    formData.images.forEach((image) => data.append("images", image));
 
     try {
       const response = await fetch("http://localhost:3000/api/v1/project", {
         method: "POST",
-        body: data, // FormData is directly passed
+        body: data,
       });
 
       if (!response.ok) throw new Error("Failed to create project");
 
-      const result = await response.json();
-      console.log("Project created successfully:", result);
+      console.log("Project created successfully");
+      
+      // Reset form after submission
+      setFormData({
+        hackathonName: "",
+        projectTitle: "",
+        description: "",
+        teamName: "",
+        achievement: "Participant",
+        techStack: [],
+        githubLink: "",
+        liveDemo: "",
+        images: [],
+      });
+      setImagePreviews([]); 
+
     } catch (error) {
       console.error("Error creating project:", error);
     }
@@ -113,33 +128,6 @@ const ProjectForm = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Team Name</label>
-          <input
-            type="text"
-            name="teamName"
-            value={formData.teamName}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
-          />
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Achievement</label>
-          <select
-            name="achievement"
-            value={formData.achievement}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
-          >
-            <option value="1st">1st</option>
-            <option value="2nd">2nd</option>
-            <option value="3rd">3rd</option>
-            <option value="Honorable Mention">Honorable Mention</option>
-            <option value="Participant">Participant</option>
-          </select>
-        </div>
-
-        <div className="mb-6">
           <label className="block text-sm font-medium mb-2">Tech Stack (comma separated)</label>
           <input
             type="text"
@@ -173,8 +161,31 @@ const ProjectForm = () => {
           />
         </div>
 
+        {/* Image Upload Section */}
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Images (max 4)</label>
+          <label className="block text-sm font-medium mb-2">Pictures</label>
+          <p className="text-gray-400 text-sm mb-2">UPLOAD A MAXIMUM OF 4 PICTURES, SHOWCASING YOUR PROJECT.</p>
+          
+          {/* Image Preview Grid */}
+          <div className="grid grid-cols-5 gap-4 mb-4">
+            {[...Array(4)].map((_, index) => (
+              <div
+                key={index}
+                className="w-24 h-24 bg-gray-700 flex items-center justify-center rounded-md border border-gray-600"
+              >
+                {imagePreviews[index] ? (
+                  <img
+                    src={imagePreviews[index]}
+                    alt={`Preview ${index + 1}`}
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-2xl">+</span>
+                )}
+              </div>
+            ))}
+          </div>
+
           <input
             type="file"
             name="images"

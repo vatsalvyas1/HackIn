@@ -106,3 +106,15 @@ export const deleteProjectById = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Get projects by user ID
+export const getProjectsByUserId = AsyncHandler(async (req, res) => {
+    const { userId } = req.params; // Extract userId from params
+  
+    if (!userId) {
+      throw new ApiError(400, "User ID is required");
+    }
+  
+    const projects = await Project.find({ userId }); 
+    res.status(200).json(new ApiResponse(200, projects, "Projects fetched successfully"));
+  });
