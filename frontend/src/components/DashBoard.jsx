@@ -64,14 +64,16 @@ export default function DashBoard() {
                       href={`https://github.com/${user.username}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-400 hover:underline"
+                      className="bg-neutral-600 rounded-full p-1"
                     >
-                      @{user.username}
+                      <Github size={18} />
                     </a>
                   )}
                   {user.socialLinks?.linkedin && (
                     <a
                       className="bg-neutral-600 rounded-full p-1"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       href={user.socialLinks.linkedin}
                     >
                       <Linkedin size={18} />
