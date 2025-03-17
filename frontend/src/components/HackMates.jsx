@@ -106,7 +106,7 @@ export default function HackMates() {
                         <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
                             <div className="flex items-center">
                                 <div className={`h-10 w-10 rounded-full flex items-center justify-center ${logoCss[Math.floor(Math.random()*5)+1]}`}>
-                                    <span className="text-white font-bold">QD</span>
+                                    <span className="text-white font-bold">{team.teamName.split(" ").map(item => item[0])}</span>
                                 </div>
                                 <div className="ml-3">
                                     <h3 className="text-white font-medium">{team.teamName}</h3>
