@@ -196,67 +196,7 @@ export default function HackMates() {
                         </div>
                     </div>
                 ))}
-                <div className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
-                    <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
-                        <div className="flex items-center">
-                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${logoCss[Math.floor(Math.random()*5)+1]}`}>
-                                <span className="text-white font-bold">QD</span>
-                            </div>
-                            <div className="ml-3">
-                                <h3 className="text-white font-medium">Quantum Devs</h3>
-                                <div className="flex items-center text-neutral-400 text-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    </svg>
-                                    Remote Team
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-purple-900/30 text-purple-400 px-3 py-1 rounded-full text-xs font-medium">
-                            2/4 Members
-                        </div>
-                    </div>
-
-                    <div className="p-4">
-                        <div className="mb-4">
-                            <h4 className="text-white font-medium mb-2">Looking for:</h4>
-                            <div className="flex flex-wrap gap-2 font-mono">
-                                <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">Frontend Dev</span>
-                                <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">UI/UX Designer</span>
-                            </div>
-                        </div>
-
-                        <div className="mb-4">
-                            <h4 className="text-white font-medium mb-2">Hackathon:</h4>
-                            <div className="flex items-center">
-                                <span className={`text-xs px-3 py-1 rounded-full ${hackathonCss[Math.floor(Math.random() * 5) + 1]}`}>NASA Space Apps Challenge</span>
-                                <span className="text-neutral-400 text-xs ml-2">Oct 7-8, 2023</span>
-                            </div>
-                        </div>
-
-                        <p className="text-neutral-400 text-sm mb-4">
-                            We're building a platform that uses satellite imagery and machine learning to predict climate change effects. Looking for frontend developers and UI/UX designers to join our team!
-                        </p>
-
-                        <div className="flex flex-wrap gap-2 mb-4 font-mono">
-                            <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">React</span>
-                            <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">Python</span>
-                            <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">TensorFlow</span>
-                            <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">Figma</span>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                            <div className="flex -space-x-2">
-                                <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-neutral-800 flex items-center justify-center text-xs text-white">JK</div>
-                                <div className="w-8 h-8 rounded-full bg-green-600 border-2 border-neutral-800 flex items-center justify-center text-xs text-white">RS</div>
-                            </div>
-                            <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">
-                                Apply to Join
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                
 
                 {/* <div className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
                     <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
