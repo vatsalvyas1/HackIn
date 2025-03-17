@@ -27,7 +27,7 @@ const projectSchema = new mongoose.Schema(
     },
     achievement: {
       type: String,
-      enum: ["1st", "2nd", "3rd", "Honorable Mention", "Participant"],
+      enum: ["Participant", "Runner-up", "Winner"],
       default: "Participant",
     },
     techStack: {

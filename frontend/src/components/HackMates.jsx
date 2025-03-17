@@ -32,7 +32,6 @@ export default function HackMates() {
                 }
 
                 const result = await response.json();
-                console.log(result.data);
                 setTeams(result.data);
             }
             catch(err) {
@@ -134,8 +133,8 @@ export default function HackMates() {
             </div>
 
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-                {teams && teams.map((team) => (
-                    <div className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
+                {teams && teams.map((team,index) => (
+                    <div key={index} className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
                         <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
                             <div className="flex items-center">
                                 <div className={`h-10 w-10 rounded-full flex items-center justify-center ${logoCss[Math.floor(Math.random()*5)+1]}`}>
@@ -161,8 +160,8 @@ export default function HackMates() {
                             <div className="mb-4">
                                 <h4 className="text-white font-medium mb-2">Looking for:</h4>
                                 <div className="flex flex-wrap gap-2 font-mono">
-                                    {team.lookingFor.map((item) => (
-                                        <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">{item}</span>
+                                    {team.lookingFor.map((item,index) => (
+                                        <span key={index} className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">{item}</span>
                                     ))}
                                 </div>
                             </div>
@@ -180,8 +179,8 @@ export default function HackMates() {
                             </p>
 
                             <div className="flex flex-wrap gap-2 mb-4 font-mono">
-                                {team.skills.map((skill) => (
-                                    <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">{skill}</span>
+                                {team.skills.map((skill,index) => (
+                                    <span key={index} className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">{skill}</span>
                                 ))}
                             </div>
 

@@ -21,7 +21,7 @@ const ProjectForm = () => {
   };
 
   const handleTechStackChange = (e) => {
-    const techStack = e.target.value.split(",").map((tech) => tech.trim());
+    const techStack = e.target.value.split(", ").map((tech) => tech.trim());
     setFormData({ ...formData, techStack });
   };
 
@@ -56,6 +56,18 @@ const ProjectForm = () => {
     data.append("liveDemo", formData.liveDemo);
 
     formData.images.forEach((image) => data.append("images", image));
+
+    console.log(
+      formData.hackathonName,
+      formData.projectTitle,
+      formData.description,
+      formData.teamName,
+      formData.achievement,
+      formData.techStack,
+      formData.githubLink,
+      formData.liveDemo,
+      userId,
+      formData.images);
 
     try {
       const response = await fetch("http://localhost:3000/api/v1/project", {
@@ -136,6 +148,32 @@ const ProjectForm = () => {
             onChange={handleTechStackChange}
             className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
           />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">Team Name</label>
+          <input
+            type="text"
+            name="teamName"
+            value={formData.teamName}
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
+            required
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium mb-2">Achievement</label>
+          <select
+            name="achievement"
+            value={formData.achievement}
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
+          >
+            <option value="Participant">Participant</option>
+            <option value="Winner">Winner</option>
+            <option value="Runner-up">Runner-up</option>
+          </select>
         </div>
 
         <div className="mb-6">
