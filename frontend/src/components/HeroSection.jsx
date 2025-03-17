@@ -23,10 +23,10 @@ export default function HeroSection() {
                 </div>
                 <div className="mt-8 flex items-center">
                     <div className="flex -space-x-2">
-                        <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-xs text-white">DB</div>
-                        <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-xs text-white">JS</div>
-                        <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs text-white">TM</div>
-                        <div className="w-8 h-8 rounded-full bg-purple-700 flex items-center justify-center text-xs text-white">RK</div>
+                        <img src="https://avatars.githubusercontent.com/u/161618212?v=4" alt="profile image" className="w-8 h-8 rounded-full border" />
+                        <img src="https://avatars.githubusercontent.com/u/110402648?v=4" className="w-8 h-8 rounded-full border" />
+                        <img src="https://avatars.githubusercontent.com/u/7278188?v=4" className="w-8 h-8 rounded-full border" />
+                        <img src="https://avatars.githubusercontent.com/u/7337301?v=4" className="w-8 h-8 rounded-full border" />
                         <div className="w-8 h-8 rounded-full bg-neutral-700 flex items-center justify-center text-xs text-white">+</div>
                     </div>
                     <span className="ml-3 text-neutral-400 text-sm">Join 10,000+ developers worldwide</span>
@@ -38,7 +38,7 @@ export default function HeroSection() {
                     <div className="bg-neutral-800 rounded-xl shadow-2xl p-6 border border-neutral-700 transform hover:-translate-y-2 transition-all duration-300">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-purple-600 flex items-center justify-center text-lg font-semibold">D</div>
+                        <div className="h-10 w-10 rounded-full bg-purple-600 flex items-center justify-center text-lg font-semibold text-white">D</div>
                         <div>
                             <h3 className="text-white font-medium">DareDev</h3>
                             <p className="text-neutral-400 text-sm">India Rank: #42</p>

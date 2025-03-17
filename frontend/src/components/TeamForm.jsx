@@ -200,7 +200,7 @@ export default function TeamForm() {
             {addedSkills.map((skill, index) => (
               <span
                 key={index}
-                className="bg-purple-900/40 text-purple-400 text-xs py-1 px-3 rounded-full border border-purple-800/30 flex items-center font-mono cursor-pointer hover:bg-purple-900/60 transition-colors"
+                className="bg-purple-900/30 text-purple-400 text-xs py-1 px-3 rounded-full border border-purple-800/30 flex items-center font-mono cursor-pointer hover:bg-purple-800/60 transition-colors"
                 onClick={() => removeSkill(skill)}
               >
                 {skill}

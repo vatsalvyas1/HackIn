@@ -1,6 +1,15 @@
+import { useEffect, useState } from "react";
 import TeamForm from "./TeamForm";
 
 export default function HackMates() {
+    const [teams,setTeams] = useState([]);
+    const logoCss = {
+        1: "bg-indigo-600",
+        2: "bg-purple-600",
+        3: "bg-blue-600",
+        4: "bg-red-600",
+        5: "bg-green-600"
+    }
     const hackathonCss = {
         1: "bg-indigo-900/30 text-indigo-400",
         2: "bg-purple-900/30 text-purple-400",
@@ -8,6 +17,31 @@ export default function HackMates() {
         4: "bg-red-900/30 text-red-400",
         5: "bg-green-900/30 text-green-400",
     };
+
+    useEffect(()=>{
+        const fetchAllTeams = async() => {
+            try{
+                const response = await fetch("http://localhost:3000/api/v1/team/get-all",
+                    {
+                        method: "GET"
+                    }
+                )
+
+                if(!response.ok){
+                    throw new Error("something went wrong");
+                }
+
+                const result = await response.json();
+                console.log(result.data);
+                setTeams(result.data);
+            }
+            catch(err) {
+                console.log(err)
+            }
+        }
+
+        fetchAllTeams();
+    },[])
 
     return (
         <div className="mx-1 md:mx-16 px-4 text-white pb-20 pt-8">
@@ -100,10 +134,73 @@ export default function HackMates() {
             </div>
 
             <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                {teams && teams.map((team) => (
+                    <div className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
+                        <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
+                            <div className="flex items-center">
+                                <div className={`h-10 w-10 rounded-full flex items-center justify-center ${logoCss[Math.floor(Math.random()*5)+1]}`}>
+                                    <span className="text-white font-bold">QD</span>
+                                </div>
+                                <div className="ml-3">
+                                    <h3 className="text-white font-medium">{team.teamName}</h3>
+                                    <div className="flex items-center text-neutral-400 text-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        {team.location}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-purple-900/30 text-purple-400 px-3 py-1 rounded-full text-xs font-medium">
+                                {team.teamMembers.length}/{team.teamSize} Members
+                            </div>
+                        </div>
+
+                        <div className="p-4">
+                            <div className="mb-4">
+                                <h4 className="text-white font-medium mb-2">Looking for:</h4>
+                                <div className="flex flex-wrap gap-2 font-mono">
+                                    {team.lookingFor.map((item) => (
+                                        <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">{item}</span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <h4 className="text-white font-medium mb-2">Hackathon:</h4>
+                                <div className="flex items-center">
+                                    <span className={`text-xs px-3 py-1 rounded-full ${hackathonCss[Math.floor(Math.random() * 5) + 1]}`}>{team.hackathonName}</span>
+                                    <span className="text-neutral-400 text-xs ml-2">Oct 7-8, 2023</span>
+                                </div>
+                            </div>
+
+                            <p className="text-neutral-400 text-sm mb-4">
+                                {team.description}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 mb-4 font-mono">
+                                {team.skills.map((skill) => (
+                                    <span className="bg-neutral-900 text-neutral-400 text-xs px-2 py-1 rounded border border-neutral-700">{skill}</span>
+                                ))}
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <div className="flex -space-x-2">
+                                    <div className="w-8 h-8 rounded-full bg-blue-600 border-2 border-neutral-800 flex items-center justify-center text-xs text-white">JK</div>
+                                    <div className="w-8 h-8 rounded-full bg-green-600 border-2 border-neutral-800 flex items-center justify-center text-xs text-white">RS</div>
+                                </div>
+                                <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">
+                                    Apply to Join
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
                 <div className="bg-neutral-800 rounded-xl border border-neutral-700 overflow-hidden hover:border-purple-500 transition-all duration-300 hover:-translate-y-1">
                     <div className="flex items-center justify-between p-4 border-b border-neutral-700 bg-neutral-800">
                         <div className="flex items-center">
-                            <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center">
+                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${logoCss[Math.floor(Math.random()*5)+1]}`}>
                                 <span className="text-white font-bold">QD</span>
                             </div>
                             <div className="ml-3">

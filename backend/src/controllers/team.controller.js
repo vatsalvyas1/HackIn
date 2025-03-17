@@ -37,4 +37,10 @@ const createTeam = AsyncHandler(async (req,res) => {
     res.status(201).json(new ApiResponse(201,team,"team created successfully"));
 })
 
-export {createTeam}
+const getTeams = AsyncHandler(async(req,res) => {
+    const teams = await Team.find();
+
+    res.status(201).json(new ApiResponse(201,teams,"fetched all teams"));
+})
+
+export {createTeam,getTeams}
