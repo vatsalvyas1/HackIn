@@ -50,7 +50,7 @@ export default function DashBoard() {
       } catch (error) {
         console.error("Error fetching user projects:", error);
       }
-    }
+    };
 
     fetchUserProfile();
     fetchUserProjects();
@@ -145,8 +145,8 @@ export default function DashBoard() {
             </ul>
           </div>
 
-           {/* Display User Projects */}
-           <div className="p-4 space-y-2">
+          {/* Display User Projects */}
+          <div className="p-4 space-y-2">
             <h3>Your Projects</h3>
             {projects.length > 0 ? (
               <ul>
@@ -155,18 +155,25 @@ export default function DashBoard() {
                     key={project._id}
                     className="bg-neutral-900 p-4 rounded-md mb-2"
                   >
-                    <h4 className="text-lg font-semibold">{project.projectTitle}</h4>
-                    <p className="text-neutral-400">{project.description}</p>
-                    <div className="flex gap-2 mt-2">
-                      {project.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Project ${index + 1}`}
-                          className="w-16 h-16 object-cover rounded-md"
-                        />
-                      ))}
-                    </div>
+                    <Link
+                      to={`/project/${project._id}`}
+                      className="block bg-neutral-900 p-4 rounded-md mb-2 hover:bg-neutral-700 transition"
+                    >
+                      <h4 className="text-lg font-semibold">
+                        {project.projectTitle}
+                      </h4>
+                      <p className="text-neutral-400">{project.description}</p>
+                      <div className="flex gap-2 mt-2">
+                        {project.images.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Project ${index + 1}`}
+                            className="w-16 h-16 object-cover rounded-md"
+                          />
+                        ))}
+                      </div>
+                    </Link>
                   </li>
                 ))}
               </ul>

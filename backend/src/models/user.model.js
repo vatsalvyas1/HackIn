@@ -69,6 +69,20 @@ const UserSchema = new mongoose.Schema(
         ref: "Team",
       },
     ],
+    myRequests: [
+      {
+        teamId :{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Team",
+
+        },
+        status: {
+          type: String,
+          enum: ["Accepted", "Rejected", "Pending"],
+          default: "Pending",
+        },
+      },
+    ],
     messages: [
       {
         sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

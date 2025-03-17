@@ -23,28 +23,41 @@ export default function TeamForm() {
     }));
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const storedUser = localStorage.getItem("user");
     const userId = JSON.parse(storedUser)._id;
-    
+
     try {
-      const response = await fetch("http://localhost:3000/api/v1/team/create-team",
+      const response = await fetch(
+        "http://localhost:3000/api/v1/team/create-team",
         {
           method: "POST",
-          headers : { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...formdata,
-            skills : addedSkills,
-            userId
-          })
+            skills: addedSkills,
+            userId,
+          }),
         }
-      )
+      );
 
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error("something went wrong");
       }
-      
+      setFormData({
+        teamName: "",
+        hackathonName: "",
+        description: "",
+        teamSize: 2,
+        location: "",
+        startDate: "",
+        endDate: "",
+        lookingFor: "",
+      });
+
+      setAddedSkills([]);
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -67,14 +80,22 @@ export default function TeamForm() {
           Need <span className="text-purple-500">Teammates?</span>
         </h3>
         <p className="text-neutral-400">
-          Create a post to find the perfect teammates for your hackathon project.
+          Create a post to find the perfect teammates for your hackathon
+          project.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} method="post" className="bg-neutral-800 rounded-xl p-6 border border-neutral-700">
+      <form
+        onSubmit={handleSubmit}
+        method="post"
+        className="bg-neutral-800 rounded-xl p-6 border border-neutral-700"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label htmlFor="team-name" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="team-name"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               Team Name
             </label>
             <input
@@ -88,7 +109,10 @@ export default function TeamForm() {
             />
           </div>
           <div>
-            <label htmlFor="hackathon-name" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="hackathon-name"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               Hackathon
             </label>
             <input
@@ -104,7 +128,10 @@ export default function TeamForm() {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="description" className="block text-sm font-medium text-neutral-400 mb-1">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-neutral-400 mb-1"
+          >
             Project Description
           </label>
           <textarea
@@ -120,7 +147,10 @@ export default function TeamForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label htmlFor="team-size" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="team-size"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               Team Size
             </label>
             <input
@@ -135,7 +165,10 @@ export default function TeamForm() {
             />
           </div>
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               Location
             </label>
             <input
@@ -151,8 +184,12 @@ export default function TeamForm() {
         </div>
 
         <div className="mb-6">
-          <label htmlFor="lookingFor" className="block text-sm font-medium text-neutral-400 mb-1">
-            Looking For <span className="text-neutral-500">(comma separated values)</span>
+          <label
+            htmlFor="lookingFor"
+            className="block text-sm font-medium text-neutral-400 mb-1"
+          >
+            Looking For{" "}
+            <span className="text-neutral-500">(comma separated values)</span>
           </label>
           <input
             type="text"
@@ -167,7 +204,10 @@ export default function TeamForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label htmlFor="start-date" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="start-date"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               Start Date
             </label>
             <input
@@ -180,7 +220,10 @@ export default function TeamForm() {
             />
           </div>
           <div>
-            <label htmlFor="end-date" className="block text-sm font-medium text-neutral-400 mb-1">
+            <label
+              htmlFor="end-date"
+              className="block text-sm font-medium text-neutral-400 mb-1"
+            >
               End Date
             </label>
             <input
@@ -195,7 +238,9 @@ export default function TeamForm() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-neutral-400 mb-1">Skills Needed</label>
+          <label className="block text-sm font-medium text-neutral-400 mb-1">
+            Skills Needed
+          </label>
           <div className="flex flex-wrap gap-2">
             {addedSkills.map((skill, index) => (
               <span
@@ -212,7 +257,11 @@ export default function TeamForm() {
               onClick={() => setAddSkill(!addSkill)}
               className="bg-neutral-700 hover:bg-neutral-600 text-white text-xs py-1 px-3 rounded-full transition-colors duration-300 flex items-center font-mono"
             >
-              {addSkill ? <X size={16} className="mr-1" /> : <Plus size={16} className="mr-1" />}
+              {addSkill ? (
+                <X size={16} className="mr-1" />
+              ) : (
+                <Plus size={16} className="mr-1" />
+              )}
               Add Skill
             </button>
           </div>
