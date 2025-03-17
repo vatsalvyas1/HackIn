@@ -38,11 +38,12 @@ import userRouter from './routes/user.routes.js';
 import otpRouter from './routes/otp.routes.js';
 import authRouter from './routes/auth.routes.js';
 import teamRouter from './routes/team.routes.js';
-
+import projectRouter from './routes/project.routes.js';
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/otp', otpRouter);
 app.use('/api/v1/team',teamRouter);
+app.use('/api/v1/project',projectRouter);
 
 export default app;

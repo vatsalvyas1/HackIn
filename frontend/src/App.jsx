@@ -7,6 +7,7 @@ import Footer from './components/Footer.jsx'
 import DashBoard from './components/DashBoard.jsx'
 import EditProfile from './components/EditProfile.jsx'
 import HackMates from './components/HackMates.jsx'
+import AddProject from './components/AddProject.jsx'
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/dashboard' element={<DashBoard />} />
-
+        <Route path='/add-project' element={<AddProject />} />
         <Route path='/hackmates' element={<HackMates />} />
       </Routes>
       <Footer />

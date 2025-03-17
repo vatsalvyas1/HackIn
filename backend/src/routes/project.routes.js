@@ -1,16 +1,13 @@
 import express from "express";
-import {
-createProject,
-getAllProjects,
-getProjectById,
-updateProjectById,
-deleteProjectById,
-} from "../controllers/project.controller.js";
+import { createProject, getAllProjects, getProjectById, updateProjectById, deleteProjectById, getProjectsByUserId } from "../controllers/project.controller.js";
+import { upload } from "../middleware/multer.middleware.js";
 
 const router = express.Router();
 
 // Route to create a new project
-router.post("/", createProject);
+router.post("/",upload.fields(
+    [{name : "images"}]
+), createProject);
 
 // Route to get all projects
 router.get("/", getAllProjects);
@@ -23,5 +20,8 @@ router.put("/:id", updateProjectById);
 
 // Route to delete a project by ID
 router.delete("/:id", deleteProjectById);
+
+// Route to get projects by user ID
+router.get("/user/:userId", getProjectsByUserId);
 
 export default router;

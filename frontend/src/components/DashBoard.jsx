@@ -1,10 +1,11 @@
 import { logout } from "../firebase";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LogOut, Pencil, Github, Linkedin } from "lucide-react";
+import { LogOut, Pencil, Github, Linkedin, Plus } from "lucide-react";
 
 export default function DashBoard() {
   const [user, setUser] = useState(null);
+  const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +31,29 @@ export default function DashBoard() {
       }
     };
 
+    const fetchUserProjects = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/v1/project/user/${userId}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch projects");
+        }
+
+        const result = await response.json();
+        setProjects(result.data);
+      } catch (error) {
+        console.error("Error fetching user projects:", error);
+      }
+    }
+
     fetchUserProfile();
+    fetchUserProjects();
   }, []); // Runs once when the component mounts
 
   const handleLogout = async () => {
@@ -89,6 +112,13 @@ export default function DashBoard() {
               </span>
 
               <Link
+                to="/add-project"
+                className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
+              >
+                <Plus size={18} />
+              </Link>
+
+              <Link
                 to="/edit-profile"
                 className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
               >
@@ -113,6 +143,36 @@ export default function DashBoard() {
                 </li>
               ))}
             </ul>
+          </div>
+
+           {/* Display User Projects */}
+           <div className="p-4 space-y-2">
+            <h3>Your Projects</h3>
+            {projects.length > 0 ? (
+              <ul>
+                {projects.map((project) => (
+                  <li
+                    key={project._id}
+                    className="bg-neutral-900 p-4 rounded-md mb-2"
+                  >
+                    <h4 className="text-lg font-semibold">{project.projectTitle}</h4>
+                    <p className="text-neutral-400">{project.description}</p>
+                    <div className="flex gap-2 mt-2">
+                      {project.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Project ${index + 1}`}
+                          className="w-16 h-16 object-cover rounded-md"
+                        />
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-neutral-400">No projects found.</p>
+            )}
           </div>
         </div>
       ) : (
