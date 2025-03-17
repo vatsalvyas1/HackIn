@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
+import { type } from "os";
 
 const TeamSchema = new mongoose.Schema(
   {
@@ -34,9 +35,9 @@ const TeamSchema = new mongoose.Schema(
     },
     teamMembers: [
       {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        role: { type: String }, // Optional role within the team
-      },
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
+      }
     ],
     skills: [
       {
@@ -56,7 +57,7 @@ const TeamSchema = new mongoose.Schema(
     joinRequests: [
       {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        status: { type: String, enum: ["pending", "accepted", "rejected"], default: "pending" },
+        message: { type: String },
       },
     ],
     isTeamFull: {
