@@ -8,6 +8,7 @@ import DashBoard from './components/DashBoard.jsx'
 import EditProfile from './components/EditProfile.jsx'
 import HackMates from './components/HackMates.jsx'
 import AddProject from './components/AddProject.jsx'
+import ProjectDetails from './components/ProjectDetails.jsx'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/dashboard' element={<DashBoard />} />
         <Route path='/add-project' element={<AddProject />} />
         <Route path='/hackmates' element={<HackMates />} />
+        <Route path="/project/:id" element={<ProjectDetails />} />
       </Routes>
       <Footer />
     </Router>
