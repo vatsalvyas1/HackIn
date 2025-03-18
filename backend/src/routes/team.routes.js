@@ -1,5 +1,5 @@
 import Router from "express";
-import { createTeam, getTeams, joinTeam, getTeamRequests, getTeam } from "../controllers/team.controller.js";
+import { createTeam, getTeams, joinTeam, getTeam, acceptRequest,rejectRequest } from "../controllers/team.controller.js";
 const router = Router();
 
 router.route("/create-team").post(
@@ -18,8 +18,16 @@ router.route("/join-team").post(
     joinTeam
 )
 
-router.route("/get-requests/:teamId").get(
-    getTeamRequests
+router.route("/accept-request").post(
+    acceptRequest
 )
+
+router.route("/reject-request").post(
+    rejectRequest
+)
+
+// router.route("/get-requests/:teamId").get(
+//     getTeamRequests
+// )
 
 export default router;

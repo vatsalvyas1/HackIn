@@ -10,12 +10,12 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendOtp = async (email, otp) => {
+const sendAcceptMessage = async (email, userName, teamName) => {
     try{
         const mailOptions = {
             to: email,
-            subject: 'OTP for account verification',
-            html: `<h1>Your OTP is ${otp}</h1>`,
+            subject: 'Congratulations! Your request has been accepted',
+            html: `hello ${userName},<br> Your request to join ${teamName} has been accepted.`,
         };
     
         const message = await transporter.sendMail(mailOptions);
@@ -31,4 +31,4 @@ const sendOtp = async (email, otp) => {
     }
 };
 
-export { sendOtp };
+export { sendAcceptMessage };

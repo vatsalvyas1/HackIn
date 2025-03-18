@@ -45,18 +45,7 @@ export default function TeamForm() {
       if (!response.ok) {
         throw new Error("something went wrong");
       }
-      setFormData({
-        teamName: "",
-        hackathonName: "",
-        description: "",
-        teamSize: 2,
-        location: "",
-        startDate: "",
-        endDate: "",
-        lookingFor: "",
-      });
-
-      setAddedSkills([]);
+      
       window.location.reload();
     } catch (error) {
       console.log(error);

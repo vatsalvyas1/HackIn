@@ -9,6 +9,7 @@ import EditProfile from './components/EditProfile.jsx'
 import HackMates from './components/HackMates.jsx'
 import AddProject from './components/AddProject.jsx'
 import ProjectDetails from './components/ProjectDetails.jsx'
+import TeamDetails from './components/TeamDetails.jsx'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/add-project' element={<AddProject />} />
         <Route path='/hackmates' element={<HackMates />} />
         <Route path="/project/:id" element={<ProjectDetails />} />
+        <Route path="/team/:teamId" element={<TeamDetails />} />
       </Routes>
       <Footer />
     </Router>
