@@ -188,12 +188,20 @@ export default function HackMates() {
                       ))}
                     </div>
                     {team.teamLeader !== userId ? (
-                      <button
-                        className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300"
-                        onClick={() => handleApply(team._id)}
-                      >
-                        Apply to Join
-                      </button>
+                      team.teamMembers.map((member) => member._id.toString() === userId) ? (
+                        <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">View Team</button>
+                      ) : (
+                        team.joinRequests.map((request) => (request.userId) === userId) ? (
+                          <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">Request Sent</button>
+                        ) : (
+                          team.teamMembers.length < team.teamSize ? (
+                            <button onClick={() => handleApply(team._id)} className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">Join Team</button>
+                          ) : (
+                            <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">Team Full</button>
+                          )
+                        )
+                        
+                      )
                     ) : (
                       <Link
                         to={`/team/${team._id}`}

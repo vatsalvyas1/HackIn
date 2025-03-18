@@ -59,7 +59,8 @@ const createTeam = AsyncHandler(async (req, res) => {
 });
 
 const getTeams = AsyncHandler(async(req,res) => {
-    const teams = await Team.find().populate("teamMembers","profileImage");
+    const teams = await Team.find()
+    .populate("teamMembers","profileImage");
 
     res.status(201).json(new ApiResponse(201,teams,"fetched all teams"));
 })
