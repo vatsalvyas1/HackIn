@@ -10,6 +10,7 @@ import HackMates from './components/HackMates.jsx'
 import AddProject from './components/AddProject.jsx'
 import ProjectDetails from './components/ProjectDetails.jsx'
 import TeamDetails from './components/TeamDetails.jsx'
+import DevFeed from './components/DevFeed.jsx'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/hackmates' element={<HackMates />} />
         <Route path="/project/:id" element={<ProjectDetails />} />
         <Route path="/team/:teamId" element={<TeamDetails />} />
+        <Route path='/feed' element={<DevFeed />} />
       </Routes>
       <Footer />
     </Router>
