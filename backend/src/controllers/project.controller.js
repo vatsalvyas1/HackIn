@@ -46,7 +46,7 @@ export const createProject = AsyncHandler(async (req, res) => {
     description,
     teamName,
     achievement,
-    techStack,
+    techStack : techStack.split(", "),
     githubLink,
     liveDemo,
     images,

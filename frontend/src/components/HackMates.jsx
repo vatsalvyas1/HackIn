@@ -215,7 +215,7 @@ export default function HackMates() {
               </div>
             ))
           ) : (
-            <div className="text-neutral-400 flex flex-col items-center justify-center w-5xl bg-neutral-800 rounded-xl p-16 border border-neutral-700">
+            <div className="text-neutral-400 flex flex-col items-center justify-center md:w-5xl bg-neutral-800 rounded-xl p-16 border border-neutral-700">
               <CircleAlert size={60} className="mb-2" />
               <p>No teams found. Try searching for a different team or hackathon.</p>
             </div> 

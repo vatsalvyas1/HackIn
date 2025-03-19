@@ -20,11 +20,6 @@ const ProjectForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleTechStackChange = (e) => {
-    const techStack = e.target.value.split(", ").map((tech) => tech.trim());
-    setFormData({ ...formData, techStack });
-  };
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files).slice(0, 4); 
     setFormData({ ...formData, images: files });
@@ -51,7 +46,7 @@ const ProjectForm = () => {
     data.append("description", formData.description);
     data.append("teamName", formData.teamName);
     data.append("achievement", formData.achievement);
-    data.append("techStack", JSON.stringify(formData.techStack));
+    data.append("techStack", formData.techStack);
     data.append("githubLink", formData.githubLink);
     data.append("liveDemo", formData.liveDemo);
 
@@ -144,8 +139,8 @@ const ProjectForm = () => {
           <input
             type="text"
             name="techStack"
-            value={formData.techStack.join(", ")}
-            onChange={handleTechStackChange}
+            value={formData.techStack}
+            onChange={handleChange}
             className="w-full p-2 bg-gray-800 border border-gray-700 rounded text-white"
           />
         </div>
