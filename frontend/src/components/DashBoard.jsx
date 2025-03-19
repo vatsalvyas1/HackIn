@@ -1,16 +1,19 @@
 import { logout } from "../firebase";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { LogOut, Pencil, Github, Linkedin, Plus } from "lucide-react";
 
 export default function DashBoard() {
   const [user, setUser] = useState(null);
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const userId =
+    location.state?.userId || JSON.parse(localStorage.getItem("user"))._id; // Use passed userId or fallback to logged-in user's ID
+  const loggedInUserId = JSON.parse(localStorage.getItem("user"))._id;
+  const isLoggedInUser = userId === loggedInUserId; // Check if the viewed user is the logged-in user
 
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem("user"))._id;
-
     const fetchUserProfile = async () => {
       try {
         const response = await fetch(
@@ -54,7 +57,7 @@ export default function DashBoard() {
 
     fetchUserProfile();
     fetchUserProjects();
-  }, []); // Runs once when the component mounts
+  }, [userId]); // Re-fetch when userId changes
 
   const handleLogout = async () => {
     await logout();
@@ -111,26 +114,32 @@ export default function DashBoard() {
                 {user.contributionScore} 🏆
               </span>
 
-              <Link
-                to="/add-project"
-                className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
-              >
-                <Plus size={18} />
-              </Link>
+              {isLoggedInUser && (
+                <>
+                  <Link
+                    to="/add-project"
+                    className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
+                  >
+                    <Plus size={18} />
+                  </Link>
 
-              <Link
-                to="/edit-profile"
-                className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
-              >
-                <Pencil size={18} />
-              </Link>
+                  <Link
+                    to="/edit-profile"
+                    className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 mr-2 flex items-center gap-1"
+                  >
+                    <Pencil size={18} />
+                  </Link>
+                </>
+              )}
 
-              <button
-                onClick={handleLogout}
-                className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 cursor:pointer"
-              >
-                <LogOut size={18} />
-              </button>
+              {isLoggedInUser && (
+                <button
+                  onClick={handleLogout}
+                  className="bg-purple-600 hover:bg-purple-500 hover:-translate-y-1 px-2 py-1 rounded-md transition-all duration-300 cursor:pointer"
+                >
+                  <LogOut size={18} />
+                </button>
+              )}
             </div>
           </div>
 

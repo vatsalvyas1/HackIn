@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Users, Info, MessageSquare, Loader2, Check, X, Trophy, MapPin } from 'lucide-react';
 
 export default function TeamDetails() {
     const { teamId } = useParams();
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [team, setTeam] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -232,10 +233,11 @@ export default function TeamDetails() {
                                 <h2 className="text-xl font-bold text-white mb-6">Team Members</h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                     {team.teamMembers.map((member, index) => (
-                                        <div 
-                                            key={index}
-                                            className="group bg-neutral-900 rounded-lg p-4 border border-neutral-700 hover:border-purple-600 transition-all duration-300 text-center"
-                                        >
+                                       <div
+                                       key={index}
+                                       onClick={() => navigate("/dashboard", { state: { userId: member._id } })} // Pass userId as state
+                                       className="group bg-neutral-900 rounded-lg p-4 border border-neutral-700 hover:border-purple-600 transition-all duration-300 text-center cursor-pointer"
+                                     >
                                             <img 
                                                 src={member.profileImage} 
                                                 alt="" 
