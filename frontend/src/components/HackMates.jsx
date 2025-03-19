@@ -83,8 +83,6 @@ export default function HackMates() {
   };
 
   const sendRequest = async (teamId) => {
-    const storedUser = localStorage.getItem("user");
-    const userId = storedUser ? JSON.parse(storedUser)._id : null;
     try {
       const response = await fetch(`http://localhost:3000/api/v1/team/join-team`, {
         method: "POST",
@@ -188,10 +186,10 @@ export default function HackMates() {
                       ))}
                     </div>
                     {team.teamLeader !== userId ? (
-                      team.teamMembers.map((member) => member._id.toString() === userId) ? (
+                      team.teamMembers.some((member) => member._id.toString() === userId.toString()) ? (
                         <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">View Team</button>
                       ) : (
-                        team.joinRequests.map((request) => (request.userId) === userId) ? (
+                        team.joinRequests.some((request) => (request.userId) === userId) ? (
                           <button className="bg-purple-700 hover:bg-purple-600 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-300">Request Sent</button>
                         ) : (
                           team.teamMembers.length < team.teamSize ? (

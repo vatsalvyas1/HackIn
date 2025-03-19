@@ -60,6 +60,10 @@ const TeamSchema = new mongoose.Schema(
         message: { type: String },
       },
     ],
+    teamScore: {
+      type: Number,
+      default: 0,
+    },
     isTeamFull: {
       type: Boolean,
       default: false, // Auto-updated when the team reaches max size
@@ -71,6 +75,11 @@ const TeamSchema = new mongoose.Schema(
 // Middleware to update `isTeamFull` before saving
 TeamSchema.pre("save", function (next) {
   this.isTeamFull = this.teamMembers.length >= this.teamSize; // Use `>=` to handle edge cases
+
+  this.teamScore = this.teamMembers.reduce((acc, member) => {  // NEW: Calculate the team score
+    return acc + member.contributionScore;
+  }
+  , 0);
   next();
 });
 
