@@ -90,7 +90,7 @@ export default function TeamDetails() {
                 <div className="bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
                     <div className="relative">
                         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-10" />
-                        <div className="relative bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-700 p-6 sm:p-8">
+                        <div className="relative bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-700 p-6 sm:p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                                 <div className="h-20 w-20 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl font-bold text-3xl flex items-center justify-center shadow-lg text-white">
                                     {team.teamName.split(" ").map((item) => item[0]).join('')}
@@ -105,6 +105,11 @@ export default function TeamDetails() {
                                         <span>{team.hackathonName}</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="text-white">
+                                <span className="text-md font-bold bg-purple-600/20 px-4 py-2 rounded-full border border-purple-600/50 text-purple-300">
+                                    {team.teamScore} 🏆
+                                </span>
                             </div>
                         </div>
                     </div>

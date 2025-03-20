@@ -356,13 +356,32 @@ export default function DashBoard() {
     window.location.reload();
   };
 
+  const colorCss = {
+    1 : "bg-purple-600",
+    2 : "bg-indigo-600",
+    3 : "bg-green-600",
+    4 : "bg-red-600",
+    5 : "bg-blue-600"
+  }
+
+  const formatDateRange = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+  
+    const formattedStart = start.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    const formattedEnd = end.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    const year = start.getFullYear();
+  
+    return `${formattedStart}-${formattedEnd}, ${year}`;
+  };
+
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
       {user ? (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-gradient-to-r from-neutral-800 to-neutral-900 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-lg border border-neutral-700/50">
+          <div className="bg-neutral-800 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-lg border border-neutral-700">
             {/* Profile Header */}
-            <div className="relative bg-neutral-800/50 p-8 backdrop-blur">
+            <div className="relative bg-neutral-900 p-8 border-b border-neutral-700">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div className="flex items-center gap-6">
                   <div className="relative">
@@ -376,7 +395,7 @@ export default function DashBoard() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-neutral-400 bg-clip-text text-transparent">
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">
                       {user.name}
                     </h1>
                     <p className="text-neutral-400 max-w-lg">{user.bio}</p>
@@ -429,13 +448,13 @@ export default function DashBoard() {
             </div>
 
             {/* Skills Section */}
-            <div className="p-8 border-t border-neutral-700/50">
+            <div className="p-8">
               <h2 className="text-xl font-semibold mb-4">Skills & Expertise</h2>
               <div className="flex flex-wrap gap-2">
                 {user.skills.map((skill, index) => (
                   <span
                     key={index}
-                    className="px-4 py-2 bg-neutral-800/50 text-neutral-300 rounded-xl text-sm font-medium hover:bg-neutral-700/50 transition-colors duration-300"
+                    className="px-4 py-2 bg-purple-900/30 text-purple-300 ring ring-purple-800 rounded-full text-sm font-medium hover:bg-purple-900/60 transition-colors duration-300"
                   >
                     {skill}
                   </span>
@@ -454,10 +473,10 @@ export default function DashBoard() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {teams.map((team) => (
-                  <div key={team._id} className="group bg-neutral-800/30 rounded-2xl p-6 border border-neutral-700/50 hover:border-purple-500/50 transition-all duration-300">
+                  <div key={team._id} className="group bg-neutral-800/30 rounded-2xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-xl font-bold">
+                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold ${colorCss[Math.floor(Math.random()*5)+1]}`}>
                           {team.teamName.split(" ").map((item) => item[0])}
                         </div>
                         <div>
@@ -468,22 +487,25 @@ export default function DashBoard() {
                         </div>
                       </div>
                       <div className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">
-                        768 🏆
+                        {team.teamScore} 🏆
                       </div>
                     </div>
                     
                     <div className="space-y-4">
-                      <div className="flex items-center text-sm text-neutral-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {team.hackathonName} (Dec 2-3, 2023)
+                      <div className="flex flex-col md:flex-row md:items-center text-sm text-neutral-400 gap-1">
+                        <div className="flex items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span>{team.hackathonName}</span> 
+                        </div>
+                        <span className="block">{formatDateRange(team.dates.startDate, team.dates.endDate)}</span>
                       </div>
                       
                       <div>
-                        <div className="h-2 w-full bg-neutral-700/30 rounded-full overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full" style={{width: "65%"}} />
-                        </div>
+                        {/* <div className="h-2 w-full bg-neutral-700/30 rounded-full overflow-hidden">
+                          <div className="h-full bg-purple-600 rounded-full" style={{width: "100%"}} />
+                        </div> */}
                         <p className="text-neutral-400 text-sm mt-2">Team Size: <span className="text-white">{team.teamSize}</span></p>
                       </div>
                       
@@ -498,9 +520,9 @@ export default function DashBoard() {
                             />
                           ))}
                         </div>
-                        <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity duration-300">
+                        <Link to={`/team/${team._id}`} className={`px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity duration-300 bg-purple-600`}>
                           Team Space
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -531,7 +553,7 @@ export default function DashBoard() {
                       key={project._id}
                       className="group block"
                     >
-                      <div className="bg-neutral-800/30 rounded-2xl overflow-hidden border border-neutral-700/50 group-hover:border-purple-500/50 transition-all duration-300">
+                      <div className="bg-neutral-800/30 rounded-2xl overflow-hidden border border-neutral-700 group-hover:border-purple-500 transition-all duration-300">
                         <div className="relative aspect-video overflow-hidden">
                           <img
                             src={project.images[0]}

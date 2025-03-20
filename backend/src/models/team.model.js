@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import crypto from "crypto";
-import { type } from "os";
 
 const TeamSchema = new mongoose.Schema(
   {
@@ -35,9 +34,9 @@ const TeamSchema = new mongoose.Schema(
     },
     teamMembers: [
       {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User",
-      }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
     ],
     skills: [
       {
@@ -72,14 +71,18 @@ const TeamSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware to update `isTeamFull` before saving
-TeamSchema.pre("save", function (next) {
-  this.isTeamFull = this.teamMembers.length >= this.teamSize; // Use `>=` to handle edge cases
+TeamSchema.pre("save", async function (next) {
+  // Update `isTeamFull`
+  this.isTeamFull = this.teamMembers.length >= this.teamSize;
 
-  this.teamScore = this.teamMembers.reduce((acc, member) => {  // NEW: Calculate the team score
-    return acc + member.contributionScore;
-  }
-  , 0);
+  // Populate `teamMembers` to access their `contributionScore`
+  const populatedTeam = await this.populate("teamMembers");
+
+  // Calculate `teamScore` based on the `contributionScore` of each member
+  this.teamScore = populatedTeam.teamMembers.reduce((acc, member) => {
+    return acc + (member.contributionScore || 0); // Ensure `contributionScore` exists, default to 0 if not
+  }, 0);
+
   next();
 });
 

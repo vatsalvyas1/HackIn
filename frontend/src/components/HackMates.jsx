@@ -29,6 +29,17 @@ export default function HackMates() {
     5: "bg-green-900/30 text-green-400",
   };
 
+  const formatDateRange = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+  
+    const formattedStart = start.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    const formattedEnd = end.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+    const year = start.getFullYear();
+  
+    return `${formattedStart}-${formattedEnd}, ${year}`;
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser)._id : null;
@@ -165,7 +176,7 @@ export default function HackMates() {
                     <h4 className="text-white font-medium mb-2">Hackathon:</h4>
                     <div className="flex items-center">
                       <span className={`text-xs px-3 py-1 rounded-full ${hackathonCss[Math.floor(Math.random() * 5) + 1]}`}>{team.hackathonName}</span>
-                      <span className="text-neutral-400 text-xs ml-2">Oct 7-8, 2023</span>
+                      <span className="text-neutral-400 text-xs ml-2">{formatDateRange(team.dates.startDate,team.dates.endDate)}</span>
                     </div>
                   </div>
 
