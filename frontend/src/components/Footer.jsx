@@ -31,11 +31,11 @@ export default function Footer() {
                     <div>
                         <h3 className="text-white font-medium mb-4">Platform</h3>
                         <ul className="space-y-2">
-                            <li><a href="#home-preview" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Home</a></li>
-                            <li><a href="#hackmates-preview" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Hackmates</a></li>
-                            <li><a href="#leaderboard-preview" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Leaderboard</a></li>
-                            <li><a href="#hackathons-preview" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Hackathons</a></li>
-                            <li><a href="#cta" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Sign Up</a></li>
+                            <li><a href="/" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Home</a></li>
+                            <li><a href="/hackmates" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Hackmates</a></li>
+                            <li><a href="/leaderboard" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Leaderboard</a></li>
+                            <li><a href="hackathons" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Hackathons</a></li>
+                            <li><a href="/feed" className="text-neutral-400 hover:text-purple-400 transition-colors duration-300">Developer Feed</a></li>
                         </ul>
                     </div>
                     
