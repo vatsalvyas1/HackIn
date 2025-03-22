@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Users, Info, MessageSquare, MessageCircleMore, Loader2, Check, X, Trophy, MapPin } from 'lucide-react';
+import { backendUrl } from "../constanst";
 
 export default function TeamDetails() {
     const { teamId } = useParams();
@@ -16,7 +17,7 @@ export default function TeamDetails() {
 
         const fetchTeam = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/v1/team/get-team/${teamId}`, {
+                const response = await fetch(`${backendUrl}/api/v1/team/get-team/${teamId}`, {
                     method: "GET",
                 });
 
@@ -38,7 +39,7 @@ export default function TeamDetails() {
 
     const acceptRequest = async (teamId, userId) => {
         try {
-            const response = await fetch("http://localhost:3000/api/v1/team/accept-request", {
+            const response = await fetch(`${backendUrl}/api/v1/team/accept-request`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -58,7 +59,7 @@ export default function TeamDetails() {
 
     const rejectRequest = async (teamId, userId) => {
         try {
-            const response = await fetch("http://localhost:3000/api/v1/team/reject-request", {
+            const response = await fetch(`${backendUrl}api/v1/team/reject-request`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

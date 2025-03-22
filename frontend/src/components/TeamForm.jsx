@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, Plus } from "lucide-react";
+import { backendUrl } from "../constanst.js";
 
 export default function TeamForm() {
   const [addSkill, setAddSkill] = useState(false);
@@ -30,7 +31,7 @@ export default function TeamForm() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/team/create-team",
+        `${backendUrl}/api/v1/team/create-team`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

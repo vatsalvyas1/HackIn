@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { backendUrl } from "../constanst";
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function EditProfile() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/users/complete-profile",
+      const response = await fetch(`${backendUrl}/api/v1/users/complete-profile`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

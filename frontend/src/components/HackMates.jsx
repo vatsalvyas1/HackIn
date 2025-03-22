@@ -3,6 +3,7 @@ import TeamForm from "./TeamForm";
 import SearchBar from "./SearchBar";
 import { Link } from "react-router-dom";
 import { MapPin, X, CircleAlert } from 'lucide-react';
+import { backendUrl } from "../constanst";
 
 export default function HackMates() {
   const [teams, setTeams] = useState([]);
@@ -47,7 +48,7 @@ export default function HackMates() {
 
     const fetchAllTeams = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/team/get-all", {
+        const response = await fetch(`${backendUrl}/api/v1/team/get-all`, {
           method: "GET",
         });
 
@@ -95,7 +96,7 @@ export default function HackMates() {
 
   const sendRequest = async (teamId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/team/join-team`, {
+      const response = await fetch(`${backendUrl}/api/v1/team/join-team`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

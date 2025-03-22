@@ -59,7 +59,7 @@ const NavBar = () => {
       {mobileMenu && (
         <div className="md:hidden flex flex-col space-y-4 text-white font-mono">
           <Link to="/" className="hover:text-purple-400">Home</Link>
-          <Link to="/find-teammates" className="hover:text-purple-400">Hackmates</Link>
+          <Link to="/hackmates" className="hover:text-purple-400">Hackmates</Link>
           <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
           <Link to="/hackathons" className="hover:text-purple-400">Hackathons</Link>
           <Link to="/feed" className="hover:text-purple-400">Feed</Link>

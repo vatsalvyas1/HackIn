@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { backendUrl } from "../constanst";
 
 export default function SignUp(){
     const [state, setState] = useState({
@@ -27,7 +27,7 @@ export default function SignUp(){
                 throw new Error("Please enter email");
             }
 
-            const response = await fetch("http://localhost:3000/api/v1/otp/send",{
+            const response = await fetch(`${backendUrl}/api/v1/otp/send`,{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
