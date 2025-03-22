@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Users, Info, MessageSquare, Loader2, Check, X, Trophy, MapPin } from 'lucide-react';
+import { Users, Info, MessageSquare, MessageCircleMore, Loader2, Check, X, Trophy, MapPin } from 'lucide-react';
 
 export default function TeamDetails() {
     const { teamId } = useParams();
@@ -127,6 +127,30 @@ export default function TeamDetails() {
                             Overview
                         </button>
 
+                        <button 
+                            onClick={() => setActiveTab('chat')}
+                            className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
+                                activeTab === 'chat' 
+                                ? 'text-white border-b-2 border-purple-600' 
+                                : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
+                            }`}
+                        >
+                            <MessageCircleMore className="w-4 h-4" />
+                            Chat
+                        </button>
+                        
+                        <button 
+                            onClick={() => setActiveTab('members')}
+                            className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
+                                activeTab === 'members' 
+                                ? 'text-white border-b-2 border-purple-600' 
+                                : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
+                            }`}
+                        >
+                            <Users className="w-4 h-4" />
+                            Team Members
+                        </button>
+
                         {user._id === team.teamLeader && (
                             <button 
                                 onClick={() => setActiveTab('requests')}
@@ -134,7 +158,7 @@ export default function TeamDetails() {
                                     activeTab === 'requests' 
                                         ? 'text-white border-b-2 border-purple-600' 
                                         : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
-                                }`}
+                                    }`}
                             >
                                 <MessageSquare className="w-4 h-4" />
                                 Requests
@@ -144,19 +168,7 @@ export default function TeamDetails() {
                                     </span>
                                 )}
                             </button>
-                        )}
-                        
-                        <button 
-                            onClick={() => setActiveTab('members')}
-                            className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
-                                activeTab === 'members' 
-                                    ? 'text-white border-b-2 border-purple-600' 
-                                    : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
-                            }`}
-                        >
-                            <Users className="w-4 h-4" />
-                            Team Members
-                        </button>
+                            )}
                     </div>
 
                     <div className="p-6 sm:p-8">
@@ -179,6 +191,67 @@ export default function TeamDetails() {
                                             </span>
                                         ))}
                                     </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "chat" && (
+                            <div>
+                                <h2 className="text-xl font-bold text-white mb-6">Chat Box</h2>
+                                <div className="bg-neutral-900 rounded-lg p-4 border border-neutral-700 h-96 overflow-y-auto flex flex-col gap-4">
+                                    <div className="text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                        received message
+                                    </div>
+                                    <div className="text-purple-400 bg-purple-900/30 rounded-md p-2 self-end max-w-1/3">
+                                        sended message
+                                    </div>
+                                    <div className="gap-4 text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                       received message
+                                    </div>
+                                    <div className="text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                       received message
+                                    </div>
+                                    <div className="text-purple-400 bg-purple-900/30 rounded-md p-2 self-end max-w-1/3">
+                                        sended message
+                                    </div>
+                                    <div className="text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                       received message
+                                    </div>
+                                    <div className="text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                       received message
+                                    </div>
+                                    <div className="text-white bg-neutral-800 rounded-md p-2 self-start max-w-1/3">
+                                       received message
+                                    </div>
+                                </div>
+                                <form action="" className="flex gap-4 mt-4">
+                                    <input type="text" name="" id="" placeholder="Type a message..."
+                                    className="bg-neutral-900 border border-neutral-700 w-full h-10 rounded-full px-3 text-white"
+                                    />
+                                    <button className="bg-purple-700 text-white font-bold p-4 py-2 rounded-full">Send</button>
+                                </form>
+                            </div>
+                        )}
+
+                        {activeTab === 'members' && (
+                            <div>
+                                <h2 className="text-xl font-bold text-white mb-6">Team Members</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {team.teamMembers.map((member, index) => (
+                                       <div
+                                       key={index}
+                                       onClick={() => navigate("/dashboard", { state: { userId: member._id } })} // Pass userId as state
+                                       className="group bg-neutral-900 rounded-lg p-4 border border-neutral-700 hover:border-purple-600 transition-all duration-300 text-center cursor-pointer"
+                                     >
+                                            <img 
+                                                src={member.profileImage} 
+                                                alt="" 
+                                                className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-neutral-700 group-hover:border-purple-600 transition-colors duration-300"
+                                            />
+                                            <h3 className="text-lg font-bold text-white mb-1">{member.name}</h3>
+                                            <span className="text-neutral-400 text-sm">{member.email}</span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -229,29 +302,6 @@ export default function TeamDetails() {
                                             <p className="text-lg">No pending requests</p>
                                         </div>
                                     )}
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === 'members' && (
-                            <div>
-                                <h2 className="text-xl font-bold text-white mb-6">Team Members</h2>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    {team.teamMembers.map((member, index) => (
-                                       <div
-                                       key={index}
-                                       onClick={() => navigate("/dashboard", { state: { userId: member._id } })} // Pass userId as state
-                                       className="group bg-neutral-900 rounded-lg p-4 border border-neutral-700 hover:border-purple-600 transition-all duration-300 text-center cursor-pointer"
-                                     >
-                                            <img 
-                                                src={member.profileImage} 
-                                                alt="" 
-                                                className="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-neutral-700 group-hover:border-purple-600 transition-colors duration-300"
-                                            />
-                                            <h3 className="text-lg font-bold text-white mb-1">{member.name}</h3>
-                                            <span className="text-neutral-400 text-sm">{member.email}</span>
-                                        </div>
-                                    ))}
                                 </div>
                             </div>
                         )}
