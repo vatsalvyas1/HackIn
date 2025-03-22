@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GithubAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { backendURL } from "./constanst.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyASa14ZZnS3P7gEi1KhF3DR3sqXTLEnLwM",
@@ -41,7 +42,7 @@ const signInWithGithub = async () => {
     const username = githubData.login || result.user.email.split("@")[0]; // GitHub username
 
     // Send token, GitHub name, and username to backend
-    const res = await fetch("http://localhost:3000/api/v1/auth/github", {
+    const res = await fetch(`${backendURL}/api/v1/auth/github`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: idToken, name, username }),
