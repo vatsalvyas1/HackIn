@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import FeedForm from "./FeedForm";
 import FeedList from "./FeedDisplay";
-
-export const backUrl = "http://localhost:3000";
+import { backendUrl } from "../constanst";
 
 const DevFeed = () => {
   const [feeds, setFeeds] = useState([]);
 
   const fetchFeeds = async () => {
     try {
-      const response = await fetch(`${backUrl}/api/v1/feed`);
+      const response = await fetch(`${backendUrl}/api/v1/feed`);
       const result = await response.json(); 
       setFeeds(result.data); 
     } catch (error) {
@@ -31,7 +30,7 @@ const DevFeed = () => {
   }
 
   try {
-    const response = await fetch(`${backUrl}/api/v1/feed/${feedId}/like`, {
+    const response = await fetch(`${backendUrl}/api/v1/feed/${feedId}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +59,7 @@ const DevFeed = () => {
 
   const handleFeedSubmit = async (formData) => {
     try {
-      const response = await fetch(`${backUrl}/api/v1/feed`, {
+      const response = await fetch(`${backendUrl}/api/v1/feed`, {
         method: "POST",
         body: formData,
       });
