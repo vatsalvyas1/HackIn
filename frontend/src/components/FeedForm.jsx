@@ -3,6 +3,8 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { Code2, Image, Video, Github } from "lucide-react";
+import clsx from "clsx";
 
 const FeedForm = ({ onSubmit }) => {
   const [content, setContent] = useState("");
@@ -11,10 +13,10 @@ const FeedForm = ({ onSubmit }) => {
   const [video, setVideo] = useState(null);
   const [showCodeEditor, setShowCodeEditor] = useState(false);
   const [githubLink, setGithubLink] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-
 
   const handleContentChange = (value) => {
     setContent(value);
@@ -32,10 +34,6 @@ const FeedForm = ({ onSubmit }) => {
     }
   };
 
-  const handleDeleteImage = () => {
-    setImage(null);
-  };
-
   const handleVideoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -45,42 +43,41 @@ const FeedForm = ({ onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const storedUser = localStorage.getItem("user");
-    console.log(storedUser);
-    const userId = JSON.parse(storedUser)?._id;
-  
-    if (!userId) {
-      console.error("User ID is missing");
-      return;
+    if (!content.trim() && !codeSnippet && !image && !video) return;
+
+    setIsSubmitting(true);
+    try {
+      const userId = user?._id;
+      if (!userId) throw new Error("User ID is missing");
+
+      const formData = new FormData();
+      formData.append("userId", userId);
+      formData.append("content", content);
+      formData.append("codeSnippet", codeSnippet);
+      formData.append("githubLink", githubLink);
+      if (image) formData.append("image", image.file);
+      if (video) formData.append("video", video);
+
+      await onSubmit(formData);
+
+      // Reset form
+      setContent("");
+      setCodeSnippet("");
+      setGithubLink("");
+      setImage(null);
+      setVideo(null);
+      setShowCodeEditor(false);
+    } catch (error) {
+      console.error("Error submitting feed:", error);
+    } finally {
+      setIsSubmitting(false);
     }
-  
-    const formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("content", content);
-    formData.append("codeSnippet", codeSnippet);
-    formData.append("githubLink", githubLink);
-    if (image) formData.append("image", image.file);
-    if (video) formData.append("video", video);
-  
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-  
-    await onSubmit(formData);
-  
-    setContent("");
-    setCodeSnippet("");
-    setGithubLink("");
-    setImage(null);
-    setVideo(null);
-    setShowCodeEditor(false);
   };
 
   return (
-    <div className="bg-neutral-800 p-4 border-x border-b border-neutral-700 max-w-5xl mx-auto">
+    <div className="bg-neutral-800/50 backdrop-blur-sm p-6 rounded-lg border border-neutral-700/50 shadow-xl">
       <div className="flex items-start space-x-4">
-        <div className="h-10 w-10 rounded-full bg-purple-700 flex items-center justify-center">
-        <div className="h-10 w-10 rounded-full bg-purple-700 flex items-center justify-center overflow-hidden">
+        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center overflow-hidden shadow-lg">
           {user?.profileImage ? (
             <img
               src={user.profileImage}
@@ -88,142 +85,144 @@ const FeedForm = ({ onSubmit }) => {
               className="h-full w-full object-cover"
             />
           ) : (
-            <span className="text-white font-bold">
+            <span className="text-white font-bold text-lg">
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </span>
           )}
         </div>
-      </div>
-        <div className="flex-1 w-full">
+        
+        <div className="flex-1 space-y-4">
           <ReactQuill
             theme="snow"
             value={content}
             onChange={handleContentChange}
             placeholder="Share your thoughts, code, or project..."
-            className="bg-neutral-900 text-white rounded-lg border p-3 border-neutral-700 w-full mb-4"
+            className="bg-neutral-900/50 text-white rounded-lg border border-neutral-700/50 w-full"
+            modules={{
+              toolbar: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link'],
+                ['clean']
+              ]
+            }}
           />
 
           {showCodeEditor && (
-            <div className="bg-neutral-900 rounded-lg p-4 border w-full border-neutral-700 mb-4">
+            <div className="bg-neutral-900/50 rounded-lg p-4 border border-neutral-700/50">
               <textarea
                 value={codeSnippet}
                 onChange={handleCodeChange}
-                placeholder="Enter your JavaScript code here..."
-                className="bg-transparent text-white w-full h-32 focus:outline-none font-mono"
+                placeholder="// Enter your code here..."
+                className="bg-transparent text-white w-full h-32 focus:outline-none font-mono resize-none p-2"
               />
-              <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
-                {codeSnippet}
-              </SyntaxHighlighter>
+              {codeSnippet && (
+                <div className="mt-2">
+                  <SyntaxHighlighter 
+                    language="javascript" 
+                    style={vscDarkPlus}
+                    className="rounded-md"
+                  >
+                    {codeSnippet}
+                  </SyntaxHighlighter>
+                </div>
+              )}
             </div>
           )}
-          <div className="mb-4">
-            <label
-              htmlFor="githubLink"
-              className="block text-sm font-medium text-neutral-400 mb-1"
-            >
-              GitHub Link (Optional)
-            </label>
-            <input
-              type="url"
-              id="githubLink"
-              value={githubLink}
-              onChange={(e) => setGithubLink(e.target.value)}
-              placeholder="https://github.com/username/repository"
-              className="bg-neutral-900 text-white rounded-lg border p-2 border-neutral-700 w-full focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
+
+          <div className="flex flex-wrap gap-4">
+            <div className="flex items-center space-x-2">
+              <label className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-neutral-700/30 hover:bg-neutral-700/50 transition-colors cursor-pointer text-neutral-300 hover:text-white">
+                <Image size={18} />
+                <span className="text-sm">Image</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+
+              <label className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-neutral-700/30 hover:bg-neutral-700/50 transition-colors cursor-pointer text-neutral-300 hover:text-white">
+                <Video size={18} />
+                <span className="text-sm">Video</span>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoUpload}
+                  className="hidden"
+                />
+              </label>
+
+              <button
+                onClick={() => setShowCodeEditor(!showCodeEditor)}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-neutral-700/30 hover:bg-neutral-700/50 transition-colors text-neutral-300 hover:text-white"
+              >
+                <Code2 size={18} />
+                <span className="text-sm">Code</span>
+              </button>
+            </div>
+
+            <div className="flex-1 min-w-[200px]">
+              <div className="relative">
+                <Github size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                <input
+                  type="url"
+                  value={githubLink}
+                  onChange={(e) => setGithubLink(e.target.value)}
+                  placeholder="GitHub repository link (optional)"
+                  className="w-full bg-neutral-900/50 text-white rounded-lg border border-neutral-700/50 pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-purple-500 transition-colors"
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="flex space-x-2 w-full mb-4">
-            <label className="flex items-center text-neutral-400 hover:text-purple-400 transition-colors duration-300 cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
+          {image && (
+            <div className="relative inline-block">
+              <img
+                src={image.preview}
+                alt="Upload preview"
+                className="max-w-md h-auto rounded-lg border border-neutral-700/50"
               />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <button
+                onClick={() => setImage(null)}
+                className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 text-white rounded-full p-1 transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Image
-            </label>
-            {image && (
-              <div className="relative w-48 h-48 mt-4">
-                <img
-                  src={image.preview}
-                  alt="Uploaded"
-                  className="w-full h-full object-cover rounded-lg border border-neutral-700"
-                />
-                <button
-                  onClick={handleDeleteImage}
-                  className="absolute top-1 right-1 bg-red-600 hover:bg-red-500 text-white rounded-full p-1 transition duration-300"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          )}
 
-            <label className="flex items-center text-neutral-400 hover:text-purple-400 transition-colors duration-300 cursor-pointer">
-              <input
-                type="file"
-                accept="video/*"
-                onChange={handleVideoUpload}
-                className="hidden"
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          {video && (
+            <div className="text-sm text-neutral-300 bg-neutral-900/50 px-3 py-2 rounded-lg inline-flex items-center">
+              <Video size={16} className="mr-2" />
+              {video.name}
+              <button
+                onClick={() => setVideo(null)}
+                className="ml-2 text-red-400 hover:text-red-300"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                />
-              </svg>
-              Video
-            </label>
+                Remove
+              </button>
+            </div>
+          )}
+
+          <div className="flex justify-end">
             <button
-              onClick={() => setShowCodeEditor(!showCodeEditor)}
-              className="flex items-center text-neutral-400 hover:text-purple-400 transition-colors duration-300"
+              onClick={handleSubmit}
+              disabled={isSubmitting || (!content.trim() && !codeSnippet && !image && !video)}
+              className={clsx(
+                "px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500",
+                "text-white shadow-lg hover:shadow-purple-500/25",
+                "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+              )}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                />
-              </svg>
-              Code
+              {isSubmitting ? "Posting..." : "Post to Feed"}
             </button>
           </div>
-
-          <button
-            onClick={handleSubmit}
-            className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors duration-300"
-          >
-            Post to Feed
-          </button>
         </div>
       </div>
     </div>
