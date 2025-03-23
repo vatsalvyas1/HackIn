@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { formatDistanceToNow } from "date-fns";
-import { Heart, HeartOff, Github, MessageCircle, Share2 } from "lucide-react";
+import {
+  Heart,
+  HeartOff,
+  Github,
+  MessageCircle,
+  Share2,
+  ArrowRight,
+} from "lucide-react";
 import clsx from "clsx";
+import { backendUrl } from "../constanst";
 
-const FeedList = ({ feeds, onLike }) => {
+// const backendUrl = "http://localhost:3000";
+
+
+const FeedList = ({ feeds, onLike, setFeeds }) => {
+  const [showCommentBox, setShowCommentBox] = useState({});
+  const [commentText, setCommentText] = useState({});
+
   if (!Array.isArray(feeds)) {
     return (
       <div className="text-center py-12 text-neutral-400">
@@ -25,6 +39,52 @@ const FeedList = ({ feeds, onLike }) => {
 
   const storedUser = localStorage.getItem("user");
   const userId = JSON.parse(storedUser)?._id;
+
+  const handleCommentClick = (feedId) => {
+    setShowCommentBox((prev) => ({
+      ...prev,
+      [feedId]: !prev[feedId],
+    }));
+  };
+
+  const handleCommentSubmit = async (feedId) => {
+    const storedUser = localStorage.getItem("user");
+    const userId = JSON.parse(storedUser)?._id;
+
+    if (!userId) {
+      console.error("User ID is missing");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/v1/feed/${feedId}/comment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, text: commentText[feedId] }),
+        }
+      );
+
+      if (!response.ok) throw new Error(await response.text());
+
+      const data = await response.json();
+      setFeeds((prevFeeds) =>
+        prevFeeds.map((feed) =>
+          feed._id === feedId ? { ...feed, comments: data.comments } : feed
+        )
+      );
+      setCommentText((prev) => ({
+        ...prev,
+        [feedId]: "",
+      }));
+      window.location.reload();
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -131,9 +191,18 @@ const FeedList = ({ feeds, onLike }) => {
                       </span>
                     </button>
 
-                    <button className="flex items-center space-x-2 text-neutral-400 hover:text-blue-400 transition-colors">
+                    <button
+                      onClick={() => handleCommentClick(feed._id)}
+                      className={clsx(
+                        "flex items-center space-x-2 transition-colors",
+                        showCommentBox[feed._id]
+                          ? "text-blue-400"
+                          : "text-neutral-400",
+                        "hover:text-blue-400"
+                      )}
+                    >
                       <MessageCircle size={20} />
-                      <span className="text-sm font-medium">0</span>
+                      <span className="text-sm font-medium">{feed.comments?.length || 0}</span>
                     </button>
 
                     <button className="flex items-center space-x-2 text-neutral-400 hover:text-green-400 transition-colors">
@@ -158,6 +227,55 @@ const FeedList = ({ feeds, onLike }) => {
                     </a>
                   )}
                 </div>
+
+                {showCommentBox[feed._id] && (
+                  <div className="mt-4 flex space-x-2">
+                    <input
+                      type="text"
+                      value={commentText[feed._id] || ""}
+                      onChange={(e) =>
+                        setCommentText((prev) => ({
+                          ...prev,
+                          [feed._id]: e.target.value,
+                        }))
+                      }
+                      placeholder="Write a comment..."
+                      className="flex-1 bg-neutral-700/30 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                    />
+                    <button
+                      onClick={() => handleCommentSubmit(feed._id)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-4 py-2 transition-colors"
+                    >
+                      <ArrowRight size={20} />
+                    </button>
+                  </div>
+                )}
+
+                {feed.comments && feed.comments.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    {feed.comments.map((comment, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center overflow-hidden shadow-lg">
+                          {comment.userId?.profileImage ? (
+                            <img
+                              src={comment.userId.profileImage}
+                              alt={comment.userId.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-white font-bold text-sm">
+                              {comment.userId?.name?.charAt(0).toUpperCase() ||
+                                "U"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex-1 bg-neutral-700/30 rounded-lg p-2">
+                          <p className="text-white text-sm">{comment.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

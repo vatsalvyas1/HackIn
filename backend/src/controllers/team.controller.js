@@ -51,6 +51,7 @@ const createTeam = AsyncHandler(async (req, res) => {
     skills,
     teamLeader: userId,
     teamMembers,
+    comments: [],
   });
 
   if (!team) throw new ApiError(400, "error creating team");

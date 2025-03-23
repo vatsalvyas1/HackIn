@@ -45,14 +45,18 @@ export const createFeedPost = AsyncHandler(async (req, res) => {
 
 // Get all feed posts
 export const getAllFeedPosts = AsyncHandler(async (req, res) => {
-  const posts = await Feed.find().populate("userId", "name email profileImage");
+  const posts = await Feed.find()
+    .populate("userId", "name email profileImage") 
+    .populate("comments.userId", "name profileImage"); 
   res.status(200).json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
 // Get a single feed post by ID
 export const getFeedPostById = AsyncHandler(async (req, res) => {
   const { id } = req.params;
-  const post = await Feed.findById(id).populate("userId", "name email");
+  const post = await Feed.findById(id)
+    .populate("userId", "name email profileImage") 
+    .populate("comments.userId", "name profileImage"); 
 
   if (!post) throw new ApiError(404, "Post not found");
 
@@ -104,6 +108,8 @@ export const commentOnFeedPost = AsyncHandler(async (req, res) => {
 
   post.comments.push({ userId, text });
   await post.save();
+
+  const updatedPost = await Feed.findById(id).populate("comments.userId", "name profileImage");
 
   res.status(200).json(new ApiResponse(200, post, "Comment added successfully"));
 });

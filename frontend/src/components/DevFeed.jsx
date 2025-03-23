@@ -161,7 +161,7 @@ const DevFeed = () => {
               <p className="text-neutral-400 mt-4">Loading feeds...</p>
             </div>
           ) : (
-            <FeedList feeds={feeds} onLike={handleLike} />
+            <FeedList feeds={feeds} onLike={handleLike} setFeeds={setFeeds} />
           )}
         </div>
       </div>
