@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+/* Quill editor text color */
+.ql-editor {
+    color: white !important;
+  }
+  
+  /* Placeholder text */
+  .ql-editor.ql-blank::before {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  
+  /* Toolbar buttons color */
+  .ql-toolbar button {
+    color: white !important;
+  }
+  
+  /* Border color for better visibility */
+  .ql-container {
+    border-color: white !important;
+  }
+  

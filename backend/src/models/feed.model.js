@@ -20,6 +20,9 @@ const feedSchema = new mongoose.Schema(
     codeSnippet: {
       type: String, 
     },
+    githubLink: {
+      type: String, 
+    },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

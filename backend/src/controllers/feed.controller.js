@@ -6,10 +6,16 @@ import { uploadOnCloud } from "../utils/cloudinary.js";
 
 // Create a new feed post
 export const createFeedPost = AsyncHandler(async (req, res) => {
-  const { userId, content, codeSnippet } = req.body;
+  const { userId, content, codeSnippet, githubLink } = req.body;
 
-  if (!userId || !content) {
-    throw new ApiError(400, "User ID and content are required");
+  console.log(req.body);
+  console.log(req.files);
+
+  if (!userId ) {
+    throw new ApiError(400, "User ID is required");
+  }
+  if (!content) {
+    throw new ApiError(400, "Content is required");
   }
 
   let imageUrl = null;
@@ -31,6 +37,7 @@ export const createFeedPost = AsyncHandler(async (req, res) => {
     image: imageUrl,
     video: videoUrl,
     codeSnippet,
+    githubLink,
   });
 
   res.status(201).json(new ApiResponse(201, newFeed, "Post created successfully"));
@@ -38,7 +45,7 @@ export const createFeedPost = AsyncHandler(async (req, res) => {
 
 // Get all feed posts
 export const getAllFeedPosts = AsyncHandler(async (req, res) => {
-  const posts = await Feed.find().populate("userId", "name email");
+  const posts = await Feed.find().populate("userId", "name email profileImage");
   res.status(200).json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
@@ -67,13 +74,17 @@ export const likeFeedPost = AsyncHandler(async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
 
+  if (!userId) throw new ApiError(400, "User ID is required");
+
   const post = await Feed.findById(id);
   if (!post) throw new ApiError(404, "Post not found");
 
-  const alreadyLiked = post.likes.includes(userId);
+  const alreadyLiked = post.likes.some((like) => like.toString() === userId);
   if (alreadyLiked) {
+    // Unlike the post: Remove only the current user's like
     post.likes = post.likes.filter((like) => like.toString() !== userId);
   } else {
+    // Like the post: Add the current user's like
     post.likes.push(userId);
   }
 
