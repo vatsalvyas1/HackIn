@@ -47,3 +47,14 @@ Hackathons are a fantastic way to learn new skills, build projects, and network 
 - **Stay motivated** by tracking your growth and competing with others.
 
 ---
+
+## How to Use 🛠️
+
+1. **Sign Up**: Create an account on HackIn to get started.
+2. **Set Up Your Profile**: Add your details, skills, and interests.
+3. **Track Hackathons**: Log your participation and results.
+4. **Showcase Projects**: Upload your hackathon projects with descriptions and tech stacks.
+5. **Connect with Teams**: Join or create teams for upcoming hackathons.
+6. **Climb the Leaderboard**: Earn points and badges to rise through the ranks.
+
+---
