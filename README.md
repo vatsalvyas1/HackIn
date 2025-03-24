@@ -58,3 +58,29 @@ Hackathons are a fantastic way to learn new skills, build projects, and network 
 6. **Climb the Leaderboard**: Earn points and badges to rise through the ranks.
 
 ---
+## Environment Variables 🔑
+
+To run this project, you will need to add the following environment variables to your `.env` file:
+
+### Backend Environment Variables
+```plaintext
+MONGODB_URI =            # MongoDB connection string for database access.
+PORT = 3000              # Port on which the server will run.
+EMAIL =                  # Email for sending notifications or authentication.
+PASSWORD =               # Password for email or authentication.
+SESSION_SECRET =         # Secret key for session management.
+GITHUB_CLIENT_ID =       # GitHub OAuth app client ID for authentication.
+GITHUB_CLIENT_SECRET =   # GitHub OAuth app client secret for authentication.
+GITHUB_CALLBACK_URL = http://localhost:3000/api/v1/auth/github/callback  # Callback URL for GitHub OAuth.
+CLOUD_NAME =             # Cloudinary cloud name for image uploads.
+API_KEY =                # Cloudinary API key for image uploads.
+API_SECRET =             # Cloudinary API secret for image uploads.
+FIREBASE_PROJECT_ID =    # Firebase project ID for authentication.
+FIREBASE_PRIVATE_KEY =   # Firebase private key for authentication.
+FIREBASE_CLIENT_EMAIL =  # Firebase client email for authentication.
+```
+
+### Frontend Environment Variables
+```plaintext
+VITE_GITHUB_CLIENT_ID =  # GitHub OAuth app client ID for frontend authentication.
+VITE_BACKEND_URL = http://localhost:3000  # Backend API URL for frontend requests.
