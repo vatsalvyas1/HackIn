@@ -34,4 +34,11 @@ const getProfile = AsyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, user, "Fetched user profile"));
 });
 
-export { completeUserProfile, getProfile };
+const getScores = AsyncHandler(async (req, res) => {
+    const users = await User.find().select("name profileImage contributionScore").sort({ contributionScore: -1 });
+
+    res.status(200).json(new ApiResponse(200, users, "Fetched user scores"));
+});
+    
+
+export { completeUserProfile, getProfile, getScores };
