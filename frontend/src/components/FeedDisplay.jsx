@@ -13,8 +13,6 @@ import {
 import clsx from "clsx";
 import { backendUrl } from "../constanst";
 
-// const backendUrl = "http://localhost:3000";
-
 
 const FeedList = ({ feeds, onLike, setFeeds }) => {
   const [showCommentBox, setShowCommentBox] = useState({});
@@ -151,7 +149,7 @@ const FeedList = ({ feeds, onLike, setFeeds }) => {
                     <img
                       src={feed.image}
                       alt="Feed content"
-                      className="rounded-lg w-full object-cover max-h-[500px]"
+                      className="rounded-lg w-xl object-cover max-h-xl mx-auto"
                     />
                   </div>
                 )}

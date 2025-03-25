@@ -97,7 +97,7 @@ const FeedForm = ({ onSubmit }) => {
             value={content}
             onChange={handleContentChange}
             placeholder="Share your thoughts, code, or project..."
-            className="bg-neutral-900/50 text-white rounded-lg border border-neutral-700/50 w-full"
+            className="bg-neutral-900/50 text-white rounded-lg border border-neutral-700/50 w-full overflow-x-auto"
             modules={{
               toolbar: [
                 ['bold', 'italic', 'underline', 'strike'],
@@ -110,19 +110,19 @@ const FeedForm = ({ onSubmit }) => {
           />
 
           {showCodeEditor && (
-            <div className="bg-neutral-900/50 rounded-lg p-4 border border-neutral-700/50">
+            <div className="bg-neutral-900/50 rounded-lg p-4 border border-neutral-700/50 overflow-x-auto">
               <textarea
                 value={codeSnippet}
                 onChange={handleCodeChange}
                 placeholder="// Enter your code here..."
-                className="bg-transparent text-white w-full h-32 focus:outline-none font-mono resize-none p-2"
+                className="bg-transparent text-white w-full h-32 focus:outline-none font-mono resize-none p-2 overflow-x-auto"
               />
               {codeSnippet && (
                 <div className="mt-2">
                   <SyntaxHighlighter 
                     language="javascript" 
                     style={vscDarkPlus}
-                    className="rounded-md"
+                    className="rounded-md overflow-x-auto max-w-3xl"
                   >
                     {codeSnippet}
                   </SyntaxHighlighter>

@@ -47,7 +47,8 @@ export const createFeedPost = AsyncHandler(async (req, res) => {
 export const getAllFeedPosts = AsyncHandler(async (req, res) => {
   const posts = await Feed.find()
     .populate("userId", "name email profileImage") 
-    .populate("comments.userId", "name profileImage"); 
+    .populate("comments.userId", "name profileImage")
+    .sort({ createdAt: -1 }); 
   res.status(200).json(new ApiResponse(200, posts, "Posts fetched successfully"));
 });
 
