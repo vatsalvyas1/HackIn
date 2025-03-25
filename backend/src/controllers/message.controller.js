@@ -5,51 +5,54 @@ import Message from "../models/message.model.js";
 import Team from "../models/team.model.js";
 
 // Get all messages for a team
-export const getTeamMessages = AsyncHandler(async (req, res) => {
-  const { teamId } = req.params;
-
-  if (!teamId) {
-    throw new ApiError(400, "Team ID is required");
+export const getTeamMessages = async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const messages = await Message.find({ teamId })
+      .sort({ createdAt: 1 })
+      .limit(100);
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-
-  // Basic team membership check
-  const team = await Team.findById(teamId);
-  if (!team) {
-    throw new ApiError(404, "Team not found");
-  }
-
-  const messages = await Message.find({ teamId })
-    .sort({ createdAt: 1 })
-    .populate("senderId", "name profileImage");
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, messages, "Messages retrieved successfully"));
-});
+};
 
 // Send a new message
-export const sendMessage = AsyncHandler(async (req, res) => {
-  const { teamId } = req.params;
-  const { content } = req.body;
+export const sendMessage = async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const { senderId, senderName, content } = req.body;
 
-  if (!teamId) {
-    throw new ApiError(400, "Team ID is required");
+    const newMessage = new Message({
+      teamId,
+      senderId,
+      senderName,
+      content,
+    });
+
+    const savedMessage = await newMessage.save();
+    
+    // Emit the new message to all team members
+    io.to(teamId).emit("new_message", savedMessage);
+    
+    res.status(201).json(savedMessage);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-  if (!content || content.trim() === "") {
-    throw new ApiError(400, "Message content is required");
+};
+
+export const sendNotification = async (teamId, message) => {
+  try {
+    const newMessage = new Message({
+      teamId,
+      senderName: "System",
+      content: message,
+      type: "notification",
+    });
+
+    const savedMessage = await newMessage.save();
+    io.to(teamId).emit("new_message", savedMessage);
+  } catch (error) {
+    console.error("Error sending notification:", error);
   }
-
-  const newMessage = await Message.create({
-    teamId,
-    senderId: req.user._id,
-    content: content.trim()
-  });
-
-  // Populate sender info before sending response
-  const populatedMessage = await Message.findById(newMessage._id)
-    .populate("senderId", "name profileImage");
-
-  return res
-    .status(201)
-    .json(new ApiResponse(201, populatedMessage, "Message sent successfully"));
-});
+};

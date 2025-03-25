@@ -2,22 +2,29 @@ import 'dotenv/config';
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import app from "./app.js";
+import {createServer} from "http";
+import { initSocket } from './socket/socket.js';
 
 dotenv.config(
     {path : "../.env"}
 );
 
+const server = createServer(app);
+
 connectDB()
 .then(() =>{
     const port = process.env.PORT || 5000;
-    app.listen(port , () =>{
+
+    server.listen(port , () =>{
         console.log(`Server is running on port ${port}`);
     });
+
+    initSocket(server);
 })
 .catch((err) => {
-    console.log("mongoDB error found : ",err);
+    console.log("MongoDB error found : ",err);
 });
 
 app.get("/",(req,res)=>{
-    res.send("server started");
+    res.send("Server Started");
 })
