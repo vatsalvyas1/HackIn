@@ -1,13 +1,19 @@
 import { Server } from "socket.io";
+import Message from "../models/message.model.js";
 
 let io;
 
 export const initSocket = (server) => {
-  io = new Server(server, {
-    cors: {
-      origin: process.env.FRONTEND_URL || "http://localhost:5173",
-      methods: ["GET", "POST"],
-    },
+    io = new Server(server, {
+        cors: {
+          origin: [
+            "http://localhost:5173",
+            "https://hack-in-sooty.vercel.app",
+            "http://localhost:3000"
+          ],
+          methods: ["GET", "POST"],
+          credentials: true 
+        }
   });
 
   io.on("connection", (socket) => {
@@ -22,6 +28,29 @@ export const initSocket = (server) => {
         socket.join(teamId);
         console.log(`User joined team ${teamId}`);
       });
+
+ // Handle new chat messages
+ socket.on("send_message", async (data) => {
+    try {
+      const { teamId, senderId, senderName, content } = data;
+      
+      // Save message to database
+      const newMessage = new Message({
+        teamId,
+        senderId,
+        senderName,
+        content,
+        type: "message"
+      });
+
+      const savedMessage = await newMessage.save();
+      
+      // Broadcast to all team members
+      io.to(teamId).emit("new_message", savedMessage);
+    } catch (error) {
+      console.error("Error handling message:", error);
+    }
+  });
 
       socket.on("disconnect", () => {
         console.log(`Client disconnected: ${socket.id}`);
