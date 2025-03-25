@@ -11,10 +11,10 @@ const FeedTypeButton = ({ active, children, onClick }) => (
   <button
     onClick={onClick}
     className={clsx(
-      "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+      "px-4 py-2 rounded-lg text-sm font-bold transition-all duration-200",
       active
-        ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg"
-        : "bg-neutral-700/30 text-neutral-300 hover:bg-neutral-700/50 hover:text-white"
+        ? "bg-purple-600 text-white shadow-lg"
+        : "bg-neutral-700 text-neutral-300 hover:bg-neutral-800 hover:text-white"
     )}
   >
     {children}
@@ -94,8 +94,8 @@ const DevFeed = () => {
     <div className="min-h-screen bg-neutral-900 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-neutral-900 to-neutral-900">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-4 font-mono">
-            Developer Social Feed
+          <h2 className="text-4xl md:text-5xl font-bold text-white bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-4 font-mono">
+            Developer <span className="text-purple-500 ">Feed</span>
           </h2>
           <p className="text-neutral-400 max-w-2xl mx-auto text-lg">
             Connect with developers, share projects, and join technical discussions
@@ -103,7 +103,7 @@ const DevFeed = () => {
           </p>
         </div>
 
-        <div className="bg-neutral-800/50 backdrop-blur-sm rounded-lg border border-neutral-700/50 p-4 mb-6 shadow-lg">
+        <div className="bg-neutral-800 backdrop-blur-sm rounded-lg border border-neutral-700 p-4 mb-6 shadow-lg">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex flex-wrap gap-2">
               <FeedTypeButton

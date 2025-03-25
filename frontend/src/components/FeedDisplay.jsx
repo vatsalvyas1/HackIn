@@ -89,7 +89,7 @@ const FeedList = ({ feeds, onLike, setFeeds }) => {
       {feeds.map((feed) => (
         <div
           key={feed._id}
-          className="bg-neutral-800/50 backdrop-blur-sm rounded-lg border border-neutral-700/50 shadow-lg transform hover:translate-y-[-2px] transition-all duration-200"
+          className="bg-neutral-800 backdrop-blur-sm rounded-lg border border-neutral-700 shadow-lg transform hover:translate-y-[-2px] transition-all duration-200"
         >
           <div className="p-6">
             <div className="flex items-start space-x-4">

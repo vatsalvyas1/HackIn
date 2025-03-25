@@ -75,7 +75,7 @@ const FeedForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="bg-neutral-800/50 backdrop-blur-sm p-6 rounded-lg border border-neutral-700/50 shadow-xl">
+    <div className="bg-neutral-800 backdrop-blur-sm p-6 rounded-lg border border-neutral-700 shadow-xl">
       <div className="flex items-start space-x-4">
         <div className="h-12 w-12 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center overflow-hidden shadow-lg">
           {user?.profileImage ? (
@@ -215,8 +215,8 @@ const FeedForm = ({ onSubmit }) => {
               disabled={isSubmitting || (!content.trim() && !codeSnippet && !image && !video)}
               className={clsx(
                 "px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                "bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500",
-                "text-white shadow-lg hover:shadow-purple-500/25",
+                "bg-purple-600 hover:from-purple-700",
+                "text-white shadow-lg",
                 "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
               )}
             >
