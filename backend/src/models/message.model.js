@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
     teamId: { type: mongoose.Schema.Types.ObjectId, ref: 'Team', required: true },
-    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.type === 'message';}},
     senderName: { type: String, required: true },
     content: { type: String, required: true },
     type: { type: String, enum: ['message', 'notification'], default: 'message' },

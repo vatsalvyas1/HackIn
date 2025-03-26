@@ -8,7 +8,7 @@ const hackathonSchema = new mongoose.Schema({
       },
       organizer: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Reference to the user who created the hackathon
+        ref: 'User', 
         required: true,
       },
       description: {
@@ -52,7 +52,7 @@ const hackathonSchema = new mongoose.Schema({
       participants: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Team', // Reference to teams participating
+          ref: 'Team', 
         },
       ],
       sponsors: [

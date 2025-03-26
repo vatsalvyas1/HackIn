@@ -8,7 +8,7 @@ const createHackathon = AsyncHandler(async(req,res) => {
     const {name, organizer, description, startDate, endDate, location, mode, prizePool, registrationDeadline, minTeamSize, maxTeamSize, sponsors, website} = req.body;
 
     if(!name || !organizer || !description || !startDate || !endDate || !mode || !registrationDeadline || !minTeamSize || !maxTeamSize){
-        throw new ApiError(404,"some feilds are missing");
+        throw new ApiError(404,"some fields are missing");
     }
 
     const user = await User.findById(organizer);
