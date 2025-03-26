@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get('/:teamId', getTeamMessages);
+router.post('/:teamId', getTeamMessages);
 // router.route("/:teamId").post(sendMessage);
 
 export default router;

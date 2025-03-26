@@ -27,34 +27,46 @@ export default function TeamDetails() {
         });
         setSocket(newSocket);
 
-        const fetchTeam = async () => {
+        const fetchTeamData = async () => {
             try {
-                const response = await fetch(`${backendUrl}/api/v1/team/get-team/${teamId}`, {
-                    method: "GET",
-                });
-
-                if (!response.ok) {
-                    throw new Error("something went wrong");
+                setLoading(true);
+    
+                // Fetch team details
+                const teamResponse = await fetch(`${backendUrl}/api/v1/team/get-team/${teamId}`);
+                if (!teamResponse.ok) {
+                    throw new Error("Failed to fetch team data");
                 }
-
-                const result = await response.json();
-                setTeam(result.data);
-                setLoading(false);
-
-                // join karo team after fetching
+                const teamData = await teamResponse.json();
+                setTeam(teamData.data);
+    
+                // Join the team room in socket
                 newSocket.emit("join_team", teamId);
-
-                //purane messages fetch
-                const messagesResponse = await fetch(`${backendUrl}/api/v1/message/${teamId}`);
+    
+                if (!storedUser || !storedUser._id) {
+                    throw new Error("User not found in localStorage");
+                }
+    
+                // Fetch messages with userId in POST request
+                const messagesResponse = await fetch(`${backendUrl}/api/v1/message/${teamId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userId: storedUser._id }),
+                });
+    
+                if (!messagesResponse.ok) {
+                    throw new Error("Failed to fetch messages");
+                }
+    
                 const messagesData = await messagesResponse.json();
                 setMessages(messagesData.data || []);
             } catch (err) {
-                console.log(err);
+                console.error("Error fetching data:", err);
+            } finally {
                 setLoading(false);
             }
         };
-
-        fetchTeam();
+    
+        fetchTeamData();
 
         //socket listener
         newSocket.on("new_message", (message) => {

@@ -39,20 +39,26 @@ export const getTeamMessages = AsyncHandler(async (req, res) => {
     throw new ApiError(400, "User ID is required");
   }
 
-  const team = await Team.findById(teamId).populate("teamMembers", "name email");
+  // Fetch team details
+  const team = await Team.findById(teamId).populate("teamMembers", "name email _id");
   if (!team) {
     throw new ApiError(404, "Team not found");
   }
 
-  // Check if user is part of the team
-  if (!team.members.includes(userId) && team.leader.toString() !== userId) {
+  // Ensure members exist before checking
+  const isLeader = team.teamLeader?.toString() === userId;
+  const isMember = team.teamMembers.some(member => member._id.toString() === userId);
+
+  if (!isMember && !isLeader) {
     throw new ApiError(403, "You are not part of this team");
   }
 
+  // Fetch messages
   const messages = await Message.find({ teamId }).sort({ createdAt: 1 }).limit(100);
-
   return res.status(200).json(new ApiResponse(200, messages, "Messages fetched successfully"));
 });
+
+
 
 
 export const sendNotification = AsyncHandler(async (teamId, message) => {
