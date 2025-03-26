@@ -11,6 +11,8 @@ import ProjectDetails from './components/ProjectDetails.jsx'
 import TeamDetails from './components/TeamDetails.jsx'
 import LeaderBoard from './components/LeaderBoard.jsx'
 import DevFeed from './components/DevFeed.jsx'
+import Hackathon from './components/Hackathon.jsx'
+import HackathonForm from './components/HackathonForm.jsx'
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Route path="/project/:id" element={<ProjectDetails />} />
         <Route path="/team/:teamId" element={<TeamDetails />} />
         <Route path="/leaderboard" element={<LeaderBoard />} />
+        <Route path="/hackathons" element={<Hackathon />} />
+        <Route path="/organise" element={<HackathonForm />} />
         <Route path='/feed' element={<DevFeed />} />
       </Routes>
       <Footer />
