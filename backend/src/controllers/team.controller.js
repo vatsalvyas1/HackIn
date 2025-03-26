@@ -3,7 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import Team from "../models/team.model.js";
 import User from "../models/user.model.js";
-import { sendAcceptMessage } from "../utils/sendmail.js";
+import { sendAcceptMessage, sendRejectMessage, sendJoinRequest } from "../utils/sendmail.js";
 
 const createTeam = AsyncHandler(async (req, res) => {
   const {
@@ -85,7 +85,7 @@ const joinTeam = AsyncHandler(async(req,res) => {
 
     if(!userId || !teamId) throw new ApiError(400,"missing fields");
 
-    const team = await Team.findById(teamId);
+    const team = await Team.findById(teamId).populate("teamLeader","name email");
     const user = await User.findById(userId);
 
     if(!team || !user) throw new ApiError(404,"team or user not found");
@@ -102,6 +102,8 @@ const joinTeam = AsyncHandler(async(req,res) => {
 
     await user.save();
     await team.save();
+
+    sendJoinRequest(team.teamLeader.email, team.teamLeader.name, user.name, team.teamName);
 
     res.status(201).json(new ApiResponse(200,team,"request sent successfully"));
 })
@@ -159,6 +161,8 @@ const rejectRequest = AsyncHandler(async(req,res) => {
 
     await user.save();
     await team.save();
+
+    sendRejectMessage(user.email, user.name, user.teamName);
 
     res.status(201).json(new ApiResponse(200,team,"request rejected successfully"));
 });

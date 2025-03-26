@@ -15,7 +15,7 @@ const sendAcceptMessage = async (email, userName, teamName) => {
         const mailOptions = {
             to: email,
             subject: 'Congratulations! Your request has been accepted',
-            html: `hello ${userName},<br> Your request to join ${teamName} has been accepted.`,
+            html: `Hello ${userName},<br> Your request to join ${teamName} has been accepted.`,
         };
     
         const message = await transporter.sendMail(mailOptions);
@@ -31,4 +31,46 @@ const sendAcceptMessage = async (email, userName, teamName) => {
     }
 };
 
-export { sendAcceptMessage };
+const sendRejectMessage = async (email, userName, teamName) => {
+    try{
+        const mailOptions = {
+            to: email,
+            subject: 'Request Rejected',
+            html: `Hello ${userName},<br> Your request to join ${teamName} has been rejected.`,
+        };
+    
+        const message = await transporter.sendMail(mailOptions);
+        if(message){
+            return true;
+        }
+
+        return false;
+    }
+    catch (error) {
+        console.log(error);
+        return false;
+    }
+};
+
+const sendJoinRequest = async(email, leaderName, userName, teamName) => {
+    try{
+        const mailOptions = {
+            to: email,
+            subject: 'Request Rejected',
+            html: `Hello ${leaderName},<br> ${userName} has requested to join your team ${teamName}`,
+        };
+    
+        const message = await transporter.sendMail(mailOptions);
+        if(message){
+            return true;
+        }
+
+        return false;
+    }
+    catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+export { sendAcceptMessage,sendRejectMessage, sendJoinRequest };

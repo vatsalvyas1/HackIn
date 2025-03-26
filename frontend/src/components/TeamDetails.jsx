@@ -195,17 +195,19 @@ export default function TeamDetails() {
                             Overview
                         </button>
 
-                        <button 
-                            onClick={() => setActiveTab('chat')}
-                            className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
-                                activeTab === 'chat' 
-                                ? 'text-white border-b-2 border-purple-600' 
-                                : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
-                            }`}
-                        >
-                            <MessageCircleMore className="w-4 h-4" />
-                            Chat
-                        </button>
+                        {team.teamMembers.some(teamMember => teamMember._id === user._id) && (
+                            <button 
+                                onClick={() => setActiveTab('chat')}
+                                className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
+                                    activeTab === 'chat' 
+                                        ? 'text-white border-b-2 border-purple-600' 
+                                        : 'text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700'
+                                }`}
+                            >
+                                <MessageCircleMore className="w-4 h-4" />
+                                Chat
+                            </button>
+                        )}
                         
                         <button 
                             onClick={() => setActiveTab('members')}
