@@ -33,6 +33,7 @@ With HackIn, you can:
    - Unlock achievements and badges as you progress.
 
 ### 5. **Hackathon Tracker**
+   - Organize hackathons.
    - Stay updated on upcoming hackathons.
    - Track your participation history and results.
    - Set goals and monitor your progress.
