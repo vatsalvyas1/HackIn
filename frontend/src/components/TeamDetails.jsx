@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { Users, Info, MessageSquare, MessageCircleMore, Loader2, Check, X, Trophy, MapPin } from 'lucide-react';
-// import { backendUrl } from "../constanst";
+import { backendUrl } from "../constanst";
 import { io } from "socket.io-client";
 
-const backendUrl = "http://localhost:3000";
+// const backendUrl = "http://localhost:3000";
 
 export default function TeamDetails() {
     const { teamId } = useParams();
