@@ -24,6 +24,32 @@ const hackathonSchema = new mongoose.Schema({
         required: true,
       },
       location: {
+          address : {
+            type : String,
+            required : true,
+          },
+          city : {
+            type : String,
+            required : true,
+          },
+          state : {
+            type : String,
+            required : true,
+          },
+          country : {
+            type : String,
+            required : true,
+          },
+          postalCode : {
+            type : String,
+            required : true,
+          },
+      },
+      collegeRepresenting: {
+        type: String,
+        required: true,
+      },
+      colorTheme: {
         type: String,
       },
       mode: {
