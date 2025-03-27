@@ -5,31 +5,6 @@ import Message from "../models/message.model.js";
 import Team from "../models/team.model.js";
 import { getIO } from "../socket/socket.js";
 
-
-// // Send a new message
-// export const sendMessage = async (req, res) => {
-//   try {
-//     const { teamId } = req.params;
-//     const { senderId, senderName, content } = req.body;
-
-//     const newMessage = new Message({
-//       teamId,
-//       senderId,
-//       senderName,
-//       content,
-//     });
-
-//     const savedMessage = await newMessage.save();
-    
-//     // Emit the new message to all team members
-//     io.to(teamId).emit("new_message", savedMessage);
-    
-//     res.status(201).json(savedMessage);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
 // Get all messages for a team
 export const getTeamMessages = AsyncHandler(async (req, res) => {
   const { teamId } = req.params;

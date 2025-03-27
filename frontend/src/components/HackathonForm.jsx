@@ -184,7 +184,7 @@ function HackathonForm() {
             >
               <ArrowLeft className="w-4 h-4" /> Back to hackathon type
             </button>
-            <h1 className="text-4xl font-bold mb-8 text-center">
+            <h1 className="text-4xl font-bold mb-8 text-center font-mono">
               Create your <span className="text-purple-500">Hackathon</span>
             </h1>
 
