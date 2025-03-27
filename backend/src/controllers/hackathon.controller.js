@@ -5,10 +5,22 @@ import Hackathon from "../models/hackathon.model.js";
 import User from "../models/user.model.js";
 
 const createHackathon = AsyncHandler(async(req,res) => {
-    const {name, organizer, description, startDate, endDate, location, mode, prizePool, registrationDeadline, minTeamSize, maxTeamSize, sponsors, website} = req.body;
+    const {name, organizer, description, startDate, endDate, mode, prizePool, registrationDeadline, minTeamSize, maxTeamSize, colorTheme, collegeRepresenting, website, sponsors} = req.body;
 
-    if(!name || !organizer || !description || !startDate || !endDate || !mode || !registrationDeadline || !minTeamSize || !maxTeamSize){
+    if(!name || !organizer || !description || !startDate || !endDate || !mode || !registrationDeadline || !minTeamSize || !maxTeamSize || !collegeRepresenting || !colorTheme){
         throw new ApiError(404,"some fields are missing");
+    }
+
+    const {address , city , state , country , postalCode} = req.body;
+    // if(!address || !city || !state || !country || !postalCode){
+    //     throw new ApiError(404,"Location fields are missing");
+    // }
+    const location = {
+        address,
+        city,
+        state,
+        country,
+        postalCode
     }
 
     const user = await User.findById(organizer);
@@ -23,6 +35,8 @@ const createHackathon = AsyncHandler(async(req,res) => {
         startDate,
         endDate,
         location,
+        collegeRepresenting,
+        colorTheme,
         mode,
         prizePool,
         registrationDeadline,
