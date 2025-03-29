@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function DashBoardDemo() {
     return(
@@ -40,10 +41,10 @@ export default function DashBoardDemo() {
                   </div>
                 </li>
               </ul>
-              <a href="#" className="mt-8 inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-600 hover:-translate-y-1 text-white font-medium rounded-lg transition-all duration-300">
+              <Link to={"/dashboard"} className="mt-8 inline-flex items-center px-6 py-3 bg-purple-700 hover:bg-purple-600 hover:-translate-y-1 text-white font-medium rounded-lg transition-all duration-300">
                 Create Your Account
                 <ArrowRight size={18} className="ml-2" />
-              </a>
+              </Link>
             </div>
   
             <div className="w-full md:w-1/2 hover:-translate-y-2 transition-all duration-300">

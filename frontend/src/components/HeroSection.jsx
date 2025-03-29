@@ -14,10 +14,10 @@ export default function HeroSection() {
                     The social platform designed exclusively for developers. Find teammates, showcase projects, and compete in global hackathons.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Link className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 transform hover:-translate-y-1 text-center">
+                    <Link to={"/hackmates"} className="bg-purple-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 transform hover:-translate-y-1 text-center">
                         Join the Community
                     </Link>
-                    <Link className="bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 transform hover:-translate-y-1 border border-purple-500 text-center">
+                    <Link to={"/hackathons"} className="bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3 px-6 rounded-md transition-all duration-300 transform hover:-translate-y-1 border border-purple-500 text-center">
                         Explore Hackathons
                     </Link>
                 </div>
