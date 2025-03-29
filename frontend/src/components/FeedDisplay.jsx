@@ -38,6 +38,32 @@ const FeedList = ({ feeds, onLike, setFeeds }) => {
   const storedUser = localStorage.getItem("user");
   const userId = JSON.parse(storedUser)?._id;
 
+  const handleLike = async (postId) => {
+    try {
+      const response = await fetch(`${backendUrl}/feed/${postId}/like`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      });
+      
+      if (!response.ok) throw new Error(await response.text());
+  
+      const data = await response.json();
+  
+      setFeeds((prevFeeds) =>
+        prevFeeds.map((feed) =>
+          feed._id === postId
+            ? { ...feed, likes: data.data.likes } // Update the entire likes array
+            : feed
+        )
+      );
+    } catch (error) {
+      console.error("Error liking post:", error);
+    }
+  };
+  
   const handleCommentClick = (feedId) => {
     setShowCommentBox((prev) => ({
       ...prev,
@@ -170,7 +196,7 @@ const FeedList = ({ feeds, onLike, setFeeds }) => {
                 <div className="flex items-center justify-between pt-4 border-t border-neutral-700/50">
                   <div className="flex items-center space-x-4">
                     <button
-                      onClick={() => onLike(feed._id)}
+                      onClick={() => handleLike(feed._id)}
                       className={clsx(
                         "flex items-center space-x-2 transition-colors",
                         "hover:text-red-400",
