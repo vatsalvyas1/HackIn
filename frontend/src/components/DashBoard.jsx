@@ -9,10 +9,12 @@ export default function DashBoard() {
   const [projects, setProjects] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = location.state?.userId || JSON.parse(localStorage.getItem("user"))._id;
+  const userId =
+    location.state?.userId || JSON.parse(localStorage.getItem("user"))._id;
   const loggedInUserId = JSON.parse(localStorage.getItem("user"))._id;
   const isLoggedInUser = userId === loggedInUserId;
   const [teams, setTeams] = useState([]);
+  const githubUsername = user?.username;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -58,12 +60,9 @@ export default function DashBoard() {
 
     const fetchUserTeams = async () => {
       try {
-        const response = await fetch(
-          `${backendUrl}/api/v1/team/get-all`,
-          {
-            method: "GET",
-          }
-        );
+        const response = await fetch(`${backendUrl}/api/v1/team/get-all`, {
+          method: "GET",
+        });
 
         if (!response.ok) {
           throw new Error("Something went wrong");
@@ -94,21 +93,27 @@ export default function DashBoard() {
   };
 
   const colorCss = {
-    1 : "bg-purple-600",
-    2 : "bg-indigo-600",
-    3 : "bg-green-600",
-    4 : "bg-red-600",
-    5 : "bg-blue-600"
-  }
+    1: "bg-purple-600",
+    2: "bg-indigo-600",
+    3: "bg-green-600",
+    4: "bg-red-600",
+    5: "bg-blue-600",
+  };
 
   const formatDateRange = (startDate, endDate) => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-  
-    const formattedStart = start.toLocaleString('en-US', { month: 'short', day: 'numeric' });
-    const formattedEnd = end.toLocaleString('en-US', { month: 'short', day: 'numeric' });
+
+    const formattedStart = start.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+    const formattedEnd = end.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
     const year = start.getFullYear();
-  
+
     return `${formattedStart}-${formattedEnd}, ${year}`;
   };
 
@@ -160,7 +165,7 @@ export default function DashBoard() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   {isLoggedInUser && (
                     <>
@@ -184,6 +189,42 @@ export default function DashBoard() {
               </div>
             </div>
 
+            {githubUsername && (
+              <div className="p-8 border-t border-neutral-700/50">
+                <h2 className="text-xl font-semibold mb-4">
+                  GitHub Contributions
+                </h2>
+                <div className="flex flex-col md:flex-row gap-6">
+                  <img
+                    src={`https://github-readme-stats.vercel.app/api?username=${githubUsername}&theme=midnight-purple&show_icons=true`}
+                    alt="GitHub Stats"
+                    className="w-full md:w-1/2 h-auto rounded-xl border border-neutral-700"
+                    onError={(e) => {
+                      e.target.style.display = "none"; 
+                    }}
+                  />
+                  <img
+                    src={`https://github-readme-streak-stats.herokuapp.com/?user=${githubUsername}&theme=midnight-purple`}
+                    alt="GitHub Streak"
+                    className="w-full md:w-1/2 h-auto rounded-xl border border-neutral-700"
+                    onError={(e) => {
+                      e.target.style.display = "none"; 
+                    }}
+                  />
+                </div>
+                <div className="mt-4 flex justify-end">
+                  <a
+                    href={`https://github.com/${githubUsername}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1"
+                  >
+                    View full GitHub profile <span>→</span>
+                  </a>
+                </div>
+              </div>
+            )}
+
             {/* Skills Section */}
             <div className="p-8">
               <h2 className="text-xl font-semibold mb-4">Skills & Expertise</h2>
@@ -203,49 +244,80 @@ export default function DashBoard() {
             <div className="p-8 border-t border-neutral-700/50">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold">Active Teams</h2>
-                <Link to="/teams" className="text-purple-400 hover:text-purple-300 transition-colors duration-300">
+                <Link
+                  to="/teams"
+                  className="text-purple-400 hover:text-purple-300 transition-colors duration-300"
+                >
                   View All Teams
                 </Link>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {teams.map((team) => (
-                  <div key={team._id} className="group bg-neutral-800/30 rounded-2xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300">
+                  <div
+                    key={team._id}
+                    className="group bg-neutral-800/30 rounded-2xl p-6 border border-neutral-700 hover:border-purple-500 transition-all duration-300"
+                  >
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-4">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold ${colorCss[Math.floor(Math.random()*5)+1]}`}>
+                        <div
+                          className={`w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold ${
+                            colorCss[Math.floor(Math.random() * 5) + 1]
+                          }`}
+                        >
                           {team.teamName.split(" ").map((item) => item[0])}
                         </div>
                         <div>
                           <h3 className="font-semibold text-lg group-hover:text-purple-400 transition-colors duration-300">
                             {team.teamName}
                           </h3>
-                          <p className="text-neutral-400 text-sm">Global Rank: #128</p>
+                          <p className="text-neutral-400 text-sm">
+                            Global Rank: #128
+                          </p>
                         </div>
                       </div>
                       <div className="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm font-medium">
                         {team.teamScore} 🏆
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div className="flex flex-col md:flex-row md:items-center text-sm text-neutral-400 gap-1">
                         <div className="flex items-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 mr-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
-                          <span>{team.hackathonName}</span> 
+                          <span>{team.hackathonName}</span>
                         </div>
-                        <span className="block">{formatDateRange(team.dates.startDate, team.dates.endDate)}</span>
+                        <span className="block">
+                          {formatDateRange(
+                            team.dates.startDate,
+                            team.dates.endDate
+                          )}
+                        </span>
                       </div>
-                      
+
                       <div>
                         {/* <div className="h-2 w-full bg-neutral-700/30 rounded-full overflow-hidden">
                           <div className="h-full bg-purple-600 rounded-full" style={{width: "100%"}} />
                         </div> */}
-                        <p className="text-neutral-400 text-sm mt-2">Team Size: <span className="text-white">{team.teamSize}</span></p>
+                        <p className="text-neutral-400 text-sm mt-2">
+                          Team Size:{" "}
+                          <span className="text-white">{team.teamSize}</span>
+                        </p>
                       </div>
-                      
+
                       <div className="flex justify-between items-center">
                         <div className="flex -space-x-3">
                           {team.teamMembers.map((member, index) => (
@@ -257,7 +329,10 @@ export default function DashBoard() {
                             />
                           ))}
                         </div>
-                        <Link to={`/team/${team._id}`} className={`px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity duration-300 bg-purple-600`}>
+                        <Link
+                          to={`/team/${team._id}`}
+                          className={`px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity duration-300 bg-purple-600`}
+                        >
                           Team Space
                         </Link>
                       </div>
@@ -281,7 +356,7 @@ export default function DashBoard() {
                   </Link>
                 )}
               </div>
-              
+
               {projects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {projects.map((project) => (
@@ -299,10 +374,12 @@ export default function DashBoard() {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
-                        
+
                         <div className="p-6 space-y-4">
-                          <p className="text-neutral-300 line-clamp-2">{project.description}</p>
-                          
+                          <p className="text-neutral-300 line-clamp-2">
+                            {project.description}
+                          </p>
+
                           <div className="flex flex-wrap gap-2">
                             {project.techStack.map((tech, index) => (
                               <span
@@ -313,9 +390,11 @@ export default function DashBoard() {
                               </span>
                             ))}
                           </div>
-                          
+
                           <div className="flex items-center justify-between pt-2">
-                            <span className="text-neutral-500 text-sm">{project.hackathonName}</span>
+                            <span className="text-neutral-500 text-sm">
+                              {project.hackathonName}
+                            </span>
                             <span className="text-purple-400 group-hover:text-purple-300 transition-colors duration-300">
                               View Project →
                             </span>
@@ -337,7 +416,9 @@ export default function DashBoard() {
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center p-8 bg-neutral-800/50 rounded-2xl border border-neutral-700/50">
             <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
-            <p className="text-neutral-400">Please log in to view this profile.</p>
+            <p className="text-neutral-400">
+              Please log in to view this profile.
+            </p>
             <Link
               to="/login"
               className="mt-4 inline-block px-6 py-3 bg-purple-600 rounded-xl hover:bg-purple-500 transition-colors duration-300"
