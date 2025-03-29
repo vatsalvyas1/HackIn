@@ -485,7 +485,7 @@ export default function HackathonDetails() {
                       1st Place
                     </h3>
                     <p className="text-2xl font-bold text-white mb-3">
-                      ${hackathon.prizes.first.toLocaleString()}
+                    ₹{hackathon.prizes.first.toLocaleString()}
                     </p>
                     {hackathon.winner?.first && (
                       <div className="mt-4 pt-4 border-t border-yellow-700/50">
@@ -508,7 +508,7 @@ export default function HackathonDetails() {
                       2nd Place
                     </h3>
                     <p className="text-2xl font-bold text-white mb-3">
-                      ${hackathon.prizes.second.toLocaleString()}
+                    ₹{hackathon.prizes.second.toLocaleString()}
                     </p>
                     {hackathon.winner?.second && (
                       <div className="mt-4 pt-4 border-t border-gray-700/50">
@@ -531,7 +531,7 @@ export default function HackathonDetails() {
                       3rd Place
                     </h3>
                     <p className="text-2xl font-bold text-white mb-3">
-                      ${hackathon.prizes.third.toLocaleString()}
+                    ₹{hackathon.prizes.third.toLocaleString()}
                     </p>
                     {hackathon.winner?.third && (
                       <div className="mt-4 pt-4 border-t border-amber-700/50">
