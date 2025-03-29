@@ -109,7 +109,7 @@ export default function HackathonDetails() {
       {hackathon && (
         <div className="bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
           <div className="relative">
-            <div className={`absolute inset-0 ${bg[hackathon.colorTheme]} opacity-10`} />
+            <div className={`absolute inset-0 ${bg[hackathon.colorTheme]}`} />
             <div className="relative bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-700 p-6 sm:p-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <div
@@ -131,8 +131,8 @@ export default function HackathonDetails() {
                 </div>
               </div>
               <div className="text-white">
-                <span className="text-md font-bold bg-purple-600/20 px-4 py-2 rounded-full border border-purple-600/50 text-purple-300">
-                  ${hackathon?.prizePool?.toLocaleString() || "0"} Prize Pool{" "}
+                <span className="text-md font-bold bg-neutral-800 px-4 py-2 rounded-full border border-neutral-700 text-white">
+                  ₹ {hackathon?.prizePool?.toLocaleString() || "0"} Prize Pool{" "}
                 </span>
               </div>
             </div>
