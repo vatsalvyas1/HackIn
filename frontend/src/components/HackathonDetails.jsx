@@ -92,11 +92,11 @@ export default function HackathonDetails() {
   };
 
   const logo = {
-    Web3: <Code />,
-    AI: <Bot />,
+    "Web3": <Code />,
+    "AI": <Bot />,
     "AR/VR": <ScanEye />,
     "Data & Gen AI": <Database />,
-    IOT: <LayoutTemplate />,
+    "IOT": <LayoutTemplate />,
     "Cyber Securtiy": <FileLock2 />,
     "Web & App Development": <MonitorSmartphone />,
     "Cloud & DevOps": <Cloud />,
