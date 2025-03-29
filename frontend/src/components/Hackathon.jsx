@@ -1,6 +1,7 @@
 import AddHackathon from "./AddHackathon";
 import { useState, useEffect } from "react";
 import { backendUrl } from "../constanst";
+import { Code, Bot, ScanEye, Database, LayoutTemplate, FileLock2,  MonitorSmartphone, Cloud, BookOpen } from "lucide-react";
 
 export default function Hackathon() {
     const [hackathons, setHackathons] = useState([]);
@@ -24,6 +25,18 @@ export default function Hackathon() {
         "bg-gradient-to-r from-yellow-900 to-amber-900" : "bg-gradient-to-r from-yellow-600 to-amber-600",
     }
 
+    const logo = {
+        "Web3" : <Code />,
+        "AI" : <Bot />,
+        "AR/VR" : <ScanEye />,
+        "Data & Gen AI" : <Database />,
+        "IOT" : <LayoutTemplate />,
+        "Cyber Securtiy" : <FileLock2 />,
+        "Web & App Development" : <MonitorSmartphone />,
+        "Cloud & DevOps" : <Cloud />,
+        "Open Innovation" : <BookOpen />
+    }
+
     const formatDateRange = (startDate, endDate) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -39,7 +52,6 @@ export default function Hackathon() {
         const fetchHackathons = async () => {
             const res = await fetch(`${backenUrl}/api/v1/hackathon/get-hackathons`);
             const result = await res.json();
-            console.log(result.data);
             setHackathons(result.data);
         }
 
@@ -81,14 +93,12 @@ export default function Hackathon() {
                             <div className="absolute inset-0 flex items-center justify-center">
                                 <div className="text-center z-10">
                                 <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-lg ${logobg[hackathon.colorTheme]}`}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-                                    </svg>
+                                    {logo[hackathon.track]}
                                 </div>
                                 </div>
                             </div>
                             <div className="absolute top-4 left-4">
-                                <span className={`text-white text-xs font-semibold px-2 py-1 rounded-md ${logobg[hackathon.colorTheme]}`}>WEB3</span>
+                                <span className={`text-white text-xs font-semibold px-2 py-1 rounded-md ${logobg[hackathon.colorTheme]}`}>{hackathon.track}</span>
                             </div>
                             <div className="absolute bottom-4 right-4 flex items-center space-x-1">
                                 <div className={`w-2 h-2 rounded-full ${new Date(hackathon.registrationDeadline) > new Date() ? ("bg-green-500") : ("bg-red-500")}`}></div>

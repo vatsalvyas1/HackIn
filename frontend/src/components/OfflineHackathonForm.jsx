@@ -77,6 +77,10 @@ export default function OfflineHackathonForm() {
             location: "",
             mode: "",
             prizePool: "",
+            firstPrize: "",
+            secondPrize: "",
+            thirdPrize: "",
+            track: "",
             registrationDeadline: "",
             minTeamSize: "1",
             maxTeamSize: "1",
@@ -107,7 +111,7 @@ export default function OfflineHackathonForm() {
             >
               <ArrowLeft className="w-4 h-4" /> Back to hackathon type
             </Link> */}
-            <h1 className="text-4xl font-bold mb-8 text-center">
+            <h1 className="text-4xl font-bold mb-8 text-center font-mono">
               Create your <span className="text-purple-500">Hackathon</span>
             </h1>
 
