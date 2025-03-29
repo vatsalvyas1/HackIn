@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react"
 import { backendUrl } from "../constanst.js"
-import { ArrowLeft } from "lucide-react"
-import { Link } from "react-router-dom"
 
 export default function OfflineHackathonForm() {
     const [formState, setFormState] = useState("hackathon-details");
@@ -15,10 +13,14 @@ export default function OfflineHackathonForm() {
       location: "",
       mode: "Offline",
       prizePool: "",
+      firstPrize: "",
+      secondPrize: "",
+      thirdPrize: "",
       registrationDeadline: "",
       minTeamSize: "1",
       maxTeamSize: "1",
       website: "",
+      track: "",
       // Venue details
       collegeRepresenting: "",
       address: "",
@@ -124,6 +126,12 @@ export default function OfflineHackathonForm() {
                   Hackathon Venue
                 </button>
                 <button 
+                  className={`flex-1 py-3 px-4 rounded-md ${formState === "prize" ? "bg-purple-700 text-white" : "text-neutral-300 hover:text-white"} font-medium transition-colors duration-300`} 
+                  onClick={() => setFormState("prize")}
+                >
+                  Hackathon Prizes
+                </button>
+                <button 
                   className={`flex-1 py-3 px-4 rounded-md ${formState === "design" ? "bg-purple-700 text-white" : "text-neutral-300 hover:text-white"} font-medium transition-colors duration-300`} 
                   onClick={() => setFormState("design")}
                 >
@@ -167,6 +175,24 @@ export default function OfflineHackathonForm() {
                     />
                   </div>
 
+                  <div className="space-y-2 md:col-span-2">
+                    <label htmlFor="Track" className="block text-sm font-medium text-neutral-300">
+                      Hackathon Track
+                    </label>
+                    <select name="track" id="Track" value={formData.track} onChange={handleChange} className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white">
+                      <option value="">Select</option>
+                      <option value="Web3">Web3</option>
+                      <option value="AI">AI</option>
+                      <option value="AR/VR">AR/VR</option>
+                      <option value="Data & Gen AI">Data & Gen AI</option>
+                      <option value="IOT">IOT</option>
+                      <option value="Cyber Securtiy">Cyber Securtiy</option>
+                      <option value="Web & App Development">Web & App Development</option>
+                      <option value="Cloud & DevOps">Cloud & DevOps</option>
+                      <option value="Open Innovation">Open Innovation</option>
+                    </select>
+                  </div>
+
                   <div className="space-y-2">
                     <label htmlFor="minTeamSize" className="block text-sm font-medium text-neutral-300">
                       Min Team Size
@@ -199,23 +225,7 @@ export default function OfflineHackathonForm() {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="prizePool" className="block text-sm font-medium text-neutral-300">
-                      Prize Pool
-                    </label>
-                    <input
-                      type="number"
-                      id="prizePool"
-                      name="prizePool"
-                      value={formData.prizePool}
-                      onChange={handleChange}
-                      min="0"
-                      className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      placeholder="Enter prize pool amount"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
+                  <div className="space-y-2 md:col-span-2">
                     <label htmlFor="website" className="block text-sm font-medium text-neutral-300">
                       Website
                     </label>
@@ -385,6 +395,83 @@ export default function OfflineHackathonForm() {
                   </div>
                 </div>
 
+                <button
+                  type="button"
+                  onClick={() => setFormState("prize")}
+                  className="w-full bg-purple-700 hover:bg-purple-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform"
+                >
+                  Next: Prizes
+                </button>
+              </form>
+            )}
+
+            {formState === "prize" && (
+              <form className="bg-neutral-800 backdrop-blur-sm p-6 md:p-8 rounded-xl border border-neutral-700 shadow-xl space-y-6">
+                <div className="grid grid-col-1 gap-6">
+                  <div className="space-y-2">
+                      <label htmlFor="prizePool" className="block text-sm font-medium text-neutral-300">
+                        Prize Pool
+                      </label>
+                      <input
+                        type="number"
+                        id="prizePool"
+                        name="prizePool"
+                        value={formData.prizePool}
+                        onChange={handleChange}
+                        min="0"
+                        className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Enter prize pool amount"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="firstPrize" className="block text-sm font-medium text-neutral-300">
+                        First Prize
+                      </label>
+                      <input
+                        type="number"
+                        id="firstPrize"
+                        name="firstPrize"
+                        value={formData.firstPrize}
+                        onChange={handleChange}
+                        min="0"
+                        className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Enter first prize amount"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="secondPrize" className="block text-sm font-medium text-neutral-300">
+                        Second Prize
+                      </label>
+                      <input
+                        type="number"
+                        id="secondPrize"
+                        name="secondPrize"
+                        value={formData.secondPrize}
+                        onChange={handleChange}
+                        min="0"
+                        className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Enter second prize amount"
+                      />
+                     </div>
+
+                    <div className="space-y-2">
+                      <label htmlFor="thirdPrize" className="block text-sm font-medium text-neutral-300">
+                        Third Prize
+                      </label>
+                      <input
+                        type="number"
+                        id="thirdPrize"
+                        name="thirdPrize"
+                        value={formData.thirdPrize}
+                        onChange={handleChange}
+                        min="0"
+                        className="w-full bg-neutral-900/50 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        placeholder="Enter third prize amount"
+                      />
+                     </div> 
+                </div>
                 <button
                   type="button"
                   onClick={() => setFormState("design")}

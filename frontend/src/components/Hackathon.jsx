@@ -91,7 +91,7 @@ export default function Hackathon() {
                                 <span className={`text-white text-xs font-semibold px-2 py-1 rounded-md ${logobg[hackathon.colorTheme]}`}>WEB3</span>
                             </div>
                             <div className="absolute bottom-4 right-4 flex items-center space-x-1">
-                                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                <div className={`w-2 h-2 rounded-full ${new Date(hackathon.registrationDeadline) > new Date() ? ("bg-green-500") : ("bg-red-500")}`}></div>
                                 <span className="text-white text-xs">{new Date(hackathon.registrationDeadline) > new Date() ? ("Registering") : ("Dates Out")} </span>
                             </div>
                             </div>
@@ -107,15 +107,15 @@ export default function Hackathon() {
                                 </div>
                                 <div>
                                 <div className="text-neutral-400 text-xs mb-1">Location</div>
-                                <div className="text-white text-sm font-medium">{hackathon.mode == "Offline" ? (hackathon.location.city +","+ hackathon.location.state) : ("Remote")} </div>
+                                <div className="text-white text-sm font-medium">{hackathon.mode == "Offline" ? (hackathon.location.city +", "+ hackathon.location.state) : ("Remote")} </div>
                                 </div>
                             </div>
                             
-                            <div className="flex flex-wrap gap-2 mb-4">
+                            {/* <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">Ethereum</span>
                                 <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">Solidity</span>
                                 <span className="bg-neutral-700 text-neutral-300 text-xs px-2 py-1 rounded">Blockchain</span>
-                            </div>
+                            </div> */}
                             
                             <div className="flex justify-between items-center">
                                 <div className="text-purple-400 text-sm font-medium">₹{hackathon.prizePool} Prize Pool</div>

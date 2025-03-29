@@ -56,6 +56,17 @@ const hackathonSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      prizes : {
+        first : {
+          type : Number,
+        },
+        second : {
+          type : Number
+        },
+        third : {
+          type : Number
+        }
+      },
       registrationDeadline: {
         type: Date,
         required: true,
@@ -76,6 +87,25 @@ const hackathonSchema = new mongoose.Schema({
           ref: 'Team', 
         },
       ],
+      winner : {
+        first : {
+          type : mongoose.Schema.Types.ObjectId,
+          ref : "Team",
+        },
+        second : {
+          type : mongoose.Schema.Types.ObjectId,
+          ref : "Team",
+        },
+        third : {
+          type : mongoose.Schema.Types.ObjectId,
+          ref : "Team",
+        },
+      },
+      track : {
+        type : String,
+        enum : ["Web3" , "AI" , "AR/VR", "Data & Gen AI", "IOT", "Cyber Securtiy", "Web & App Development", "Cloud & DevOps", "Open Innovation"],
+        required : true
+      },
       sponsors: [
         {
           name: String,
