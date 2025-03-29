@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom"
 
 function DashboardPlaceholder() {
   return (
@@ -423,12 +424,12 @@ function DashboardPlaceholder() {
             <h3 className="text-2xl font-bold text-white mb-4">Create Your Developer Dashboard</h3>
             <p className="text-neutral-300 max-w-3xl mx-auto mb-8">Track your hackathon journey, showcase your projects, connect with teammates, and climb the global leaderboard.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#" className="bg-purple-700 hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 text-center">
+              <Link to={"/dashboard"} className="bg-purple-700 hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 text-center">
                 Sign Up Now
-              </a>
-              <a href="#" className="bg-neutral-800 hover:bg-neutral-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 border border-neutral-700 text-center">
+              </Link>
+              <Link to={"/feed"} className="bg-neutral-800 hover:bg-neutral-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 border border-neutral-700 text-center">
                 Learn More
-              </a>
+              </Link>
             </div>
           </div>
         </div>
