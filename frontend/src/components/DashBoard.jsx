@@ -226,7 +226,7 @@ export default function DashBoard() {
             )}
 
             {/* Skills Section */}
-            <div className="p-8">
+            <div className="p-8 border-t border-neutral-700/50">
               <h2 className="text-xl font-semibold mb-4">Skills & Expertise</h2>
               <div className="flex flex-wrap gap-2">
                 {user.skills.map((skill, index) => (
