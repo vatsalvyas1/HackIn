@@ -134,13 +134,15 @@ export default function TeamDetails() {
 
   const rejectRequest = async (teamId, userId) => {
     try {
-      const response = await fetch(`${backendUrl}api/v1/team/reject-request`, {
+      const response = await fetch(`${backendUrl}/api/v1/team/reject-request`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ teamId, userId }),
       });
+
+      console.log("aya yaha tk toh");
 
       if (!response.ok) {
         throw new Error("something went wrong");

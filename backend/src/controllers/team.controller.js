@@ -195,7 +195,7 @@ const rejectRequest = AsyncHandler(async (req, res) => {
   if (!team || !user) throw new ApiError(404, "team or user not found");
 
   const newRequests = team.joinRequests.filter(
-    (request) => request.userId != userId
+    (request) => request.userId.toString() != userId.toString()
   );
 
   team.joinRequests = newRequests;
