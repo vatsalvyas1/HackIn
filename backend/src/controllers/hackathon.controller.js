@@ -67,4 +67,14 @@ const getHackathons = AsyncHandler(async(req,res) => {
     res.status(200).json(new ApiResponse("Hackathons found",hackathons));
 })
 
-export {createHackathon, getHackathons};
+const getbyId = AsyncHandler(async(req,res) => {
+    const {id} = req.params;
+    const hackathon = await Hackathon.findById(id);
+    if(!hackathon){
+        throw new ApiError(404,"Hackathon not found");
+    }
+    res.status(200).json(new ApiResponse("Hackathon found",hackathon));
+}
+);
+
+export {createHackathon, getHackathons, getbyId};

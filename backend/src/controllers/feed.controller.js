@@ -74,7 +74,7 @@ export const deleteFeedPost = AsyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, {}, "Post deleted successfully"));
 });
 
-// Like a post
+//like post
 export const likeFeedPost = AsyncHandler(async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
@@ -84,17 +84,23 @@ export const likeFeedPost = AsyncHandler(async (req, res) => {
   const post = await Feed.findById(id);
   if (!post) throw new ApiError(404, "Post not found");
 
-  const alreadyLiked = post.likes.some((like) => like.toString() === userId);
-  if (alreadyLiked) {
-    // Unlike the post: Remove only the current user's like
-    post.likes = post.likes.filter((like) => like.toString() !== userId);
+  // Check if the user has already liked the post
+  const likeIndex = post.likes.indexOf(userId);
+
+  if (likeIndex !== -1) {
+    // Unlike: Remove the user from likes
+    post.likes.splice(likeIndex, 1);
   } else {
-    // Like the post: Add the current user's like
+    // Like: Add the user ID to likes
     post.likes.push(userId);
   }
 
   await post.save();
-  res.status(200).json(new ApiResponse(200, post, "Like status updated"));
+  
+  // Return the entire updated post or at least the likes array
+  res.status(200).json(
+    new ApiResponse(200, { likes: post.likes }, "Like status updated")
+  );
 });
 
 // Comment on a post

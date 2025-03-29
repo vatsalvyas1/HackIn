@@ -13,6 +13,7 @@ import LeaderBoard from './components/LeaderBoard.jsx'
 import DevFeed from './components/DevFeed.jsx'
 import Hackathon from './components/Hackathon.jsx'
 import HackathonForm from './components/HackathonForm.jsx'
+import HackathonDetails from './components/HackathonDetails.jsx'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/hackathons" element={<Hackathon />} />
         <Route path="/organise" element={<HackathonForm />} />
         <Route path='/feed' element={<DevFeed />} />
+        <Route path='/hackathon/:id' element={<HackathonDetails />} />
       </Routes>
       <Footer />
     </Router>
