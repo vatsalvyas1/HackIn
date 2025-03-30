@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 
 export default function Hackathon() {
   const [hackathons, setHackathons] = useState([]);
-  const backenUrl = "http://localhost:3000";
 
   const bg = {
     "bg-gradient-to-r from-blue-900 to-purple-900":

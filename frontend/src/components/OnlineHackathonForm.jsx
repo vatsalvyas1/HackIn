@@ -27,8 +27,6 @@ export default function OnlineHackathonForm() {
        sponsorLogo: ""
      });
  
-     const backendUrl = "http://localhost:3000";
- 
      const colorTheme = {
          0 : "bg-gradient-to-r from-blue-900 to-purple-900",
          1 : "bg-gradient-to-r from-green-900 to-teal-900",
