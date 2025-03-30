@@ -72,7 +72,8 @@ export default function HackMates() {
     const filtered = teams.filter((team) =>
       team.teamName.toLowerCase().includes(query.toLowerCase()) ||
       team.hackathonName.toLowerCase().includes(query.toLowerCase()) ||
-      team.skills.some((skill) => skill.toLowerCase().includes(query.toLowerCase()))
+      team.skills.some((skill) => skill.toLowerCase().includes(query.toLowerCase())) ||
+      team.teamCode.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredTeams(filtered);
   };

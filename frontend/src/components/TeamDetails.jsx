@@ -187,7 +187,10 @@ export default function TeamDetails() {
                   </div>
                 </div>
               </div>
-              <div className="text-white">
+              <div className="text-white space-x-2">
+                <span className="text-md font-bold bg-purple-600/20 px-4 py-2 rounded-full border border-purple-600/50 text-purple-300">
+                  # {team.teamCode}
+                </span>
                 <span className="text-md font-bold bg-purple-600/20 px-4 py-2 rounded-full border border-purple-600/50 text-purple-300">
                   {team.teamScore} 🏆
                 </span>
@@ -324,7 +327,6 @@ export default function TeamDetails() {
                     className="bg-neutral-900 border border-neutral-700 w-full h-10 rounded-full px-3 text-white"
                   />
                   <button
-                    type="submit"
                     className="bg-purple-700 text-white font-bold p-4 py-2 rounded-full"
                   >
                     Send
