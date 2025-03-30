@@ -14,6 +14,7 @@ import DevFeed from './components/DevFeed.jsx'
 import Hackathon from './components/Hackathon.jsx'
 import HackathonForm from './components/HackathonForm.jsx'
 import HackathonDetails from './components/HackathonDetails.jsx'
+import JoinHackathon from './components/JoinHackathon.jsx'
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/organise" element={<HackathonForm />} />
         <Route path='/feed' element={<DevFeed />} />
         <Route path='/hackathon/:id' element={<HackathonDetails />} />
+        <Route path='/hackathon/:id/apply' element={<JoinHackathon />} />
       </Routes>
       <Footer />
     </Router>
