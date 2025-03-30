@@ -380,21 +380,23 @@ export default function TeamDetails() {
                         key={index}
                         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-neutral-900 rounded-lg p-4 border border-neutral-700"
                       >
-                        <div className="flex items-center gap-4">
-                          <img
-                            src={request.userId.profileImage}
-                            alt=""
-                            className="w-12 h-12 rounded-full border-2 border-neutral-700"
-                          />
-                          <div>
-                            <h3 className="text-lg font-semibold text-white">
-                              {request.userId.name}
-                            </h3>
-                            <span className="text-neutral-400 text-sm">
-                              {request.userId.email}
-                            </span>
+                        <Link to={`/dashboard/${request.userId._id}`}>
+                          <div className="flex items-center gap-4">
+                            <img
+                              src={request.userId.profileImage}
+                              alt=""
+                              className="w-12 h-12 rounded-full border-2 border-neutral-700"
+                            />
+                            <div>
+                              <h3 className="text-lg font-semibold text-white">
+                                {request.userId.name}
+                              </h3>
+                              <span className="text-neutral-400 text-sm">
+                                {request.userId.email}
+                              </span>
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                         <p className="text-neutral-300 bg-neutral-800 rounded-md px-4 py-2">
                           {request.message}
                         </p>
