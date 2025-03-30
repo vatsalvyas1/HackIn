@@ -11,7 +11,10 @@ import {
   School,
   Briefcase,
   Globe,
-  PhoneCall
+  PhoneCall,
+  Users,
+  UserPlus,
+  UserCircle
 } from 'lucide-react';
 
 export default function JoinHackathon() {
@@ -19,6 +22,7 @@ export default function JoinHackathon() {
   const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [hackathon, setHackathon] = useState(null);
+  const [joinType, setJoinType] = useState(null); // 'individual', 'join-team', or 'create-team'
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -64,7 +68,7 @@ export default function JoinHackathon() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, joinType })
       });
       
       if (response.ok) {
@@ -74,6 +78,63 @@ export default function JoinHackathon() {
       console.error('Error submitting application:', error);
     }
   };
+
+  const JoinTypeSelection = () => (
+    <div className="max-w-2xl mx-auto bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
+      <div className="p-8">
+        <div className="flex items-center justify-center mb-8">
+          <img 
+            src={hackathon?.logo || 'https://via.placeholder.com/64'} 
+            alt="Hackathon logo" 
+            className="w-16 h-16 rounded-lg"
+          />
+        </div>
+        
+        <h2 className="text-2xl font-bold text-center text-white mb-4">
+          Join {hackathon?.name || 'Hackathon'}
+        </h2>
+        
+        <p className="text-neutral-400 text-center mb-8">
+          Choose how you'd like to participate in this hackathon
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button
+            onClick={() => setJoinType('individual')}
+            className="bg-neutral-700 hover:bg-neutral-600 p-6 rounded-xl border border-neutral-600 transition-all duration-300 hover:border-purple-500 group"
+          >
+            <div className="flex flex-col items-center text-center">
+              <UserCircle className="w-12 h-12 mb-4 text-purple-400 group-hover:text-purple-300" />
+              <h3 className="text-lg font-semibold text-white mb-2">Individual Application</h3>
+              <p className="text-sm text-neutral-400">Submit your application as an individual participant</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setJoinType('join-team')}
+            className="bg-neutral-700 hover:bg-neutral-600 p-6 rounded-xl border border-neutral-600 transition-all duration-300 hover:border-purple-500 group"
+          >
+            <div className="flex flex-col items-center text-center">
+              <Users className="w-12 h-12 mb-4 text-purple-400 group-hover:text-purple-300" />
+              <h3 className="text-lg font-semibold text-white mb-2">Join a Team</h3>
+              <p className="text-sm text-neutral-400">Find and join an existing team</p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => setJoinType('create-team')}
+            className="bg-neutral-700 hover:bg-neutral-600 p-6 rounded-xl border border-neutral-600 transition-all duration-300 hover:border-purple-500 group"
+          >
+            <div className="flex flex-col items-center text-center">
+              <UserPlus className="w-12 h-12 mb-4 text-purple-400 group-hover:text-purple-300" />
+              <h3 className="text-lg font-semibold text-white mb-2">Create a Team</h3>
+              <p className="text-sm text-neutral-400">Start a new team and invite others</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   const OverviewScreen = () => (
     <div className="max-w-2xl mx-auto bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
@@ -164,14 +225,24 @@ export default function JoinHackathon() {
     <div className="min-h-screen bg-neutral-900 text-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <button
-          onClick={() => navigate(`/hackathon/${id}`)}
+          onClick={() => {
+            if (showForm) {
+              setShowForm(false);
+            } else if (joinType) {
+              setJoinType(null);
+            } else {
+              navigate(`/hackathon/${id}`);
+            }
+          }}
           className="flex items-center text-neutral-400 hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Hackathon
+          {showForm ? 'Back to Overview' : joinType ? 'Back to Join Options' : 'Back to Hackathon'}
         </button>
 
-        {!showForm ? (
+        {!joinType ? (
+          <JoinTypeSelection />
+        ) : !showForm ? (
           <OverviewScreen />
         ) : (
           <div className="bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
@@ -182,7 +253,10 @@ export default function JoinHackathon() {
                 </div>
               </div>
               
-              <h2 className="text-2xl font-bold text-center mb-2">Join Hackathon</h2>
+              <h2 className="text-2xl font-bold text-center mb-2">
+                {joinType === 'individual' ? 'Individual Application' : 
+                 joinType === 'join-team' ? 'Join a Team' : 'Create a Team'}
+              </h2>
               <p className="text-neutral-400 text-center mb-8">
                 Please fill out the form below to submit your application
               </p>
@@ -417,6 +491,56 @@ export default function JoinHackathon() {
                       </div>
                     </div>
                   </div>
+
+                  {(joinType === 'join-team' || joinType === 'create-team') && (
+                    <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <Users className="w-5 h-5 mr-2" />
+                        {joinType === 'join-team' ? 'Team Information' : 'Create Team'}
+                      </h3>
+                      {joinType === 'join-team' ? (
+                        <div>
+                          <label className="block text-sm font-medium text-neutral-300 mb-1">
+                            Team Code
+                          </label>
+                          <input
+                            type="text"
+                            name="teamCode"
+                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                            placeholder="Enter team code"
+                            required
+                          />
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-neutral-300 mb-1">
+                              Team Name
+                            </label>
+                            <input
+                              type="text"
+                              name="teamName"
+                              className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                              placeholder="Enter team name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-neutral-300 mb-1">
+                              Team Description
+                            </label>
+                            <textarea
+                              name="teamDescription"
+                              className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                              rows="3"
+                              placeholder="Describe your team and what you're looking for..."
+                              required
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex justify-center">
@@ -424,7 +548,8 @@ export default function JoinHackathon() {
                     type="submit"
                     className="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
                   >
-                    Submit Application
+                    {joinType === 'individual' ? 'Submit Application' : 
+                     joinType === 'join-team' ? 'Join Team' : 'Create Team'}
                   </button>
                 </div>
               </form>
