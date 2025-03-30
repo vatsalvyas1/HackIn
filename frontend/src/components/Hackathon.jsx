@@ -78,7 +78,7 @@ export default function Hackathon() {
 
   useEffect(() => {
     const fetchHackathons = async () => {
-      const res = await fetch(`${backenUrl}/api/v1/hackathon/get-hackathons`);
+      const res = await fetch(`${backendUrl}/api/v1/hackathon/get-hackathons`);
       const result = await res.json();
       setHackathons(result.data);
     };

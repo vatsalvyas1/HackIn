@@ -14,8 +14,6 @@ import {
 import { backendUrl } from "../constanst";
 import { io } from "socket.io-client";
 
-// const backendUrl = "http://localhost:3000";
-
 export default function TeamDetails() {
   const { teamId } = useParams();
   const navigate = useNavigate();
