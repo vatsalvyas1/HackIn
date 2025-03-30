@@ -201,7 +201,8 @@ export default function HackathonDetails() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-neutral-900 p-4 rounded-lg border border-neutral-700">
+                  {hackathon.mode !== "Online" && (
+                    <div className="bg-neutral-900 p-4 rounded-lg border border-neutral-700">
                     <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
                       <MapPin className="w-5 h-5" />
                       Location
@@ -212,8 +213,8 @@ export default function HackathonDetails() {
                           "Address not available"}
                       </p>
                       <p>
-                        ({hackathon?.location?.city || 0}), (
-                        {hackathon?.location?.state || 0})
+                        {hackathon?.location?.city || 0}, 
+                        {hackathon?.location?.state || 0}
                       </p>
                       <p>{hackathon?.location?.country || 0}</p>
                       <p className="mt-2 text-purple-300">
@@ -222,6 +223,7 @@ export default function HackathonDetails() {
                       </p>
                     </div>
                   </div>
+                )}
 
                   <div className="bg-neutral-900 p-4 rounded-lg border border-neutral-700">
                     <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">

@@ -380,8 +380,11 @@ export default function TeamDetails() {
                         key={index}
                         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-neutral-900 rounded-lg p-4 border border-neutral-700"
                       >
-                        <Link to={`/dashboard/${request.userId._id}`}>
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-4" onClick={() =>
+                            navigate("/dashboard", {
+                              state: { userId: request.userId._id },
+                            })
+                          }>
                             <img
                               src={request.userId.profileImage}
                               alt=""
@@ -396,7 +399,6 @@ export default function TeamDetails() {
                               </span>
                             </div>
                           </div>
-                        </Link>
                         <p className="text-neutral-300 bg-neutral-800 rounded-md px-4 py-2">
                           {request.message}
                         </p>
