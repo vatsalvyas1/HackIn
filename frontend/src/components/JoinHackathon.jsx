@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { backendUrl } from '../constanst.js';
 import { 
   User, 
   GraduationCap, 
@@ -16,6 +17,17 @@ import {
   UserPlus,
   UserCircle
 } from 'lucide-react';
+import {
+  Code,
+  Bot,
+  ScanEye,
+  Database,
+  LayoutTemplate,
+  FileLock2,
+  MonitorSmartphone,
+  Cloud,
+  BookOpen,
+} from "lucide-react";
 
 export default function JoinHackathon() {
   const { id } = useParams();
@@ -38,13 +50,35 @@ export default function JoinHackathon() {
     email: '',
     phone: ''
   });
+  const logo = {
+    "Web3": <Code size={18}/>,
+    "AI": <Bot />,
+    "AR/VR": <ScanEye />,
+    "Data & Gen AI": <Database />,
+    "IOT": <LayoutTemplate />,
+    "Cyber Securtiy": <FileLock2 />,
+    "Web & App Development": <MonitorSmartphone />,
+    "Cloud & DevOps": <Cloud size={32}/>,
+    "Open Innovation": <BookOpen />,
+  };
+  const logobg = {
+    "bg-gradient-to-r from-blue-900 to-purple-900": "bg-gradient-to-r from-blue-600 to-purple-600",
+    "bg-gradient-to-r from-green-900 to-teal-900": "bg-gradient-to-r from-green-600 to-teal-600",
+    "bg-gradient-to-r from-red-900 to-orange-900": "bg-gradient-to-r from-red-600 to-orange-600",
+    "bg-gradient-to-r from-indigo-900 to-blue-900": "bg-gradient-to-r from-indigo-600 to-blue-600",
+    "bg-gradient-to-r from-purple-900 to-pink-900": "bg-gradient-to-r from-purple-600 to-pink-600",
+    "bg-gradient-to-r from-yellow-900 to-amber-900": "bg-gradient-to-r from-yellow-600 to-amber-600",
+  };
 
   useEffect(() => {
     const fetchHackathon = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/v1/hackathon/${id}`);
-        const data = await response.json();
-        setHackathon(data);
+        const response = await fetch(`${backendUrl}/api/v1/hackathon/get-hackathon/${id}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        setHackathon(result.data);
       } catch (error) {
         console.error('Error fetching hackathon:', error);
       }
@@ -82,12 +116,8 @@ export default function JoinHackathon() {
   const JoinTypeSelection = () => (
     <div className="max-w-2xl mx-auto bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
       <div className="p-8">
-        <div className="flex items-center justify-center mb-8">
-          <img 
-            src={hackathon?.logo || 'https://via.placeholder.com/64'} 
-            alt="Hackathon logo" 
-            className="w-16 h-16 rounded-lg"
-          />
+        <div className={`w-12 h-12 flex justify-center items-center mx-auto mb-8 rounded-full ${logobg[hackathon?.colorTheme]}`}>
+          {logo[hackathon?.track]}
         </div>
         
         <h2 className="text-2xl font-bold text-center text-white mb-4">

@@ -297,11 +297,6 @@ export default function HackathonDetails() {
                     </div>
                   )}
                 </div>
-                <div className="flex justify-center mt-6">
-                <button
-                  onClick={() => navigate(`/hackathon/${id}/apply`)}
-                  className="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">Join This Hackathon</button>
-                  </div>
               </div>
             )}
 
@@ -568,6 +563,14 @@ export default function HackathonDetails() {
               </div>
             )}
           </div>
+
+          <div className="flex justify-center mb-6">
+                <button
+                  onClick={() => navigate(`/hackathon/${id}/apply`)}
+                  className="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                    Join This Hackathon
+                </button>
+                </div>
         </div>
       )}
     </div>

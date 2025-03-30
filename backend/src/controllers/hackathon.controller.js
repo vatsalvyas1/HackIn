@@ -5,7 +5,7 @@ import Hackathon from "../models/hackathon.model.js";
 import User from "../models/user.model.js";
 
 const createHackathon = AsyncHandler(async(req,res) => {
-    const {name, organizer, description, startDate, endDate, mode, prizePool,firstPrize, secondPrize, thirdPrize, track, registrationDeadline, minTeamSize, maxTeamSize, colorTheme, collegeRepresenting, website, sponsors} = req.body;
+    const {name, organizer, description, startDate, endDate, mode, prizePool,firstPrize, secondPrize, thirdPrize, track, registrationDeadline, minTeamSize, maxTeamSize, colorTheme, collegeRepresenting, website, sponsorName, sponsorLogo} = req.body;
 
     if(!name || !organizer || !description || !startDate || !endDate || !mode || !registrationDeadline || !minTeamSize || !maxTeamSize || !collegeRepresenting || !colorTheme  || !firstPrize || !secondPrize || !thirdPrize || !track){
         throw new ApiError(404,"some fields are missing");
@@ -22,6 +22,11 @@ const createHackathon = AsyncHandler(async(req,res) => {
         country,
         postalCode
     }
+
+    const sponsors = [{
+        name : sponsorName,
+        logo : sponsorLogo
+    }];
 
     const user = await User.findById(organizer);
     if(!user){
