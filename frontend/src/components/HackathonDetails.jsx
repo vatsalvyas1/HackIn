@@ -27,11 +27,9 @@ import { format } from "date-fns";
 export default function HackathonDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
   const [hackathon, setHackathon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
-  const [participatingTeams, setParticipatingTeams] = useState([]);
 
   useEffect(() => {
     const fetchHackathonDetails = async () => {
@@ -74,6 +72,52 @@ export default function HackathonDetails() {
     const date = new Date(dateString);
     return format(date, "MMMM d, yyyy 'at' h:mm a");
   };
+
+  const acceptTeam = async (teamId) => {
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/v1/hackathon/add-team/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ teamId }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to accept team");
+      }
+      const result = await response.json();
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const rejectTeam = async (teamId) => {
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/v1/hackathon/reject-application/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ teamId }),
+        }
+      );
+      
+      if (!response.ok) {
+        throw new Error("Failed to reject team");
+      }
+      
+      const result = await response.json();
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  }  
 
   const bg = {
     "bg-gradient-to-r from-blue-900 to-purple-900": "bg-gradient-to-r from-blue-900 to-purple-900",
@@ -429,9 +473,9 @@ export default function HackathonDetails() {
                 <h2 className="text-xl font-bold text-white mb-6">
                   Participating Teams ({hackathon.participants.length})
                 </h2>
-                {participatingTeams.length > 0 ? (
+                {hackathon.participants.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {participatingTeams.map((team, index) => (
+                    {hackathon.participants.map((team, index) => (
                       <div
                         key={index}
                         onClick={() => navigate(`/team/${team._id}`)}
@@ -608,7 +652,7 @@ export default function HackathonDetails() {
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-wrap gap-2 mb-3">
+                        {/* <div className="flex flex-wrap gap-2 mb-3">
                           {application.skills.slice(0, 3).map((skill, idx) => (
                             <span
                               key={idx}
@@ -622,14 +666,28 @@ export default function HackathonDetails() {
                               +{application.skills.length - 3} more
                             </span>
                           )}
-                        </div>
+                        </div> */}
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-neutral-400">
                             {application.teamMembers.length} members
                           </span>
                           <div className="space-x-2">
-                            <button className="bg-green-500 text-white p-1 px-2 rounded-full">Accept</button>
-                            <button className="bg-red-500 text-white p-1 px-2 rounded-full">Reject</button>
+                            <button 
+                            className="bg-green-500 text-white p-1 px-2 rounded-full"
+                            onClick={() => {
+                              acceptTeam(application._id);
+                            }}
+                            >
+                              Accept
+                            </button>
+                            <button 
+                            className="bg-red-500 text-white p-1 px-2 rounded-full"
+                            onClick={() => {
+                              rejectTeam(application._id);
+                            }}
+                            >
+                              Reject
+                            </button>
                           </div>
                         </div>
                       </div>

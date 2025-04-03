@@ -76,7 +76,8 @@ const getHackathons = AsyncHandler(async(req,res) => {
 const getbyId = AsyncHandler(async(req,res) => {
     const {id} = req.params;
     const hackathon = await Hackathon.findById(id)
-    .populate("applications");
+    .populate("applications")
+    .populate("participants");
     if(!hackathon){
         throw new ApiError(404,"Hackathon not found");
     }
@@ -104,4 +105,46 @@ const addTeamRequest = AsyncHandler(async(req,res) => {
 }
 );
 
-export {createHackathon, getHackathons, getbyId, addTeamRequest};
+const addTeam = AsyncHandler(async(req,res) => {
+    const {id} = req.params;
+    const {teamId} = req.body;
+
+    const hackathon = await Hackathon.findById(id);
+    if(!hackathon){
+        throw new ApiError(404,"Hackathon not found");
+    }
+
+    const newApplications = hackathon.applications.filter((application) => {
+        return application.toString() !== teamId;
+    });
+
+    hackathon.applications = newApplications;
+    hackathon.participants.push(teamId);
+
+    await hackathon.save();
+    res.status(200).json(new ApiResponse("Team added to hackathon",hackathon));
+}
+);
+
+const rejectApplication = AsyncHandler(async(req,res) => {
+    const {id} = req.params;
+    const {teamId} = req.body;
+
+    const hackathon = await Hackathon.findById(id);
+    if(!hackathon){
+        throw new ApiError(404,"Hackathon not found");
+    }
+
+    const newApplications = hackathon.applications.filter((application) => {
+        return application.toString() !== teamId;
+    }
+    );
+
+    hackathon.applications = newApplications;
+
+    await hackathon.save();
+    res.status(200).json(new ApiResponse("Team removed from hackathon",hackathon));
+}
+);
+
+export {createHackathon, getHackathons, getbyId, addTeamRequest, addTeam, rejectApplication};
