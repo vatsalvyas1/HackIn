@@ -27,7 +27,7 @@ router.route("/reject-application/:id").post(
     rejectApplication
 );
 
-router.route("/get-my-hackathons").get(
+router.route("/get-my-hackathons").post(
     getMyHackathons
 );
 

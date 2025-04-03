@@ -13,7 +13,7 @@ const TierSection = ({ title, sponsors, gradientColors, borderColor, navigate })
         <div 
           key={sponsor._id} 
           className={`bg-neutral-800/50 backdrop-blur-sm rounded-xl p-6 border ${borderColor} transform hover:-translate-y-2 transition-all duration-300 relative group cursor-pointer`}
-          onClick={() => navigate(`/sponsors/${sponsor._id}`)}
+          onClick={() => navigate(`/sponsor/${sponsor._id}`)}
         >
           <div className="flex justify-center mb-4">
             <img 

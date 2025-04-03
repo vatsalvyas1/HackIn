@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { backendUrl } from "../constanst.js";
+import { UserRoundIcon } from "lucide-react";
 
 const SponsorDetails = () => {
   const { id } = useParams();
@@ -12,6 +13,7 @@ const SponsorDetails = () => {
 
   useEffect(() => {
     const fetchSponsorDetails = async () => {
+      console.log("Fetching sponsor details...");
       try {
         const response = await fetch(`${backendUrl}/api/v1/sponsors/${id}`);
 
@@ -28,14 +30,17 @@ const SponsorDetails = () => {
       }
     };
 
+    const storedUser = localStorage.getItem("user");
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const userId = user ? user._id : null;
     const fetchMyHackathons = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/v1/hackathons/get-my-hackathons`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+        const response = await fetch(`${backendUrl}/api/v1/hackathon/get-my-hackathons`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body : JSON.stringify({
+            userId
+          }),
         });
 
         if (!response.ok) {
@@ -47,10 +52,10 @@ const SponsorDetails = () => {
       } catch (err) {
         setError(err.message);
       }
-    };
-    fetchMyHackathons();  
+    };  
 
     fetchSponsorDetails();
+    fetchMyHackathons();
   }, [id]);
 
   if (loading)

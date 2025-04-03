@@ -41,7 +41,7 @@ function App() {
         <Route path='/hackathon/:id/apply' element={<JoinHackathon />} />
         <Route path='/sponsor' element={<Sponsors />} />
         <Route path='/add-sponsor' element={<AddSponsor />} />
-        <Route path='/sponsors/:id' element={<SponsorDetails />} />
+        <Route path='/sponsor/:id' element={<SponsorDetails />} />
       </Routes>
       <Footer />
     </Router>
