@@ -16,6 +16,8 @@ import HackathonForm from './components/HackathonForm.jsx'
 import HackathonDetails from './components/HackathonDetails.jsx'
 import JoinHackathon from './components/JoinHackathon.jsx'
 import AddSponsor from './components/AddSponsor.jsx'
+import Sponsors from './components/Sponsors.jsx'
+import SponsorDetails from './components/SponsorDetails.jsx'
 
 function App() {
   return (
@@ -37,7 +39,9 @@ function App() {
         <Route path='/feed' element={<DevFeed />} />
         <Route path='/hackathon/:id' element={<HackathonDetails />} />
         <Route path='/hackathon/:id/apply' element={<JoinHackathon />} />
+        <Route path='/sponsor' element={<Sponsors />} />
         <Route path='/add-sponsor' element={<AddSponsor />} />
+        <Route path='/sponsors/:id' element={<SponsorDetails />} />
       </Routes>
       <Footer />
     </Router>

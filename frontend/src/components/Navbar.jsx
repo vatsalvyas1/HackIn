@@ -34,6 +34,7 @@ const NavBar = () => {
           <Link to="/leaderboard" className="hover:text-purple-400 transition-color duration-300">Leaderboard</Link>
           <Link to="/hackathons" className="hover:text-purple-400 transition-color duration-300">Hackathons</Link>
           <Link to="/feed" className="hover:text-purple-400 transition-color duration-300">Feed</Link>
+          <Link to="/sponsor" className="hover:text-purple-400 transition-color duration-300">Sponsor</Link>
           {user ? (
             <Link to={'/dashboard'} className="px-4 py-2 flex items-center gap-4 bg-purple-700 rounded-md hover:bg-purple-600 transition-color duration-300">
               <img src={user.profileImage} alt="" className="h-8 w-8 rounded-full"/>
@@ -63,6 +64,7 @@ const NavBar = () => {
           <Link to="/leaderboard" className="hover:text-purple-400">Leaderboard</Link>
           <Link to="/hackathons" className="hover:text-purple-400">Hackathons</Link>
           <Link to="/feed" className="hover:text-purple-400">Feed</Link>
+          <Link to="/sponsor" className="hover:text-purple-400">Sponsor</Link>
           {user ? (
             <Link to={'/dashboard'} className="px-4 py-2 flex items-center gap-4 bg-purple-700 rounded-md hover:bg-purple-600 transition-color duration-300">
               <img src={user.profileImage} alt="" className="h-8 w-8 rounded-full"/>
