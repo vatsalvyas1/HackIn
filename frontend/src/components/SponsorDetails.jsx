@@ -10,6 +10,7 @@ const SponsorDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [myHackathons, setMyHackathons] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchSponsorDetails = async () => {
@@ -38,7 +39,7 @@ const SponsorDetails = () => {
         const response = await fetch(`${backendUrl}/api/v1/hackathon/get-my-hackathons`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body : JSON.stringify({
+          body: JSON.stringify({
             userId
           }),
         });
@@ -78,7 +79,73 @@ const SponsorDetails = () => {
     );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="max-w-4xl mx-auto px-4 py-12 relative">
+      {/* Modal Popup with Blurred Background */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Blurred Background */}
+          <div 
+            className="absolute inset-0 bg-neutral-900/30 backdrop-blur-lg"
+            onClick={() => setShowModal(false)}
+          ></div>
+          
+          {/* Modal Content */}
+          <div className="relative bg-neutral-800 rounded-xl p-6 w-full max-w-md border border-purple-700/50 z-10">
+            <h2 className="text-2xl font-bold text-white mb-4">Sponsorship Request</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-neutral-300 mb-2">Sponsor:</h3>
+                <p className="text-white">{sponsor.name}</p>
+              </div>
+              
+              <div>
+                <h3 className="text-neutral-300 mb-2">Hackathon:</h3>
+                <select className="w-full bg-neutral-700 border border-neutral-600 rounded-md px-4 py-2 text-white">
+                  <option>Select a hackathon</option>
+                  {myHackathons.length > 0 ? (
+                    myHackathons.map(hackathon => (
+                      <option key={hackathon._id} value={hackathon._id}>
+                        {hackathon.name}
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option>My Hackathon 2023</option>
+                      <option>Tech Fest 2024</option>
+                    </>
+                  )}
+                </select>
+              </div>
+              
+              <div>
+                <h3 className="text-neutral-300 mb-2">Message:</h3>
+                <textarea 
+                  className="w-full bg-neutral-700 border border-neutral-600 rounded-md px-4 py-2 text-white"
+                  rows="4"
+                  placeholder="Enter your sponsorship request message..."
+                ></textarea>
+              </div>
+              
+              <div className="flex justify-end space-x-3">
+                <button 
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-neutral-600 hover:bg-neutral-500 rounded-lg transition-colors duration-300"
+                >
+                  Cancel
+                </button>
+                <button 
+                  className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg transition-colors duration-300"
+                >
+                  Submit Request
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
       <div className="bg-neutral-800/50 backdrop-blur-sm rounded-xl p-8 border border-purple-700/50">
         <div className="flex flex-col md:flex-row gap-8">
           <div className="flex-shrink-0">
@@ -136,7 +203,8 @@ const SponsorDetails = () => {
             </div>
             <div className="flex justify-end">
               <button
-                type="submit"
+                type="button"
+                onClick={() => setShowModal(true)}
                 className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
               >
                 Send Request for Sponsorship
