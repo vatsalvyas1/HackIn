@@ -87,6 +87,12 @@ const hackathonSchema = new mongoose.Schema({
           ref: 'Team', 
         },
       ],
+      applications : [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Team', 
+        },
+      ],
       winner : {
         first : {
           type : mongoose.Schema.Types.ObjectId,

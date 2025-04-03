@@ -170,11 +170,9 @@ export default function JoinHackathon() {
     <div className="max-w-2xl mx-auto bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
       <div className="p-8">
         <div className="flex items-center justify-center mb-8">
-          <img 
-            src={hackathon?.logo || 'https://via.placeholder.com/64'} 
-            alt="Hackathon logo" 
-            className="w-16 h-16 rounded-lg"
-          />
+          <div className={`w-16 h-16 flex justify-center items-center mx-auto rounded-full ${logobg[hackathon?.colorTheme]}`}>
+            {logo[hackathon?.track]}
+          </div>
         </div>
         
         <h2 className="text-2xl font-bold text-center text-white mb-2">
@@ -276,7 +274,60 @@ export default function JoinHackathon() {
           <OverviewScreen />
         ) : (
           <div className="bg-neutral-800 rounded-xl border border-neutral-700 shadow-xl overflow-hidden">
-            <div className="p-8">
+            {joinType === 'individual' && (
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-center mb-2">
+                  Individual Application
+                </h2>
+              </div>
+            )}
+
+            {joinType === 'join-team' && (
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-center mb-2">
+                  Join a Team
+                </h2>
+
+                <form action="">
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-neutral-300 mb-1">
+                      Please Enter your Team Code
+                    </label>
+                    <input
+                      type="text"
+                      name="teamCode"
+                      className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
+                      placeholder="Enter team code"
+                      required
+                    />
+
+                    <div className='flex justify-center mt-4'>
+                      <button className='bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300'>
+                        Sent Team Request
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {joinType === 'create-team' && (
+              <div className="p-8">
+                <h2 className="text-2xl font-bold text-center mb-2">
+                  Create a Team
+                </h2>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+
+{/* <div className="p-8">
               <div className="flex items-center justify-center mb-8">
                 <div className="bg-purple-600 rounded-full p-4">
                   <User className="w-8 h-8" />
@@ -583,10 +634,4 @@ export default function JoinHackathon() {
                   </button>
                 </div>
               </form>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+            </div> */}

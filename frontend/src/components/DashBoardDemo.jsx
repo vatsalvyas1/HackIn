@@ -100,7 +100,7 @@ export default function DashBoardDemo() {
                       <div className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs text-white">VV</div>
                       <div className="h-6 w-6 rounded-full bg-blue-600 flex items-center justify-center text-xs text-white">RM</div>
                       <div className="h-6 w-6 rounded-full bg-purple-600 flex items-center justify-center text-xs text-white">PJ</div>
-                      <div className="h-6 w-6 rounded-full bg-green-600 flex items-center justify-center text-xs text-white">PG</div>
+                      <div className="h-6 w-6 rounded-full bg-green-600 flex items-center justify-center text-xs text-white">AS</div>
                     </div>
                   </div>
   
@@ -108,7 +108,7 @@ export default function DashBoardDemo() {
                   <div className="bg-neutral-900 rounded-lg p-4 border border-neutral-700">
                     <div className="flex justify-between items-center">
                       <div>
-                        <h5 className="text-white">AceHack 4.0</h5>
+                        <h5 className="text-white">Code NAKSHTRA</h5>
                         <p className="text-neutral-400 text-sm">Starts in 3 days</p>
                       </div>
                       <button className="bg-purple-700 hover:bg-purple-600 px-3 py-1 rounded text-xs text-white">

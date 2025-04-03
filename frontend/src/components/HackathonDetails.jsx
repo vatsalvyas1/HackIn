@@ -572,7 +572,7 @@ export default function HackathonDetails() {
                   className="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
                     Join This Hackathon
                 </button>
-                </div>
+          </div>
         </div>
       )}
     </div>

@@ -1,9 +1,9 @@
 import Router from "express";
-import { createTeam, getTeams, joinTeam, getTeam, acceptRequest,rejectRequest } from "../controllers/team.controller.js";
+import { createLiveTeam, getTeams, joinTeam, getTeam, acceptRequest,rejectRequest } from "../controllers/team.controller.js";
 const router = Router();
 
 router.route("/create-team").post(
-    createTeam
+    createLiveTeam
 )
 
 router.route("/get-all").get(

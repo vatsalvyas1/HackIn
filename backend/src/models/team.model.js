@@ -67,6 +67,10 @@ const TeamSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // Auto-updated when the team reaches max size
     },
+    isLive : {
+      type : Boolean,
+      required : true,
+    }
   },
   { timestamps: true }
 );

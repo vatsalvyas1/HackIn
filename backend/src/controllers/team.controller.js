@@ -11,7 +11,7 @@ import {
 import { getIO } from "../socket/socket.js";
 import Message from "../models/message.model.js";
 
-const createTeam = AsyncHandler(async (req, res) => {
+const createLiveTeam = AsyncHandler(async (req, res) => {
   const {
     userId,
     teamName,
@@ -57,7 +57,7 @@ const createTeam = AsyncHandler(async (req, res) => {
     skills,
     teamLeader: userId,
     teamMembers,
-    comments: [],
+    isLive: true,
   });
 
   if (!team) throw new ApiError(400, "error creating team");
@@ -66,7 +66,7 @@ const createTeam = AsyncHandler(async (req, res) => {
 });
 
 const getTeams = AsyncHandler(async (req, res) => {
-  const teams = await Team.find()
+  const teams = await Team.find({isLive: true})
     .populate("teamMembers", " username profileImage")
     .populate("joinRequests.userId", "username profileImage name email");
   res.status(201).json(new ApiResponse(201, teams, "fetched all teams"));
@@ -234,7 +234,7 @@ const rejectRequest = AsyncHandler(async (req, res) => {
 // )
 
 export {
-  createTeam,
+  createLiveTeam,
   getTeams,
   getTeam,
   joinTeam,

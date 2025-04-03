@@ -289,7 +289,7 @@ export default function TeamDetails() {
               </div>
             )}
 
-            {activeTab === "chat" && (
+            {/* {activeTab === "chat" && (
               <div>
                 <h2 className="text-xl font-bold text-white mb-6">Team Chat</h2>
                 <div className="bg-neutral-900 rounded-lg p-4 border border-neutral-700 h-96 overflow-y-auto flex flex-col gap-4">
@@ -333,7 +333,7 @@ export default function TeamDetails() {
                   </button>
                 </form>
               </div>
-            )}
+            )} */}
 
             {activeTab === "members" && (
               <div>
