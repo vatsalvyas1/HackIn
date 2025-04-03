@@ -37,7 +37,31 @@ const sponsorSchema = new mongoose.Schema({
     type: String,
     enum: ['Platinum', 'Gold', 'Silver', 'Bronze'],
     default: 'Bronze'
-  }
+  },
+  sponsorshipRequests: [
+    {
+      hackathon: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Hackathon',
+        required: true
+      },
+      organizer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      },
+      message: String,
+      status: {
+        type: String,
+        enum: ['Pending', 'Accepted', 'Rejected'],
+        default: 'Pending'
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    }
+  ]
 });
 
 const Sponsor = mongoose.model("Sponsor", sponsorSchema);

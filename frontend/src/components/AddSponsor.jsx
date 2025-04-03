@@ -202,7 +202,7 @@ export default function AddSponsor() {
             type="submit"
             className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
           >
-            Submit Sponsorship Request
+            Add Yourself As A Sponsor
           </button>
         </div>
       </form>
