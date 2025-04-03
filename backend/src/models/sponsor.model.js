@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const SponsorSchema = new mongoose.Schema({
+const sponsorSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please add a sponsor name'],
@@ -24,19 +24,6 @@ const SponsorSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a contact email']
   },
-  // Track tier per hackathon (if sponsorship levels vary)
-  hackathons: [{
-    hackathon: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Hackathon',
-      required: true
-    },
-    tier: {
-      type: String,
-      enum: ['Platinum', 'Gold', 'Silver', 'Bronze'],
-      default: 'Bronze'
-    }
-  }],
   createdAt: {
     type: Date,
     default: Date.now
@@ -45,10 +32,13 @@ const SponsorSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
+  },
+  tier: {
+    type: String,
+    enum: ['Platinum', 'Gold', 'Silver', 'Bronze'],
+    default: 'Bronze'
   }
 });
 
-// Prevent duplicate sponsorships for the same hackathon
-SponsorSchema.index({ user: 1, "hackathons.hackathon": 1 }, { unique: true });
-
-module.exports = mongoose.model('Sponsor', SponsorSchema);
+const Sponsor = mongoose.model("Sponsor", sponsorSchema);
+export default Sponsor;

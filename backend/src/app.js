@@ -57,6 +57,7 @@ import projectRouter from './routes/project.routes.js';
 import feedRouter from './routes/feed.routes.js';
 import messageRouter from './routes/message.routes.js';
 import HackathonRouter from "./routes/hackathon.routes.js";
+import sponsorRouter from "./routes/sponsor.routes.js";
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
@@ -66,5 +67,6 @@ app.use('/api/v1/project',projectRouter);
 app.use('/api/v1/feed',feedRouter);
 app.use("/api/v1/hackathon", HackathonRouter);
 app.use('/api/v1/message',messageRouter);
+app.use('/api/v1/sponsors', sponsorRouter);
 
 export default app;
