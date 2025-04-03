@@ -1,5 +1,5 @@
 import Router from "express";
-import { createHackathon, getHackathons, getbyId, addTeamRequest, addTeam, rejectApplication } from "../controllers/hackathon.controller.js";
+import { createHackathon, getHackathons, getbyId, addTeamRequest, addTeam, rejectApplication, getMyHackathons } from "../controllers/hackathon.controller.js";
 
 const router = Router();
 
@@ -25,6 +25,10 @@ router.route("/add-team/:id").post(
 
 router.route("/reject-application/:id").post(
     rejectApplication
+);
+
+router.route("/get-my-hackathons").get(
+    getMyHackathons
 );
 
 export default router;

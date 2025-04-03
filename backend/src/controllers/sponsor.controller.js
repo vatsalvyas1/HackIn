@@ -63,7 +63,6 @@ const createSponsor = AsyncHandler(async (req, res) => {
   // Send sponsorship request
 const createSponsorshipRequest = AsyncHandler(async (req, res) => {
     const { sponsorId, hackathonId, message } = req.body;
-    const organizerId = req.user._id;
   
     // Validate input
     if (!sponsorId || !hackathonId) {
@@ -78,22 +77,9 @@ const createSponsorshipRequest = AsyncHandler(async (req, res) => {
       throw new ApiError(404, "Sponsor or hackathon not found");
     }
   
-    // Check if request already exists
-    const existingRequest = sponsor.sponsorshipRequests.find(request => 
-      request.hackathon.equals(hackathonId) && 
-      request.organizer.equals(organizerId)
-    );
-  
-    if (existingRequest) {
-      throw new ApiError(400, "Sponsorship request already sent");
-    }
-  
-    // Add new request
     sponsor.sponsorshipRequests.push({
-      hackathon: hackathonId,
-      organizer: organizerId,
-      message,
-      status: 'Pending'
+        hackathon: hackathonId,
+        message: message || "No message provided"
     });
   
     await sponsor.save();

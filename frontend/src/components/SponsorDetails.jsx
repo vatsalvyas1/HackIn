@@ -8,6 +8,7 @@ const SponsorDetails = () => {
   const [sponsor, setSponsor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [myHackathons, setMyHackathons] = useState([]);
 
   useEffect(() => {
     const fetchSponsorDetails = async () => {
@@ -26,6 +27,28 @@ const SponsorDetails = () => {
         setLoading(false);
       }
     };
+
+    const fetchMyHackathons = async () => {
+      try {
+        const response = await fetch(`${backendUrl}/api/v1/hackathons/get-my-hackathons`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch hackathons");
+        }
+
+        const data = await response.json();
+        setMyHackathons(data.data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchMyHackathons();  
 
     fetchSponsorDetails();
   }, [id]);

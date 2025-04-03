@@ -45,21 +45,7 @@ const sponsorSchema = new mongoose.Schema({
         ref: 'Hackathon',
         required: true
       },
-      organizer: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      },
       message: String,
-      status: {
-        type: String,
-        enum: ['Pending', 'Accepted', 'Rejected'],
-        default: 'Pending'
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now
-      }
     }
   ]
 });

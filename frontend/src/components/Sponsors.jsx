@@ -74,7 +74,7 @@ const Sponsors = () => {
   const silverSponsors = sponsors.filter(s => s.tier === 'Silver');
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="mx-1 md:mx-16 px-4 py-12">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-white bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 mb-4 font-mono">
           Our Valued <span className="text-purple-500">Sponsors</span>

@@ -147,4 +147,13 @@ const rejectApplication = AsyncHandler(async(req,res) => {
 }
 );
 
-export {createHackathon, getHackathons, getbyId, addTeamRequest, addTeam, rejectApplication};
+const getMyHackathons = AsyncHandler(async(req,res) => {
+    const userId = req.body;
+    const hackathons = await Hackathon.find({organizer : userId});
+    if(!hackathons){
+        throw new ApiError(404,"No hackathons found");
+    }
+    res.status(200).json(new ApiResponse("Hackathons found",hackathons));
+});
+
+export {createHackathon, getHackathons, getbyId, addTeamRequest, addTeam, rejectApplication, getMyHackathons};
