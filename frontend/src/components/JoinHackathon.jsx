@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { backendUrl } from '../constanst.js';
 import { 
   User, 
   GraduationCap, 
@@ -17,6 +16,7 @@ import {
   UserPlus,
   UserCircle
 } from 'lucide-react';
+import { X, Plus } from "lucide-react";
 import {
   Code,
   Bot,
@@ -28,6 +28,7 @@ import {
   Cloud,
   BookOpen,
 } from "lucide-react";
+import { backendUrl } from '../constanst.js';
 
 export default function JoinHackathon() {
   const { id } = useParams();
@@ -35,21 +36,21 @@ export default function JoinHackathon() {
   const [showForm, setShowForm] = useState(false);
   const [hackathon, setHackathon] = useState(null);
   const [joinType, setJoinType] = useState(null); // 'individual', 'join-team', or 'create-team'
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    gender: '',
-    institution: '',
-    fieldOfStudy: '',
-    graduationYear: '',
-    graduationMonth: '',
-    skills: '',
-    githubLink: '',
-    linkedinLink: '',
-    city: '',
-    email: '',
-    phone: ''
+  const [addSkill, setAddSkill] = useState(false);
+  const [skills, setSkills] = useState(["React", "NodeJS", "MongoDB"]);
+  const [formdata, setFormData] = useState({
+    teamName: "",
+    hackathonName: "",
+    description: "",
+    teamSize: "",
+    location: "",
+    startDate: "",
+    endDate: "",
+    lookingFor: "",
+    isLive : false,
   });
+  const [addedSkills, setAddedSkills] = useState([]);
+
   const logo = {
     "Web3": <Code size={18}/>,
     "AI": <Bot />,
@@ -79,6 +80,15 @@ export default function JoinHackathon() {
         }
         const result = await response.json();
         setHackathon(result.data);
+
+        setFormData({
+          ...formdata,
+          hackathonName: result.data.name,
+          startDate: result.data.startDate,
+          endDate: result.data.endDate,
+          location: result.data.location.city,
+          teamSize: result.data.maxTeamSize,
+        })
       } catch (error) {
         console.error('Error fetching hackathon:', error);
       }
@@ -87,30 +97,72 @@ export default function JoinHackathon() {
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'radio' ? value === 'true' : value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const storedUser = localStorage.getItem("user");
+    const userId = JSON.parse(storedUser)._id;
+    
     try {
-      const response = await fetch(`${backendUrl}/api/v1/hackathon/${id}/apply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ...formData, joinType })
-      });
-      
-      if (response.ok) {
-        navigate(`/hackathon/${id}`);
+
+      if(joinType == "individual") {
+        setFormData({
+          ...formdata,
+          teamSize: 1,
+        })
       }
+
+      const teamResponse = await fetch(`${backendUrl}/api/v1/team/create-team`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formdata,
+          skills: addedSkills,
+          userId,
+        }),
+      });
+  
+      if (!teamResponse.ok) {
+        throw new Error("Failed to create team");
+      }
+  
+      const teamResult = await teamResponse.json();
+      const teamId = teamResult.data._id;
+  
+      const hackathonResponse = await fetch(
+        `${backendUrl}/api/v1/hackathon/add-team-request/${id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ teamId }),
+        }
+      );
+  
+      if (!hackathonResponse.ok) {
+        throw new Error("Failed to register team for hackathon");
+      }
+      
+      navigate(`/hackathon/${id}`);
     } catch (error) {
-      console.error('Error submitting application:', error);
+      console.error("Submission error:", error);
     }
+  };
+
+  const addSkills = (skill) => {
+    setAddedSkills([...addedSkills, skill]);
+    setSkills((prevSkills) => prevSkills.filter((s) => s !== skill));
+  };
+
+  const removeSkill = (skill) => {
+    setSkills([...skills, skill]);
+    setAddedSkills((prevSkills) => prevSkills.filter((s) => s !== skill));
   };
 
   const JoinTypeSelection = () => (
@@ -279,6 +331,43 @@ export default function JoinHackathon() {
                 <h2 className="text-2xl font-bold text-center mb-2">
                   Individual Application
                 </h2>
+
+                <form
+                  onSubmit={handleSubmit}
+                  method="post"
+                  className="bg-neutral-800 rounded-xl p-6 border border-neutral-700"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label
+                        htmlFor="team-name"
+                        className="block text-sm font-medium text-neutral-400 mb-1"
+                      >
+                        Team Name
+                      </label>
+                      <input
+                        type="text"
+                        id="team-name"
+                        name="teamName"
+                        value={formdata.teamName}
+                        onChange={handleChange}
+                        placeholder="Enter your team name"
+                        className="w-full bg-neutral-900 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
+                      onClick={handleSubmit}
+                    >
+                      Join Now
+                    </button>
+                  </div>
+                </form>
+
               </div>
             )}
 
@@ -316,6 +405,149 @@ export default function JoinHackathon() {
                 <h2 className="text-2xl font-bold text-center mb-2">
                   Create a Team
                 </h2>
+
+                <form
+                  onSubmit={handleSubmit}
+                  method="post"
+                  className="bg-neutral-800 rounded-xl p-6 border border-neutral-700"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <label
+                        htmlFor="team-name"
+                        className="block text-sm font-medium text-neutral-400 mb-1"
+                      >
+                        Team Name
+                      </label>
+                      <input
+                        type="text"
+                        id="team-name"
+                        name="teamName"
+                        value={formdata.teamName}
+                        onChange={handleChange}
+                        placeholder="Enter your team name"
+                        className="w-full bg-neutral-900 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <label
+                      htmlFor="description"
+                      className="block text-sm font-medium text-neutral-400 mb-1"
+                    >
+                      Project Description
+                    </label>
+                    <textarea
+                      id="description"
+                      rows="3"
+                      name="description"
+                      value={formdata.description}
+                      onChange={handleChange}
+                      placeholder="Describe your project and what you're building..."
+                      className="w-full bg-neutral-900 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    ></textarea>
+                  </div>
+
+                  <div>
+                    <p>Wanted to find teamMates too : </p>
+                    <label htmlFor="isLive">Yes</label>
+                    <input 
+                      type="radio" 
+                      name="isLive" 
+                      id="isLive" 
+                      value="true"  
+                      checked={formdata.isLive === true}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="notLive">No</label>
+                    <input 
+                      type="radio" 
+                      name="isLive" 
+                      id="notLive" 
+                      value="false" 
+                      checked={formdata.isLive === false}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  {formdata.isLive && (
+                    <div>
+                      <div className="mb-6">
+                          <label
+                            htmlFor="lookingFor"
+                            className="block text-sm font-medium text-neutral-400 mb-1"
+                          >
+                            Looking For{" "}
+                            <span className="text-neutral-500">(comma separated values)</span>
+                          </label>
+                          <input
+                            type="text"
+                            id="lookingFor"
+                            name="lookingFor"
+                            value={formdata.lookingFor}
+                            onChange={handleChange}
+                            placeholder="e.g., Frontend Dev, UI/UX Designer, AI Engineer"
+                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          />
+                        </div>
+
+                        <div className="mb-6">
+                          <label className="block text-sm font-medium text-neutral-400 mb-1">
+                            Skills Needed
+                          </label>
+                          <div className="flex flex-wrap gap-2">
+                            {addedSkills.map((skill, index) => (
+                              <span
+                                key={index}
+                                className="bg-purple-900/30 text-purple-400 text-xs py-1 px-3 rounded-full border border-purple-800/30 flex items-center font-mono cursor-pointer hover:bg-purple-800/60 transition-colors"
+                                onClick={() => removeSkill(skill)}
+                              >
+                                {skill}
+                                <X size={16} className="ml-1" />
+                              </span>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => setAddSkill(!addSkill)}
+                              className="bg-neutral-700 hover:bg-neutral-600 text-white text-xs py-1 px-3 rounded-full transition-colors duration-300 flex items-center font-mono"
+                            >
+                              {addSkill ? (
+                                <X size={16} className="mr-1" />
+                              ) : (
+                                <Plus size={16} className="mr-1" />
+                              )}
+                              Add Skill
+                            </button>
+                          </div>
+                          {addSkill && (
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              {skills.map((skill, index) => (
+                                <span
+                                  key={index}
+                                  className="bg-neutral-900 text-white text-xs py-1 px-3 rounded-full border border-neutral-700 flex items-center font-mono cursor-pointer hover:bg-neutral-800 transition-colors"
+                                  onClick={() => addSkills(skill)}
+                                >
+                                  {skill}
+                                  <Plus size={16} className="ml-1" />
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
+                      onClick={handleSubmit}
+                    >
+                      Create Team
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
           </div>
@@ -324,314 +556,3 @@ export default function JoinHackathon() {
     </div>
   );
 }
-
-
-
-{/* <div className="p-8">
-              <div className="flex items-center justify-center mb-8">
-                <div className="bg-purple-600 rounded-full p-4">
-                  <User className="w-8 h-8" />
-                </div>
-              </div>
-              
-              <h2 className="text-2xl font-bold text-center mb-2">
-                {joinType === 'individual' ? 'Individual Application' : 
-                 joinType === 'join-team' ? 'Join a Team' : 'Create a Team'}
-              </h2>
-              <p className="text-neutral-400 text-center mb-8">
-                Please fill out the form below to submit your application
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-6">
-                  <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center">
-                      <User className="w-5 h-5 mr-2" />
-                      Personal Information
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          First Name
-                        </label>
-                        <input
-                          type="text"
-                          name="firstName"
-                          value={formData.firstName}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Last Name
-                        </label>
-                        <input
-                          type="text"
-                          name="lastName"
-                          value={formData.lastName}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Gender
-                        </label>
-                        <select
-                          name="gender"
-                          value={formData.gender}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        >
-                          <option value="">Select Gender</option>
-                          <option value="male">Male</option>
-                          <option value="female">Female</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center">
-                      <GraduationCap className="w-5 h-5 mr-2" />
-                      Education
-                    </h3>
-                    <div className="grid grid-cols-1 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Institution
-                        </label>
-                        <input
-                          type="text"
-                          name="institution"
-                          value={formData.institution}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Field of Study
-                        </label>
-                        <input
-                          type="text"
-                          name="fieldOfStudy"
-                          value={formData.fieldOfStudy}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-neutral-300 mb-1">
-                            Graduation Month
-                          </label>
-                          <select
-                            name="graduationMonth"
-                            value={formData.graduationMonth}
-                            onChange={handleChange}
-                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            required
-                          >
-                            <option value="">Select Month</option>
-                            {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(month => (
-                              <option key={month} value={month}>{month}</option>
-                            ))}
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-neutral-300 mb-1">
-                            Graduation Year
-                          </label>
-                          <select
-                            name="graduationYear"
-                            value={formData.graduationYear}
-                            onChange={handleChange}
-                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            required
-                          >
-                            <option value="">Select Year</option>
-                            {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + i).map(year => (
-                              <option key={year} value={year}>{year}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center">
-                      <Zap className="w-5 h-5 mr-2" />
-                      Experience
-                    </h3>
-                    <div>
-                      <label className="block text-sm font-medium text-neutral-300 mb-1">
-                        Skills
-                      </label>
-                      <textarea
-                        name="skills"
-                        value={formData.skills}
-                        onChange={handleChange}
-                        className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                        rows="3"
-                        placeholder="List your relevant skills..."
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center">
-                      <LinkIcon className="w-5 h-5 mr-2" />
-                      Links
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          GitHub Profile
-                        </label>
-                        <input
-                          type="url"
-                          name="githubLink"
-                          value={formData.githubLink}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          placeholder="https://github.com/username"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          LinkedIn Profile
-                        </label>
-                        <input
-                          type="url"
-                          name="linkedinLink"
-                          value={formData.linkedinLink}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          placeholder="https://linkedin.com/in/username"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                    <h3 className="text-lg font-semibold mb-4 flex items-center">
-                      <Phone className="w-5 h-5 mr-2" />
-                      Contact
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          City
-                        </label>
-                        <input
-                          type="text"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-1">
-                          Phone Number
-                        </label>
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {(joinType === 'join-team' || joinType === 'create-team') && (
-                    <div className="bg-neutral-900/50 p-6 rounded-lg border border-neutral-700">
-                      <h3 className="text-lg font-semibold mb-4 flex items-center">
-                        <Users className="w-5 h-5 mr-2" />
-                        {joinType === 'join-team' ? 'Team Information' : 'Create Team'}
-                      </h3>
-                      {joinType === 'join-team' ? (
-                        <div>
-                          <label className="block text-sm font-medium text-neutral-300 mb-1">
-                            Team Code
-                          </label>
-                          <input
-                            type="text"
-                            name="teamCode"
-                            className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            placeholder="Enter team code"
-                            required
-                          />
-                        </div>
-                      ) : (
-                        <div className="space-y-4">
-                          <div>
-                            <label className="block text-sm font-medium text-neutral-300 mb-1">
-                              Team Name
-                            </label>
-                            <input
-                              type="text"
-                              name="teamName"
-                              className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                              placeholder="Enter team name"
-                              required
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-neutral-300 mb-1">
-                              Team Description
-                            </label>
-                            <textarea
-                              name="teamDescription"
-                              className="w-full bg-neutral-900 border border-neutral-700 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                              rows="3"
-                              placeholder="Describe your team and what you're looking for..."
-                              required
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex justify-center">
-                  <button
-                    type="submit"
-                    className="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
-                  >
-                    {joinType === 'individual' ? 'Submit Application' : 
-                     joinType === 'join-team' ? 'Join Team' : 'Create Team'}
-                  </button>
-                </div>
-              </form>
-            </div> */}

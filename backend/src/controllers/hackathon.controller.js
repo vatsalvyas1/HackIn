@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import Hackathon from "../models/hackathon.model.js";
 import User from "../models/user.model.js";
+import Team from "../models/team.model.js";
 
 const createHackathon = AsyncHandler(async(req,res) => {
     const {name, organizer, description, startDate, endDate, mode, prizePool,firstPrize, secondPrize, thirdPrize, track, registrationDeadline, minTeamSize, maxTeamSize, colorTheme, collegeRepresenting, website, sponsorName, sponsorLogo} = req.body;
@@ -74,7 +75,8 @@ const getHackathons = AsyncHandler(async(req,res) => {
 
 const getbyId = AsyncHandler(async(req,res) => {
     const {id} = req.params;
-    const hackathon = await Hackathon.findById(id);
+    const hackathon = await Hackathon.findById(id)
+    .populate("applications");
     if(!hackathon){
         throw new ApiError(404,"Hackathon not found");
     }
@@ -82,4 +84,24 @@ const getbyId = AsyncHandler(async(req,res) => {
 }
 );
 
-export {createHackathon, getHackathons, getbyId};
+const addTeamRequest = AsyncHandler(async(req,res) => {
+    const {id} = req.params;
+    const {teamId} = req.body;
+
+    const hackathon = await Hackathon.findById(id);
+    const team = await Team.findById(teamId);
+    if(!team){
+        throw new ApiError(404,"Team not found");
+    }
+
+    if(!hackathon){
+        throw new ApiError(404,"Hackathon not found");
+    }
+
+    hackathon.applications.push(team._id);
+    await hackathon.save();
+    res.status(200).json(new ApiResponse("Team request added",hackathon));
+}
+);
+
+export {createHackathon, getHackathons, getbyId, addTeamRequest};

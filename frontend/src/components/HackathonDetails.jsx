@@ -19,6 +19,7 @@ import {
   MonitorSmartphone,
   Cloud,
   BookOpen,
+  Clipboard
 } from "lucide-react";
 import { backendUrl } from "../constanst";
 import { format } from "date-fns";
@@ -44,6 +45,7 @@ export default function HackathonDetails() {
         }
         const result = await response.json();
         setHackathon(result.data);
+        console.log(result.data);
         // setParticipatingTeams(data.hackathon.participants);
       } catch (error) {
         console.error(error);
@@ -185,6 +187,18 @@ export default function HackathonDetails() {
             >
               <Award className="w-4 h-4" />
               Prizes
+            </button>
+
+            <button
+              onClick={() => setActiveTab("applications")}
+              className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
+                activeTab === "applications"
+                  ? "text-white border-b-2 border-purple-600"
+                  : "text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700"
+              }`}
+            >
+              <Clipboard className="w-4 h-4" />
+              Applications
             </button>
           </div>
 
@@ -560,6 +574,71 @@ export default function HackathonDetails() {
                         specific categories or achievements.
                       </p>
                     </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "applications" && (
+              <div>
+                <h2 className="text-xl font-bold text-white mb-6">
+                  Applications
+                </h2>
+                {hackathon.applications.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {hackathon.applications.map((application, index) => (
+                      <div
+                        key={index}
+                        className="group bg-neutral-900 rounded-lg p-4 border border-neutral-700 hover:border-purple-600 transition-all duration-300"
+                      >
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="h-12 w-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl font-bold text-xl flex items-center justify-center shadow-lg text-white cursor-pointer" onClick={() => navigate(`/team/${application._id}`)}>
+                            {application.teamName
+                              .split(" ")
+                              .map((item) => item[0])
+                              .join("")}
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-bold text-white cursor-pointer hover:text-purple-400" onClick={() => navigate(`/team/${application._id}`)}>
+                              {application.teamName}
+                            </h3>
+                            <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                              <MapPin className="w-3 h-3" />
+                              <span>{application.location}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {application.skills.slice(0, 3).map((skill, idx) => (
+                            <span
+                              key={idx}
+                              className="bg-purple-900/40 text-purple-300 border border-purple-800 px-2 py-0.5 rounded-full text-xs font-medium"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                          {application.skills.length > 3 && (
+                            <span className="bg-neutral-800 text-neutral-400 px-2 py-0.5 rounded-full text-xs font-medium">
+                              +{application.skills.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-neutral-400">
+                            {application.teamMembers.length} members
+                          </span>
+                          <div className="space-x-2">
+                            <button className="bg-green-500 text-white p-1 px-2 rounded-full">Accept</button>
+                            <button className="bg-red-500 text-white p-1 px-2 rounded-full">Reject</button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-neutral-400">
+                    <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p className="text-lg">No applications yet</p>
                   </div>
                 )}
               </div>

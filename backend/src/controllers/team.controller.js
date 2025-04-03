@@ -31,10 +31,8 @@ const createLiveTeam = AsyncHandler(async (req, res) => {
     !hackathonName ||
     !description ||
     !teamSize ||
-    !lookingFor ||
     !startDate ||
-    !endDate ||
-    !skills
+    !endDate
   ) {
     throw new ApiError(400, "enter all feilds");
   }
@@ -66,7 +64,7 @@ const createLiveTeam = AsyncHandler(async (req, res) => {
 });
 
 const getTeams = AsyncHandler(async (req, res) => {
-  const teams = await Team.find({isLive: true})
+  const teams = await Team.find()
     .populate("teamMembers", " username profileImage")
     .populate("joinRequests.userId", "username profileImage name email");
   res.status(201).json(new ApiResponse(201, teams, "fetched all teams"));
