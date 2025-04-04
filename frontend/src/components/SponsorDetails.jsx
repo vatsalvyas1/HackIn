@@ -321,15 +321,17 @@ const SponsorDetails = () => {
                 </a>
               </div>
             </div>
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => setShowModal(true)}
-                className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
-              >
-                Send Request for Sponsorship
-              </button>
-            </div>
+            {userId !== sponsor.user._id && (
+               <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                  className="bg-purple-700 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300"
+                >
+                  Send Request for Sponsorship
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

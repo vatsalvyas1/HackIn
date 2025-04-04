@@ -149,7 +149,6 @@ const rejectApplication = AsyncHandler(async(req,res) => {
 
 const getMyHackathons = AsyncHandler(async(req,res) => {
     const {userId} = req.body;
-    console.log(userId);
     const hackathons = await Hackathon.find({organizer : userId});
     if(!hackathons){
         throw new ApiError(404,"No hackathons found");
