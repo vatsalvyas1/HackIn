@@ -418,7 +418,7 @@ function DashboardPlaceholder() {
       </div>
       
       {/* <!-- Create Your Dashboard CTA --> */}
-      <div className="max-w-6xl mx-auto mt-16 pt-8 border-t border-neutral-800">
+      <div className="max-w-6xl mx-auto mt-16 mt-8 border-t border-neutral-800 relative overflow-hidden"> 
         <div className="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 rounded-xl p-8 border border-purple-800/30">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-white mb-4">Create Your Developer Dashboard</h3>
@@ -432,6 +432,17 @@ function DashboardPlaceholder() {
               </Link>
             </div>
           </div>
+        </div>
+
+        <div className="md:block absolute text-purple-200/20 font-medium -top-5 -left-10 text-xl md:text-5xl font-mono">
+          <p>{"<body>"}</p>
+          <p>10101001</p>
+          <p>101010{"<h1/>"}</p>
+        </div>
+        <div className="md:block absolute text-purple-200/20 font-medium -bottom-5 -right-10 text-xl md:text-5xl font-mono">
+          <p>{"<h1>"}0101001</p>
+          <p>101001110</p>
+          <p>{"</body>"}</p>
         </div>
       </div>
     </div>
