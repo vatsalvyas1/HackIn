@@ -47,7 +47,17 @@ const sponsorSchema = new mongoose.Schema({
       },
       message: String,
     }
-  ]
+  ],
+  acceptSponsorshipRequests : [
+    {
+      hackathon: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Hackathon',
+        required: true
+      },
+      message: String,
+    }
+  ],
 });
 
 const Sponsor = mongoose.model("Sponsor", sponsorSchema);

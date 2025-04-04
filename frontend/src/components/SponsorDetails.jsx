@@ -60,30 +60,56 @@ const SponsorDetails = () => {
     }
   };
 
-  const handleRequestAction = async (requestId, action) => {
+  const handleAccept = async (hackathonId) => {
     try {
       const response = await fetch(
-        `${backendUrl}/api/v1/sponsors/request/${requestId}/${action}`,
+        `${backendUrl}/api/v1/sponsors/accept-request`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            hackathonId,
+            sponsorId: id,
+          }),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to ${action} request`);
+        throw new Error("Failed to accept sponsorship request");
       }
 
-      // Refresh sponsor details to get updated requests
-      const updatedSponsor = await fetch(`${backendUrl}/api/v1/sponsors/${id}`);
-      const data = await updatedSponsor.json();
-      setSponsor(data.data);
+      window.alert("Sponsorship request accepted successfully!");
     } catch (error) {
-      console.error(`Error ${action}ing request:`, error);
+      console.error("Error accepting sponsorship request:", error);
     }
   };
+
+  const handelReject = async(hackathonId) => {
+    try {
+      const response = await fetch(
+        `${backendUrl}/api/v1/sponsors/reject-request`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            hackathonId,
+            sponsorId: id,
+          }),
+        });
+
+      if (!response.ok) {
+        throw new Error("Failed to reject sponsorship request");
+      }
+      
+      window.alert("Sponsorship request rejected successfully!");
+    } catch (error) {
+      console.error("Error rejecting sponsorship request:", error);
+    }
+  }; 
 
   useEffect(() => {
     const fetchSponsorDetails = async () => {
@@ -384,11 +410,11 @@ const SponsorDetails = () => {
                           {request.message}
                         </p>
 
-                        {!request.status && (
+                        
                           <div className="flex items-center gap-3 pt-4">
                             <button
                               onClick={() =>
-                                handleRequestAction(request._id, "accept")
+                                handleAccept(request.hackathon._id)
                               }
                               className="flex items-center gap-2 px-4 py-2 bg-green-600/20 hover:bg-green-600 border border-green-500/30 rounded-lg text-green-400 hover:text-white font-medium transition-all duration-200"
                             >
@@ -397,7 +423,7 @@ const SponsorDetails = () => {
                             </button>
                             <button
                               onClick={() =>
-                                handleRequestAction(request._id, "reject")
+                                handelReject(request.hackathon._id)
                               }
                               className="flex items-center gap-2 px-4 py-2 bg-red-600/20 hover:bg-red-600 border border-red-500/30 rounded-lg text-red-400 hover:text-white font-medium transition-all duration-200"
                             >
@@ -405,7 +431,7 @@ const SponsorDetails = () => {
                               Reject
                             </button>
                           </div>
-                        )}
+                        
                       </div>
                     </div>
                   </div>

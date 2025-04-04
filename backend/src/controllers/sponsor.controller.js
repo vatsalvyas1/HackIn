@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { AsyncHandler } from "../utils/AsyncHandler.js";
 import Sponsor from "../models/sponsor.model.js";
 import Hackathon from "../models/hackathon.model.js";
+import { request } from "express";
 
 // @route   GET /api/v1/sponsors
 const getSponsors = AsyncHandler(async (req, res) => {
@@ -92,32 +93,30 @@ const createSponsorshipRequest = AsyncHandler(async (req, res) => {
   
   // Accept sponsorship request
   const acceptSponsorshipRequest = AsyncHandler(async (req, res) => {
-    const { sponsorId, requestId } = req.body;
-    const sponsorUser = req.user._id; // The sponsor owner
-  
-    if (!sponsorId || !requestId) {
-      throw new ApiError(400, "Sponsor ID and Request ID are required");
+    const { sponsorId, hackathonId } = req.body;
+
+    if (!sponsorId || !hackathonId) {
+      throw new ApiError(400, "Sponsor ID and Hackathon ID are required");
     }
-  
-    // Verify the requesting user owns the sponsor profile
-    const sponsor = await Sponsor.findOne({
-      _id: sponsorId,
-      user: sponsorUser
+
+    const sponsor = await Sponsor.findById(sponsorId);
+    const hackathon = await Hackathon.findById(hackathonId);
+
+    if(!sponsor || !hackathon) {
+      throw new ApiError(404, "Sponsor or hackathon not found");
+    }
+
+    const newSponsorshipsRequest = sponsor.sponsorshipRequests.filter((request) => {
+      return request.hackathon.toString() === hackathonId.toString();
+    })
+
+    sponsor.sponsorshipRequests = newSponsorshipsRequest;
+    sponsor.acceptSponsorshipRequests.push({
+      hackathon: hackathonId,
+      message: "Sponsorship request accepted"
     });
-  
-    if (!sponsor) {
-      throw new ApiError(404, "Sponsor not found or unauthorized");
-    }
-  
-    // Find and update the request
-    const request = sponsor.sponsorshipRequests.id(requestId);
-    if (!request) {
-      throw new ApiError(404, "Request not found");
-    }
-  
-    request.status = 'Accepted';
+
     await sponsor.save();
-  
     res.status(200).json(
       new ApiResponse(200, sponsor, "Sponsorship request accepted")
     );
@@ -125,34 +124,27 @@ const createSponsorshipRequest = AsyncHandler(async (req, res) => {
   
   // Reject sponsorship request
   const rejectSponsorshipRequest = AsyncHandler(async (req, res) => {
-    const { sponsorId, requestId } = req.body;
-    const sponsorUser = req.user._id; // The sponsor owner
-  
-    if (!sponsorId || !requestId) {
-      throw new ApiError(400, "Sponsor ID and Request ID are required");
+    const { sponsorId, hackathonId } = req.body;
+    
+    if (!sponsorId || !hackathonId) {
+      throw new ApiError(400, "Sponsor ID and Hackathon ID are required");
     }
-  
-    // Verify the requesting user owns the sponsor profile
-    const sponsor = await Sponsor.findOne({
-      _id: sponsorId,
-      user: sponsorUser
-    });
-  
-    if (!sponsor) {
-      throw new ApiError(404, "Sponsor not found or unauthorized");
+
+    const sponsor = await Sponsor.findById(sponsorId);
+    const hackathon = await Hackathon.findById(hackathonId);
+
+    if(!sponsor || !hackathon) {
+      throw new ApiError(404, "Sponsor or hackathon not found");
     }
-  
-    // Find and update the request
-    const request = sponsor.sponsorshipRequests.id(requestId);
-    if (!request) {
-      throw new ApiError(404, "Request not found");
-    }
-  
-    request.status = 'Rejected';
+
+    const newSponsorshipsRequest = sponsor.sponsorshipRequests.filter((request) => {
+      return request.hackathon.toString() !== hackathonId.toString();
+    })
+    sponsor.sponsorshipRequests = newSponsorshipsRequest;
     await sponsor.save();
-  
     res.status(200).json(
       new ApiResponse(200, sponsor, "Sponsorship request rejected")
     );
   });
+  
 export { getSponsors, getSponsor, createSponsor, createSponsorshipRequest, acceptSponsorshipRequest, rejectSponsorshipRequest };
