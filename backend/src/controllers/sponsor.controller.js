@@ -18,7 +18,8 @@ const getSponsors = AsyncHandler(async (req, res) => {
 // @route   GET /api/v1/sponsors/:id
 const getSponsor = AsyncHandler(async (req, res) => {
     const sponsor = await Sponsor.findById(req.params.id)
-      .populate('user', 'name email'); // Only populate user details
+      .populate('user', 'name email')
+      .populate("sponsorshipRequests.hackathon") ; 
   
     if (!sponsor) {
       throw new ApiError(404, "Sponsor not found");
