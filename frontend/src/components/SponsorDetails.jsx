@@ -371,20 +371,6 @@ const SponsorDetails = () => {
                 <h2 className="text-2xl font-bold text-white">
                   Sponsorship Requests
                 </h2>
-                {/* <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-yellow-400" />
-                  <span className="text-sm text-neutral-400">Pending</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-400" />
-                  <span className="text-sm text-neutral-400">Accepted</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-red-400" />
-                  <span className="text-sm text-neutral-400">Rejected</span>
-                </div>
-              </div> */}
               </div>
 
               <div className="grid gap-4">
@@ -434,6 +420,42 @@ const SponsorDetails = () => {
                             </button>
                           </div>
                         
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {sponsor.acceptSponsorshipRequests.length > 0 && (
+            <div className="mt-8 bg-neutral-900/80 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-white">
+                  Sponsored Hackathon
+                </h2>
+              </div>
+
+              <div className="grid gap-4">
+                {sponsor.acceptSponsorshipRequests.map((request, index) => (
+                  <div
+                    key={index}
+                    className={"bg-neutral-800/50 backdrop-blur-sm rounded-xl p-6 border border-neutral-700/50 hover:border-purple-500/30 transition-colors duration-200"}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-grow space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className="">
+                            <h3
+                              className="text-lg hover:text-purple-400 transition-colors duration-200 font-medium text-white cursor-pointer"
+                              onClick={() => {
+                                navigate(`/hackathon/${request.hackathon._id}`);
+                              }}
+                            >
+                              {request.hackathon.name}
+                            </h3>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
