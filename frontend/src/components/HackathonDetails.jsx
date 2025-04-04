@@ -30,6 +30,7 @@ export default function HackathonDetails() {
   const [hackathon, setHackathon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
+  const user = JSON.parse(localStorage.getItem("user"))._id;
 
   useEffect(() => {
     const fetchHackathonDetails = async () => {
@@ -233,17 +234,19 @@ export default function HackathonDetails() {
               Prizes
             </button>
 
-            <button
-              onClick={() => setActiveTab("applications")}
-              className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
-                activeTab === "applications"
-                  ? "text-white border-b-2 border-purple-600"
-                  : "text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700"
-              }`}
-            >
-              <Clipboard className="w-4 h-4" />
-              Applications
-            </button>
+            {user === hackathon?.organizer && (
+              <button
+                onClick={() => setActiveTab("applications")}
+                className={`flex items-center gap-2 px-4 py-2 font-medium transition-all duration-300 ${
+                  activeTab === "applications"
+                    ? "text-white border-b-2 border-purple-600"
+                    : "text-neutral-400 hover:text-white border-b-2 border-transparent hover:border-neutral-700"
+                }`}
+              >
+                <Clipboard className="w-4 h-4" />
+                Applications
+              </button>
+            )}
           </div>
 
           <div className="p-6 sm:p-8">

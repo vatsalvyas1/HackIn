@@ -11,6 +11,43 @@ const SponsorDetails = () => {
   const [error, setError] = useState(null);
   const [myHackathons, setMyHackathons] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    hackathonId: "",
+    message: "",
+  });
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${backendUrl}/api/v1/sponsors/create-request`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          hackathonId: formData.hackathonId,
+          message: formData.message,
+          sponsorId: id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send sponsorship request");
+      }
+
+      window.alert("Sponsorship request sent successfully!");
+      setShowModal(false);
+      setFormData({
+        hackathonId: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("Error sending sponsorship request:", error);
+    }
+  };
+
 
   useEffect(() => {
     const fetchSponsorDetails = async () => {
@@ -93,7 +130,7 @@ const SponsorDetails = () => {
           <div className="relative bg-neutral-800 rounded-xl p-6 w-full max-w-md border border-purple-700/50 z-10">
             <h2 className="text-2xl font-bold text-white mb-4">Sponsorship Request</h2>
             
-            <div className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <h3 className="text-neutral-300 mb-2">Sponsor:</h3>
                 <p className="text-white">{sponsor.name}</p>
@@ -101,7 +138,7 @@ const SponsorDetails = () => {
               
               <div>
                 <h3 className="text-neutral-300 mb-2">Hackathon:</h3>
-                <select className="w-full bg-neutral-700 border border-neutral-600 rounded-md px-4 py-2 text-white">
+                <select className="w-full bg-neutral-700 border border-neutral-600 rounded-md px-4 py-2 text-white" value={formData.hackathonId} onChange={(e) => setFormData({ ...formData, hackathonId: e.target.value })}>
                   <option>Select a hackathon</option>
                   {myHackathons.length > 0 ? (
                     myHackathons.map(hackathon => (
@@ -111,8 +148,8 @@ const SponsorDetails = () => {
                     ))
                   ) : (
                     <>
-                      <option>My Hackathon 2023</option>
-                      <option>Tech Fest 2024</option>
+                      {/* <option>My Hackathon 2023</option>
+                      <option>Tech Fest 2024</option> */}
                     </>
                   )}
                 </select>
@@ -124,23 +161,25 @@ const SponsorDetails = () => {
                   className="w-full bg-neutral-700 border border-neutral-600 rounded-md px-4 py-2 text-white"
                   rows="4"
                   placeholder="Enter your sponsorship request message..."
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 ></textarea>
               </div>
               
               <div className="flex justify-end space-x-3">
                 <button 
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-neutral-600 hover:bg-neutral-500 rounded-lg transition-colors duration-300"
+                  className="px-4 py-2 bg-neutral-600 hover:bg-neutral-500 rounded-lg transition-colors duration-300 text-white font-semibold"
                 >
                   Cancel
                 </button>
                 <button 
-                  className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg transition-colors duration-300"
+                  className="px-4 py-2 bg-purple-700 hover:bg-purple-600 rounded-lg transition-colors duration-300 text-white font-semibold"
                 >
                   Submit Request
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}
@@ -212,6 +251,19 @@ const SponsorDetails = () => {
             </div>
           </div>
         </div>
+
+          {userId === sponsor.user && (
+            <div>
+              <h3>Requests : </h3>
+              <ul className="list-disc list-inside">
+                {sponsor.sponsorshipRequests.map((request, index) => (
+                  <li key={index} className="text-neutral-300">
+                    Hackathon ID: {request.hackathon}, Message: {request.message}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
       </div>
     </div>
   );
