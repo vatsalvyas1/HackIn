@@ -80,6 +80,7 @@ const SponsorDetails = () => {
         throw new Error("Failed to accept sponsorship request");
       }
 
+      window.location.reload();
       window.alert("Sponsorship request accepted successfully!");
     } catch (error) {
       console.error("Error accepting sponsorship request:", error);
@@ -106,6 +107,7 @@ const SponsorDetails = () => {
       }
       
       window.alert("Sponsorship request rejected successfully!");
+      window.location.reload();
     } catch (error) {
       console.error("Error rejecting sponsorship request:", error);
     }
