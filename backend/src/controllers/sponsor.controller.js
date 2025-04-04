@@ -107,7 +107,7 @@ const createSponsorshipRequest = AsyncHandler(async (req, res) => {
     }
 
     const newSponsorshipsRequest = sponsor.sponsorshipRequests.filter((request) => {
-      return request.hackathon.toString() === hackathonId.toString();
+      return request.hackathon.toString() !== hackathonId.toString();
     })
 
     sponsor.sponsorshipRequests = newSponsorshipsRequest;
@@ -146,5 +146,5 @@ const createSponsorshipRequest = AsyncHandler(async (req, res) => {
       new ApiResponse(200, sponsor, "Sponsorship request rejected")
     );
   });
-  
+
 export { getSponsors, getSponsor, createSponsor, createSponsorshipRequest, acceptSponsorshipRequest, rejectSponsorshipRequest };
