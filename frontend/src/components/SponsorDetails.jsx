@@ -252,7 +252,7 @@ const SponsorDetails = () => {
           </div>
         </div>
 
-          {userId === sponsor.user && (
+          {userId === sponsor.user._id && (
             <div>
               <h3>Requests : </h3>
               <ul className="list-disc list-inside">
