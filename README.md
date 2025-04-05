@@ -7,6 +7,8 @@ With HackIn, you can:
 - **Showcase your projects** and skills to the world.
 - **Connect with teammates** and build your developer network.
 - **Climb the global leaderboard** and earn recognition for your achievements.
+- **Organize or join hackathons**
+- **Find sponsors** or **sponsor events** to support innovation.
 
 ---
 
@@ -27,25 +29,45 @@ With HackIn, you can:
    - Track team performance and contributions.
    - Connect with teammates and view their profiles.
 
+#### Live vs Private Teams
+- When creating a team, choose:
+ - **Live**: Your team will appear under “HackMates” and other developers with required skills can request to join.
+    - 🔔 **Team leaders receive email notifications** when someone requests to join their team.
+    - 📩 **Joiners receive email updates** when their request is accepted or rejected by the team leader.
+  - **Private**: A unique **Team Code** will be generated to share directly with friends or collaborators.
+
 ### 4. **Global Leaderboard**
    - Compete with developers worldwide and climb the ranks.
    - Earn points for participating in hackathons, winning challenges, and completing projects.
    - Unlock achievements and badges as you progress.
 
 ### 5. **Hackathon Tracker**
-   - Organize hackathons.
-   - Stay updated on upcoming hackathons.
-   - Track your participation history and results.
-   - Set goals and monitor your progress.
+- Organize hackathons with full control over team applications.
+- Stay updated on upcoming hackathons.
+- Track your participation history and results.
+- Set goals and monitor your progress.
+
+#### Organizer Controls
+- Teams can apply to participate in a hackathon.
+- Organizers can **accept or reject** team applications to ensure event quality.
+  
+### 6. **Sponsor Integration**
+- Sponsors can register with a **dedicated sponsor account** (only one sponsor profile per account).
+- Receive sponsorship requests from hackathon organizers.
+- Choose to **accept or decline** sponsorships.
+- Accepted sponsored hackathons are displayed on the sponsor’s profile for visibility.
 
 ---
 
 ## Why HackIn? 🤔
 
 Hackathons are a fantastic way to learn new skills, build projects, and network with other developers. However, keeping track of your progress and showcasing your achievements can be challenging. **HackIn solves this problem** by providing a centralized platform where you can:
+
 - **Organize your hackathon journey** in one place.
 - **Showcase your skills** to potential employers or collaborators.
 - **Stay motivated** by tracking your growth and competing with others.
+- **Connect with sponsors** or **get sponsored** to organize impactful events.
+- **Build or discover teams** that match your skills and interests.
 
 ---
 
@@ -55,8 +77,10 @@ Hackathons are a fantastic way to learn new skills, build projects, and network 
 2. **Set Up Your Profile**: Add your details, skills, and interests.
 3. **Track Hackathons**: Log your participation and results.
 4. **Showcase Projects**: Upload your hackathon projects with descriptions and tech stacks.
-5. **Connect with Teams**: Join or create teams for upcoming hackathons.
-6. **Climb the Leaderboard**: Earn points and badges to rise through the ranks.
+5. **Connect with Teams**: Join or create teams (Live or Private mode).
+6. **Organize Events**: Host hackathons and manage team approvals and sponsor requests.
+7. **Sponsor Events**: Create a sponsor profile and support developer innovation.
+8. **Climb the Leaderboard**: Earn points and badges to rise through the ranks.
 
 ---
 ## Environment Variables 🔑
