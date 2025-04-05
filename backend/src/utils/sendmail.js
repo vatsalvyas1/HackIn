@@ -35,7 +35,7 @@ const sendRejectMessage = async (email, userName, teamName) => {
     try{
         const mailOptions = {
             to: email,
-            subject: 'Request Rejected',
+            subject: 'Oops! Your Request has been rejected',
             html: `Hello ${userName},<br> Your request to join ${teamName} has been rejected.`,
         };
     
@@ -56,7 +56,7 @@ const sendJoinRequest = async(email, leaderName, userName, teamName) => {
     try{
         const mailOptions = {
             to: email,
-            subject: 'Request Rejected',
+            subject: 'Join Request Received',
             html: `Hello ${leaderName},<br> ${userName} has requested to join your team ${teamName}`,
         };
     
